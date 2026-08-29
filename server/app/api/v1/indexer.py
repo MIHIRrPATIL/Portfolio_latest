@@ -5,6 +5,27 @@ from app.config import settings
 
 router = APIRouter(prefix="/indexer", tags=["Codebase Indexer"])
 
+@router.api_route("/cron", methods=["GET", "POST"])
+async def trigger_nightly_cron(batch_size: int = Query(5, ge=1, le=20)):
+    """
+    Cron Trigger Endpoint:
+    Can be called by external schedulers (Cron-job.org, GitHub Actions, etc.)
+    to execute the midnight batch indexer without relying on container memory.
+    """
+    try:
+        from scripts.nightly_batch_indexer import run_nightly_batch_indexing
+        import asyncio
+        asyncio.create_task(run_nightly_batch_indexing(batch_size=batch_size))
+        return {
+            "status": "triggered",
+            "message": f"Nightly batch indexing triggered for next {batch_size} unindexed repositories.",
+        }
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to trigger cron: {str(e)}"
+        )
+
 @router.post("/all", response_model=List[Dict[str, Any]])
 async def index_all_repositories(username: Optional[str] = Query(None, description="GitHub Username")):
     """

@@ -54,24 +54,16 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# CORS Middleware Setup
-cors_origins = settings.cors_origins_list
-if not cors_origins or "*" in cors_origins:
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=["*"],
-        allow_credentials=False,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
-else:
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=cors_origins,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+# Bulletproof Dynamic CORS Middleware Setup
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[],
+    allow_origin_regex=r"^https?://.*",
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["*"],
+)
 
 # Include API Router
 app.include_router(api_v1_router)
