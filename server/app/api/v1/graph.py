@@ -53,6 +53,7 @@ async def get_project_graph(repo_id: str):
     }
 
 @router.get("/all")
+@router.get("/data")
 async def get_all_graphs(project: Optional[str] = Query(None, description="Optional repo_id filter")):
     """
     Returns nodes and edges for the Neural Graph visualizer.

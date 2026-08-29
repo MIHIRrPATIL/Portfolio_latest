@@ -8,10 +8,17 @@ router = APIRouter(prefix="/agent", tags=["Agentic AI Chatbot"])
 
 class ChatRequest(BaseModel):
     session_id: str = Field(default="default_session")
-    query: str = Field(..., min_length=1, description="User question or prompt")
+    query: Optional[str] = Field(default=None, description="User question or prompt")
+    user_query: Optional[str] = Field(default=None, description="User question or prompt (alias)")
     chat_history: List[Dict[str, str]] = Field(default_factory=list)
     pathname: Optional[str] = Field(default=None, description="Active client route path (e.g. /projects/cdac-asr, /graph, /)")
     page_context: Optional[Dict[str, Any]] = Field(default_factory=dict, description="Metadata of currently viewed page/project")
+
+    def get_query(self) -> str:
+        q = (self.query or self.user_query or "").strip()
+        if not q:
+            raise HTTPException(status_code=422, detail="Field 'query' or 'user_query' must not be empty.")
+        return q
 
 @router.post("/chat")
 async def chat_with_agent(req: ChatRequest):
@@ -19,9 +26,10 @@ async def chat_with_agent(req: ChatRequest):
     Synchronous Chat Endpoint:
     Runs the Master Agentic Workflow and returns full response, GraphRAG context, and UI badges.
     """
+    effective_query = req.get_query()
     state = await agent_orchestrator.run(
         session_id=req.session_id,
-        user_query=req.query,
+        user_query=effective_query,
         chat_history=req.chat_history,
         pathname=req.pathname,
         page_context=req.page_context
@@ -44,10 +52,11 @@ async def stream_chat_with_agent(req: ChatRequest):
     Server-Sent Events (SSE) Streaming Endpoint:
     Streams LLM persona tokens, GraphRAG metadata, and UI badge chips in real time.
     """
+    effective_query = req.get_query()
     return StreamingResponse(
         agent_orchestrator.stream(
             session_id=req.session_id,
-            user_query=req.query,
+            user_query=effective_query,
             chat_history=req.chat_history,
             pathname=req.pathname,
             page_context=req.page_context
