@@ -75,7 +75,7 @@ async def root_health_check():
         "service": "Portfolio GitHub Webhook & Grading Engine",
         "version": "1.0.0",
         "configured_user": settings.GITHUB_USERNAME,
-        "token_configured": bool(settings.GITHUB_PERSONAL_ACCESS_TOKEN and settings.GITHUB_PERSONAL_ACCESS_TOKEN != "your_github_pat_token_here"),
+        "token_configured": bool(settings.effective_github_token),
         "webhook_secret_configured": bool(settings.GITHUB_WEBHOOK_SECRET and settings.GITHUB_WEBHOOK_SECRET != "your_super_secret_webhook_key_here"),
         "docs": "/docs"
     }

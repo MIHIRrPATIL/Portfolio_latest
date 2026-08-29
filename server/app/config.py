@@ -8,12 +8,33 @@ class Settings(BaseSettings):
     CORS_ORIGINS: str = "*"
     
     GITHUB_PERSONAL_ACCESS_TOKEN: str = ""
+    GITHUB_TOKEN: str = ""
+    GH_TOKEN: str = ""
+    GITHUB_PAT: str = ""
+    GITHUB_ACCESS_TOKEN: str = ""
+    ACCESS_TOKEN: str = ""
     GITHUB_WEBHOOK_SECRET: str = ""
     GITHUB_USERNAME: str = "MIHIRrPATIL"
     GEMINI_API_KEY: str = ""
     OPENROUTER_API_KEY: str = ""
     OPENROUTER_MODEL: str = "openrouter/free"
     DATABASE_URL: str = "sqlite:///./portfolio.db"
+
+    @property
+    def effective_github_token(self) -> str:
+        token = (
+            self.GITHUB_PERSONAL_ACCESS_TOKEN or
+            self.GITHUB_TOKEN or
+            self.GH_TOKEN or
+            self.GITHUB_PAT or
+            self.GITHUB_ACCESS_TOKEN or
+            self.ACCESS_TOKEN or
+            os.getenv("GITHUB_TOKEN", "") or
+            os.getenv("GITHUB_PERSONAL_ACCESS_TOKEN", "")
+        ).strip()
+        if token == "your_github_pat_token_here":
+            return ""
+        return token
 
     @property
     def normalized_database_url(self) -> str:

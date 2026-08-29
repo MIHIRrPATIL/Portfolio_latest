@@ -12,7 +12,7 @@ class GitHubService:
 
     def __init__(self):
         self.base_url = "https://api.github.com"
-        self.token = settings.GITHUB_PERSONAL_ACCESS_TOKEN
+        self.token = settings.effective_github_token
         self.username = settings.GITHUB_USERNAME
         self.timeout = httpx.Timeout(15.0, connect=6.0)
 
@@ -21,8 +21,9 @@ class GitHubService:
             "Accept": "application/vnd.github.v3+json",
             "User-Agent": "Portfolio-FastAPI-Server"
         }
-        if self.token and self.token != "your_github_pat_token_here":
-            headers["Authorization"] = f"token {self.token}"
+        token = settings.effective_github_token or self.token
+        if token:
+            headers["Authorization"] = f"Bearer {token}"
         return headers
 
     async def fetch_user_repositories(self, username: Optional[str] = None) -> List[Dict[str, Any]]:
