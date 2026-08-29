@@ -68,7 +68,7 @@ app.add_middleware(
 # Include API Router
 app.include_router(api_v1_router)
 
-@app.get("/", tags=["Health"])
+@app.api_route("/", methods=["GET", "HEAD"], tags=["Health"])
 async def root_health_check():
     return {
         "status": "online",
