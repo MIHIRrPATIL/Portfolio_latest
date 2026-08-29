@@ -1,5 +1,6 @@
 'use client'
 
+import React, { useState, useRef, useEffect } from 'react'
 import dynamic from 'next/dynamic'
 
 const Spline = dynamic(() => import('@splinetool/react-spline'), {
@@ -17,7 +18,29 @@ interface SplineWrapperProps {
 }
 
 export default function SplineWrapper({ scene, className }: SplineWrapperProps) {
+  const [isInView, setIsInView] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true)
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [])
+
   return (
-    <Spline scene={scene} className={className} />
+    <div ref={containerRef} className={className}>
+      {isInView && <Spline scene={scene} className={className} />}
+    </div>
   )
 }

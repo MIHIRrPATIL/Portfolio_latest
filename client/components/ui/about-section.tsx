@@ -2,10 +2,24 @@
 import { TimelineContent } from "@/components/ui/timeline-animation";
 import { VerticalCutReveal } from "@/components/ui/vertical-cut-reveal";
 import { ArrowRight } from "lucide-react";
-import { useRef } from "react";
+import { useState, useEffect, useRef } from "react";
+import { fetchPortfolioStats, PortfolioStats } from "@/data/projects";
 
 export default function AboutSection3() {
   const heroRef = useRef<HTMLDivElement>(null);
+  const [stats, setStats] = useState<PortfolioStats>({
+    totalRepos: 51,
+    languagesCount: 12,
+    languages: [],
+    totalStars: 5
+  });
+
+  useEffect(() => {
+    fetchPortfolioStats().then((s) => {
+      if (s) setStats(s);
+    });
+  }, []);
+
   const revealVariants = {
     visible: (i: number) => ({
       y: 0,
@@ -49,7 +63,7 @@ export default function AboutSection3() {
             customVariants={revealVariants}
             className="text-4xl md:text-5xl lg:text-7xl font-black font-sans text-white uppercase tracking-[0.4em] leading-tight"
           >
-            WHO I AM
+            WHO AM I ?
           </TimelineContent>
         </div>
 
@@ -95,7 +109,7 @@ export default function AboutSection3() {
                 customVariants={revealVariants}
                 className="mb-8"
               >
-                <div className="text-4xl md:text-8xl font-black text-white leading-none">50+</div>
+                <div className="text-4xl md:text-8xl font-black text-white leading-none">{stats.totalRepos}+</div>
                 <div className="text-xs md:text-2xl font-black text-white/50 uppercase tracking-widest mt-2">repos</div>
               </TimelineContent>
               <TimelineContent
@@ -104,7 +118,7 @@ export default function AboutSection3() {
                 timelineRef={heroRef}
                 customVariants={revealVariants}
               >
-                <div className="text-3xl md:text-6xl font-black text-red-300 leading-none">5+</div>
+                <div className="text-3xl md:text-6xl font-black text-red-300 leading-none">{stats.languagesCount}+</div>
                 <div className="text-xs md:text-xl font-black text-white/50 uppercase tracking-tighter leading-tight mt-2 md:mt-4">languages &<br />Frameworks</div>
               </TimelineContent>
             </div>
@@ -129,7 +143,7 @@ export default function AboutSection3() {
               customVariants={revealVariants}
               className="flex items-center gap-6 text-white md:justify-end"
             >
-              <span className="text-red-300 font-black text-6xl">300k</span>
+              <span className="text-red-300 font-black text-6xl">{stats.locDisplay || "900K+"}</span>
               <span className="font-bold text-lg">LOC</span>
             </TimelineContent>
           </div>
@@ -225,6 +239,12 @@ export default function AboutSection3() {
                 animationNum={15}
                 timelineRef={heroRef}
                 customVariants={revealVariants}
+                onClick={() => {
+                  const syncElem = document.getElementById('sync') || document.getElementById('connect');
+                  if (syncElem) {
+                    syncElem.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
                 className="bg-white text-black hover:bg-red-300 hover:text-black border-none flex items-center w-fit ml-auto gap-8 transition-all duration-500 ease-out px-6 py-4 md:px-20 md:py-10 rounded-2xl cursor-pointer font-black uppercase tracking-tighter text-xl md:text-2xl shadow-[0_40px_80px_rgba(255,255,255,0.15)] group"
               >
                 LET'S COLLABORATE

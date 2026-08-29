@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import Folder from "./Folder";
 import Link from "next/link";
 import { ProjectCard } from "./ProjectCard";
-import { projects } from "@/data/projects";
+import { projects, fetchAllProjects, fetchFeaturedProjects, Project } from "@/data/projects";
 import { cn } from "@/lib/utils";
 
 const CARD_H = 130; // Shorter cards
@@ -13,15 +13,24 @@ const CARD_GAP = 24;
 
 export default function ProjectsSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const [projectList, setProjectList] = useState<Project[]>([]);
   
   // State for activation
   const [isActivated, setIsActivated] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
+  React.useEffect(() => {
+    fetchFeaturedProjects().then((data) => {
+      if (data && data.length > 0) setProjectList(data);
+    });
+    // Hydrate full 51+ projects database in background
+    fetchAllProjects();
+  }, []);
+
   // Scroll logic
   const SCROLL_MULTIPLIER = 500;
   // If activated, section gets tall to allow scrolling. If not, it's 100vh.
-  const sectionHeight = isActivated ? `${projects.length * SCROLL_MULTIPLIER + 1000}px` : '100vh';
+  const sectionHeight = isActivated ? `${projectList.length * SCROLL_MULTIPLIER + 1000}px` : '100vh';
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -31,18 +40,18 @@ export default function ProjectsSection() {
   // Track active index based on scroll when activated
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
     if (!isActivated) return;
-    const rawIndex = latest * (projects.length - 1);
-    const newIndex = Math.max(0, Math.min(projects.length - 1, Math.round(rawIndex)));
+    const rawIndex = latest * (projectList.length - 1);
+    const newIndex = Math.max(0, Math.min(projectList.length - 1, Math.round(rawIndex)));
     if (newIndex !== activeIndex) {
       setActiveIndex(newIndex);
     }
   });
 
   const stepSize = CARD_H + CARD_GAP;
-  const maxTravel = (projects.length - 1) * stepSize;
+  const maxTravel = (projectList.length - 1) * stepSize;
   const carouselY = useTransform(scrollYProgress, [0, 1], [0, -maxTravel]);
 
-  const activeProject = projects[activeIndex];
+  const activeProject = projectList[activeIndex] || projectList[0];
 
   return (
     <section
@@ -237,15 +246,17 @@ export default function ProjectsSection() {
               hidePapers={false} 
               open={isActivated}
               activeIndex={activeIndex}
-              items={projects.map(project => (
+              items={projectList.map((project, index) => (
                 <ProjectCard 
-                  key={project.id}
+                  key={`${project.id}-${project.owner || 'repo'}-${index}`}
                   id={project.id}
                   title={project.title}
                   description={project.description}
                   category={project.category}
                   tags={project.tags}
                   image={project.image}
+                  isTeamProject={project.isTeamProject}
+                  owner={project.owner}
                 />
               ))} 
             />

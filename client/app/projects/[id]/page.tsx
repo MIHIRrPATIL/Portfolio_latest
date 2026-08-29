@@ -16,10 +16,13 @@ import {
   Sparkles,
   Activity,
   Code2,
-  CheckCircle2
+  CheckCircle2,
+  Users
 } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
-import { projects } from "@/data/projects";
+import { fetchProjectById, fetchAllProjects, Project } from "@/data/projects";
+
+import { LoadingScreen } from "@/components/LoadingScreen";
 
 const renderIcon = (iconName: string) => {
   switch (iconName) {
@@ -38,11 +41,35 @@ export default function ProjectPage() {
   const id = params.id as string;
   const [activeTab, setActiveTab] = useState<'overview' | 'features' | 'metrics'>('overview');
 
-  const currentIndex = projects.findIndex((p) => p.id === id);
-  const project = projects[currentIndex >= 0 ? currentIndex : 0];
+  const [project, setProject] = useState<Project | null>(null);
+  const [allProjects, setAllProjects] = useState<Project[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const prevProject = projects[(currentIndex - 1 + projects.length) % projects.length];
-  const nextProject = projects[(currentIndex + 1) % projects.length];
+  React.useEffect(() => {
+    if (id) {
+      setIsLoading(true);
+      fetchProjectById(id).then((data) => {
+        if (data) setProject(data);
+        setIsLoading(false);
+      }).catch(() => {
+        setIsLoading(false);
+      });
+
+      fetchAllProjects().then((data) => {
+        if (data && data.length > 0) setAllProjects(data);
+      });
+    }
+  }, [id]);
+
+  if (isLoading || !project) {
+    return <LoadingScreen fullScreen message={`INDEXING & SYNTHESIZING ${id ? id.toUpperCase() : 'PROJECT'}`} />;
+  }
+
+  const currentIndex = allProjects.findIndex((p) => p.id === id || p.id.toLowerCase() === id?.toLowerCase());
+  const validIndex = currentIndex >= 0 ? currentIndex : 0;
+
+  const prevProject = allProjects.length > 0 ? allProjects[(validIndex - 1 + allProjects.length) % allProjects.length] : null;
+  const nextProject = allProjects.length > 0 ? allProjects[(validIndex + 1) % allProjects.length] : null;
 
   return (
     <main className="min-h-screen bg-black text-white px-6 md:px-16 lg:px-24 py-12 md:py-20 overflow-x-hidden selection:bg-red-300 selection:text-black">
@@ -81,10 +108,18 @@ export default function ProjectPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.3em] text-red-300 mb-6">
+          <div className="flex flex-wrap items-center gap-3 font-mono text-xs uppercase tracking-[0.3em] text-red-300 mb-6">
             <span>Artifact // {project.year}</span>
             <span className="w-4 h-px bg-red-300/40" />
             <span className="text-white/60">{project.category}</span>
+            {project.isTeamProject && (
+              <>
+                <span className="w-4 h-px bg-red-300/40" />
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] bg-red-500/20 text-red-300 border border-red-300/30">
+                  <Users className="w-3 h-3" /> Team Project ({project.owner ? `@${project.owner}` : 'Collaborative'})
+                </span>
+              </>
+            )}
           </div>
 
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black uppercase tracking-tight leading-[0.95] text-white mb-6 text-balance">
@@ -109,15 +144,17 @@ export default function ProjectPage() {
 
           {/* Quick Action Buttons */}
           <div className="flex flex-wrap items-center gap-4">
-            <a
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-red-300 text-black font-mono text-xs uppercase tracking-[0.2em] font-bold hover:bg-white hover:shadow-[0_0_30px_rgba(252,165,165,0.3)] transition-all duration-300"
-            >
-              <span>Live Deployment</span>
-              <ExternalLink className="w-4 h-4 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
-            </a>
+            {project.liveUrl && project.liveUrl !== '' && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2.5 px-6 py-3.5 rounded-2xl bg-red-300 text-black font-mono text-xs uppercase tracking-[0.2em] font-bold hover:bg-white hover:shadow-[0_0_30px_rgba(252,165,165,0.3)] transition-all duration-300"
+              >
+                <span>Live Deployment</span>
+                <ExternalLink className="w-4 h-4 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" />
+              </a>
+            )}
             <a
               href={project.repoUrl}
               target="_blank"
@@ -130,26 +167,47 @@ export default function ProjectPage() {
           </div>
         </motion.div>
 
-        {/* Right 5 Columns: Hero Graphic Frame */}
+        {/* Right 5 Columns: Hero Cyberpunk Terminal Frame */}
         <motion.div 
           className="lg:col-span-5 relative group"
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <div className="relative aspect-4/3 rounded-3xl overflow-hidden bg-[#121214] border border-white/15 shadow-[0_0_60px_rgba(0,0,0,0.8)]">
-            <img 
-              src={project.image} 
-              alt={project.title} 
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          <div className="relative aspect-4/3 rounded-3xl overflow-hidden bg-[#0d0d0e] border border-white/15 p-6 flex flex-col justify-between shadow-[0_0_60px_rgba(0,0,0,0.8)] group-hover:border-red-300/40 transition-colors">
+            {/* Cyber Grid Pattern */}
+            <div 
+              className="absolute inset-0 opacity-15 pointer-events-none"
+              style={{
+                backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.2) 1px, transparent 0)`,
+                backgroundSize: "20px 20px"
+              }}
             />
-            <div className="absolute inset-0 bg-linear-to-t from-black via-black/20 to-transparent opacity-60 pointer-events-none" />
-            
-            {/* Inner Badge Overlay */}
-            <div className="absolute bottom-5 left-5 z-10">
-              <span className="font-mono text-xs uppercase tracking-[0.2em] px-3.5 py-1.5 rounded-xl bg-black/80 backdrop-blur-md border border-white/15 text-white/80">
-                System Render // v2.6
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <span className="text-9xl font-black text-red-300/10 group-hover:text-red-300/20 transition-colors select-none">
+                {(project.title || "P").charAt(0).toUpperCase()}
               </span>
+            </div>
+
+            {/* Top Terminal Bar */}
+            <div className="relative z-10 flex items-center justify-between font-mono text-xs uppercase tracking-widest text-red-300 border-b border-white/10 pb-3">
+              <span className="flex items-center gap-2">
+                <Terminal className="w-4 h-4" /> Dossier Spec
+              </span>
+              <span className="text-white/40">{project.year}</span>
+            </div>
+
+            {/* Mid Terminal Spec Content */}
+            <div className="relative z-10 font-mono text-xs space-y-2 text-white/80 my-auto py-4">
+              <div><span className="text-red-300/80">&gt; REPO:</span> {project.owner || 'MIHIRrPATIL'}/{project.id}</div>
+              <div><span className="text-red-300/80">&gt; STACK:</span> {project.tags.join(" • ")}</div>
+              <div><span className="text-red-300/80">&gt; TYPE:</span> {project.isTeamProject ? "Team / Collaborative" : "Solo Application"}</div>
+            </div>
+
+            {/* Bottom Status Overlay */}
+            <div className="relative z-10 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.2em] pt-3 border-t border-white/10 text-white/40">
+              <span>Status: Active</span>
+              <span className="text-red-300">Verified System</span>
             </div>
           </div>
         </motion.div>
@@ -286,35 +344,37 @@ export default function ProjectPage() {
       </div>
 
       {/* ─── Bottom Artifact Quick Switcher ─── */}
-      <div className="w-full border-t border-white/10 mt-24 pt-12">
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
-          <Link
-            href={`/projects/${prevProject.id}`}
-            className="group flex items-center gap-4 p-5 rounded-2xl bg-[#121214] border border-white/10 hover:border-red-300/40 transition-all duration-300 w-full sm:w-auto min-w-65"
-          >
-            <ArrowLeft className="w-5 h-5 text-red-300 group-hover:-translate-x-1 transition-transform" />
-            <div className="text-left">
-              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/50 block">Previous Artifact</span>
-              <span className="font-black uppercase tracking-wide text-xs text-white group-hover:text-red-300 transition-colors">{prevProject.title}</span>
-            </div>
-          </Link>
+      {prevProject && nextProject && (
+        <div className="w-full border-t border-white/10 mt-24 pt-12">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
+            <Link
+              href={`/projects/${prevProject.id}`}
+              className="group flex items-center gap-4 p-5 rounded-2xl bg-[#121214] border border-white/10 hover:border-red-300/40 transition-all duration-300 w-full sm:w-auto min-w-65"
+            >
+              <ArrowLeft className="w-5 h-5 text-red-300 group-hover:-translate-x-1 transition-transform" />
+              <div className="text-left">
+                <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/50 block">Previous Artifact</span>
+                <span className="font-black uppercase tracking-wide text-xs text-white group-hover:text-red-300 transition-colors">{prevProject.title}</span>
+              </div>
+            </Link>
 
-          <span className="font-mono text-xs uppercase tracking-[0.25em] text-white/40">
-            Artifact Navigation
-          </span>
+            <span className="font-mono text-xs uppercase tracking-[0.25em] text-white/40">
+              Artifact Navigation
+            </span>
 
-          <Link
-            href={`/projects/${nextProject.id}`}
-            className="group flex items-center justify-end gap-4 p-5 rounded-2xl bg-[#121214] border border-white/10 hover:border-red-300/40 transition-all duration-300 w-full sm:w-auto min-w-65 text-right"
-          >
-            <div className="text-right">
-              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/50 block">Next Artifact</span>
-              <span className="font-black uppercase tracking-wide text-xs text-white group-hover:text-red-300 transition-colors">{nextProject.title}</span>
-            </div>
-            <ArrowRight className="w-5 h-5 text-red-300 group-hover:translate-x-1 transition-transform" />
-          </Link>
+            <Link
+              href={`/projects/${nextProject.id}`}
+              className="group flex items-center justify-end gap-4 p-5 rounded-2xl bg-[#121214] border border-white/10 hover:border-red-300/40 transition-all duration-300 w-full sm:w-auto min-w-65 text-right"
+            >
+              <div className="text-right">
+                <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-white/50 block">Next Artifact</span>
+                <span className="font-black uppercase tracking-wide text-xs text-white group-hover:text-red-300 transition-colors">{nextProject.title}</span>
+              </div>
+              <ArrowRight className="w-5 h-5 text-red-300 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
         </div>
-      </div>
+      )}
     </main>
   );
 }

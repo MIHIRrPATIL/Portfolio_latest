@@ -231,15 +231,20 @@ export default function Hero() {
       <div className="absolute inset-0 z-5 h-full w-full pointer-events-none">
         <Canvas 
           camera={{ position: [0, 1, 3] }} 
-          dpr={[1, 1.5]}
-          gl={{ powerPreference: "high-performance", antialias: false }}
+          dpr={[1, 1.25]}
+          gl={{ 
+            powerPreference: "high-performance", 
+            antialias: false,
+            preserveDrawingBuffer: false,
+            failIfMajorPerformanceCaveat: false
+          }}
         >
-          <Suspense fallback={<Loader />}>
+          <Suspense fallback={null}>
             <ambientLight intensity={0.6} />
             <pointLight position={[10, 10, 10]} intensity={1} />
             <spotLight position={[-10, 10, 10]} angle={0.15} penumbra={1} intensity={1} />
             
-            <Float speed={1.5} rotationIntensity={0.5} floatIntensity={1}>
+            <Float speed={1.2} rotationIntensity={0.4} floatIntensity={0.8}>
               <Astronaut
                 scale={isMobile ? 0.18 : 0.28}
                 position={isMobile ? [0, -1.8, 0] : [1.5, -1.2, 0]}

@@ -1,7 +1,11 @@
 import hmac
 import hashlib
-from fastapi import APIRouter, Request, Header, HTTPException, status
+from fastapi import APIRouter, Request, Header, HTTPException, status, BackgroundTasks
 from app.config import settings
+from app.services.indexer_service import indexer_service
+from app.services.ai_service import ai_service
+from app.db.session import SessionLocal
+from app.db.crud import upsert_project_case_study
 
 router = APIRouter(prefix="/github", tags=["GitHub Webhook"])
 
@@ -11,7 +15,6 @@ def verify_github_signature(payload: bytes, signature_header: str, secret: str) 
     generated with GITHUB_WEBHOOK_SECRET.
     """
     if not secret:
-        # If secret is not configured in .env, log warning and allow for development
         return True
 
     if not signature_header or not signature_header.startswith("sha256="):
@@ -23,15 +26,30 @@ def verify_github_signature(payload: bytes, signature_header: str, secret: str) 
 
     return hmac.compare_digest(computed_signature, expected_signature)
 
+async def _background_reindex_pushed_repo(owner: str, repo_name: str):
+    """Asynchronous background task to re-index ONLY the pushed repository."""
+    try:
+        print(f"🔔 Webhook push event! Selective re-indexing: {owner}/{repo_name}...")
+        repo_index = await indexer_service.index_repository(owner, repo_name)
+        case_study = await ai_service.analyze_and_generate_case_study(repo_index)
+        
+        db = SessionLocal()
+        upsert_project_case_study(db, case_study)
+        db.close()
+        print(f"✅ Successfully updated DB case study for pushed repo: {repo_name}")
+    except Exception as e:
+        print(f"⚠️ Error re-indexing pushed repo {repo_name}: {str(e)}")
+
 @router.post("/webhook")
 async def handle_github_webhook(
     request: Request,
+    background_tasks: BackgroundTasks,
     x_github_event: str = Header(None, alias="X-GitHub-Event"),
     x_hub_signature_256: str = Header(None, alias="X-Hub-Signature-256")
 ):
     """
     GitHub Webhook Handler.
-    Receives push/repo events, validates HMAC SHA-256 signature, and triggers auto-grading.
+    Receives push/repo events, validates HMAC SHA-256 signature, and selectively re-indexes changed repos.
     """
     raw_payload = await request.body()
 
@@ -45,7 +63,7 @@ async def handle_github_webhook(
 
     json_payload = await request.json()
 
-    # Handle Webhook Ping Event (Sent when adding Webhook URL in GitHub)
+    # Handle Webhook Ping Event
     if x_github_event == "ping":
         return {
             "status": "success",
@@ -55,22 +73,27 @@ async def handle_github_webhook(
 
     # Handle Push Event
     if x_github_event == "push":
-        repo_name = json_payload.get("repository", {}).get("full_name")
+        repo_info = json_payload.get("repository", {})
+        full_name = repo_info.get("full_name")
+        repo_name = repo_info.get("name")
+        owner = repo_info.get("owner", {}).get("login", settings.GITHUB_USERNAME)
         pusher = json_payload.get("pusher", {}).get("name")
         ref = json_payload.get("ref")
-        commits_count = len(json_payload.get("commits", []))
+
+        # Selective Re-indexing for ONLY this changed repo in the background
+        if repo_name and owner:
+            background_tasks.add_task(_background_reindex_pushed_repo, owner, repo_name)
 
         return {
             "status": "processed",
             "event": "push",
-            "repository": repo_name,
+            "repository": full_name,
             "pusher": pusher,
             "branch": ref,
-            "commits_count": commits_count,
-            "message": f"Push event processed for {repo_name}. Triggering automated re-grade."
+            "message": f"Push event acknowledged for {full_name}. Selective background re-indexing queued."
         }
 
-    # Handle Repository Event (Created / Starred)
+    # Handle Repository Event
     if x_github_event == "repository":
         action = json_payload.get("action")
         repo_name = json_payload.get("repository", {}).get("full_name")

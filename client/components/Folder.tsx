@@ -133,7 +133,7 @@ const Folder: React.FC<FolderProps> = ({
           ></span>
           {!hidePapers && papers.map((item, i) => {
             const isActive = i === activeIndex;
-            const sizeClasses = open ? 'w-[220px] h-[310px]' : 'w-[80px] h-[80%]'; // Expanded card size
+            const sizeClasses = open ? 'w-[230px] h-[330px]' : 'w-[80px] h-[80%]'; // Expanded card size
 
             const transformStyle = open
               ? `${getDynamicTransform(i)} translate(${paperOffsets[i]?.x || 0}px, ${paperOffsets[i]?.y || 0}px)`

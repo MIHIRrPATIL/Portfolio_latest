@@ -8,6 +8,7 @@ import ScrollProgress from "./ScrollProgress"
 import PageLoader from "./PageLoader"
 import SideNav from "./SideNav"
 import MenuOverlay from "./MenuOverlay"
+import AgentChatWidget from "../agent/AgentChatWidget"
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -29,6 +30,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <ScrollProgress />
       <SideNav />
       <MenuOverlay isOpen={isMenuOpen} close={() => setIsMenuOpen(false)} />
+      <AgentChatWidget />
       {children}
     </div>
   )

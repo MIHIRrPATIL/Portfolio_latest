@@ -25,6 +25,8 @@ export const SocialFooter = () => {
 
   return (
     <section id="connect" ref={footerRef} className="w-full relative z-0 overflow-visible min-h-screen flex flex-col px-6 md:px-16 lg:px-24 bg-[#050505]">
+      <div id="contact" className="absolute top-0 pointer-events-none" />
+      <div id="sync" className="absolute top-0 pointer-events-none" />
       
       {/* CSS to hide the Built with Spline watermark */}
       <style dangerouslySetInnerHTML={{ __html: `
