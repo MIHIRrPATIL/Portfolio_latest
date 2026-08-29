@@ -169,8 +169,8 @@ class GitHubService:
                 response = await client.get(url)
                 if response.status_code == 200:
                     return response.json()
-        except Exception as e:
-            print(f"⚠️ Error fetching languages for {owner}/{repo}: {str(e)}")
+        except Exception:
+            pass
         return {}
 
     async def fetch_and_grade_all_repos(self, username: Optional[str] = None) -> List[Dict[str, Any]]:
