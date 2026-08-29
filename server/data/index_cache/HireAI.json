@@ -1,0 +1,127 @@
+{
+  "repo_name": "HireAI",
+  "owner": "Indra55",
+  "full_name": "Indra55/HireAI",
+  "indexed_at": "2026-08-28T18:30:16.207186+00:00",
+  "readme": {
+    "present": true,
+    "content": "# 🚀 HireAI - AI-Powered Recruitment Platform\n\n<div align=\"center\">\n  <img src=\"https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white\" alt=\"Next.js\">\n  <img src=\"https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB\" alt=\"React\">\n  <img src=\"https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white\" alt=\"TypeScript\">\n  <img src=\"https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white\" alt=\"Node.js\">\n  <img src=\"https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white\" alt=\"MongoDB\">\n</div>\n\n## 🌟 Transform Your Hiring Process with AI\n\nHireAI is a revolutionary recruitment platform that leverages artificial intelligence to help you find, evaluate, and hire top talent faster and more efficiently than ever before. Say goodbye to endless resume screening and hello to intelligent candidate matching!!\n\n## ✨ Next-Gen Recruitment, Powered by AI\n\n### 🧠 AI-Powered Candidate Intelligence\n- **Natural Language Understanding**: Describe your ideal candidate in plain English - our AI handles the rest\n- **Smart Ranking Engine**: Goes beyond keywords to understand context, skills, and cultural fit\n- **Deep Insights**: Get detailed match breakdowns showing exactly why a candidate is perfect for your role\n- **Predictive Analytics**: Our AI predicts candidate success based on historical hiring data\n\n### 🔍 Hyper-Intelligent Candidate Discovery\n- **Web-Wide Talent Mapping**: Scours the internet to find passive candidates who aren't even looking\n- **Social DNA Analysis**: Gain insights from LinkedIn, GitHub, Twitter, and more to build 360° candidate profiles\n- **Resume-to-Profile Matching**: Automatically map resume data to structured profiles with 95%+ accuracy\n- **Skills Gap Analysis**: Identify missing skills and suggest upskilling opportunities\n\n### 🤖 Autonomous Outreach & Engagement\n- **AI-Personalized Messages**: Generate human-like, personalized outreach that gets responses\n- **Multi-Channel Campaigns**: Coordinate email, LinkedIn, and other channels in one seamless workflow\n- **Smart Follow-ups**: AI suggests optimal times and messages for follow-ups\n- **Sentiment Analysis**: Gauge candidate interest and engagement levels in real-time\n\n### 📊 Data-Driven Decision Making\n- **Hiring Funnel Analytics**: Visualize your entire recruitment pipeline\n- **Time-to-Hire Predictions**: Forecast how long roles will take to fill\n- **Quality of Hire Metrics**: Track new hire performance and retention\n- **Diversity & Inclusion Insights**: Ensure your hiring process is fair and unbiased\n\n### 🚀 Turbocharged Recruiter Experience\n- **One-Click Applications**: Streamline the application process for both recruiters and candidates\n- **Collaborative Hiring**: Share feedback and rate candidates with your team\n- **Interview Intelligence**: Get AI-powered interview questions tailored to each candidate\n- **Offer Optimization**: Data-driven compensation recommendations that win top talent\n\n## 🛠 Tech Stack\n\n### Frontend\n- **Framework**: Next.js 13+ with App Router\n- **UI**: Tailwind CSS + Shadcn/ui\n- **State Management**: React Context + Custom Hooks\n- **Visualization**: Recharts\n- **Animation**: Framer Motion\n\n### Backend\n- **Runtime**: Node.js with Express\n- **Database**: MongoDB with Mongoose ODM\n- **Authentication**: JWT + bcrypt\n- **AI/ML**: Custom embedding models for candidate matching\n- **APIs**: RESTful architecture\n\n## 🚀 Getting Started\n\n### Prerequisites\n- Node.js 18+ and npm/yarn\n- MongoDB instance (local or Atlas)\n- Git\n\n\n## 🤖 How It Works\n\n1. **Company Onboarding**\n   - Complete the company survey to set your hiring preferences\n   - Define key departments, locations, and required skills\n\n2. **Candidate Discovery**\n   - Use natural language to describe your ideal candidate\n   - Let AI search through profiles and rank candidates\n   - Filter and sort results based on various criteria\n\n3. **Candidate Evaluation**\n   - View comprehensive candidate profiles\n   - See match scores and detailed breakdowns\n   - Access social profiles and online presence\n\n4. **Outreach & Engagement**\n   - Generate personalized outreach messages\n   - Track communication history\n   - Schedule interviews and follow-ups\n\n## 📈 Features in Development\n\n- [ ] Advanced AI interview scheduling\n- [ ] Automated reference checking\n- [ ] Skills assessment integration\n- [ ] Team collaboration tools\n- [ ] Advanced analytics dashboard\n\n## 🤝 Contributing\n\nWe welcome contributions! Please read our [Contributing Guide](CONTRIBUTING.md) to get started.\n\n## 📄 License\n\nThis project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.\n\n## 🙏 Acknowledgments\n\n- Built with ❤️ by the Singularity team\n- Special thanks to all our beta testers and contributors\n- Inspired by the challenges of modern recruitment\n\n---\n\n<div align=\"center\">\n  Made with 💜 by Team Singularity @ 100x GenAI Buildathon\n</div>\n"
+  },
+  "recent_activity": {
+    "commit_count": 5,
+    "commits": [
+      {
+        "sha": "5f29ccd",
+        "author": "Hitanshu Gala",
+        "date": "2025-07-02T07:41:15Z",
+        "message": "Update README.md",
+        "files_changed": [
+          "README.md"
+        ]
+      },
+      {
+        "sha": "2f2e1db",
+        "author": "Hitanshu",
+        "date": "2025-06-21T12:12:59Z",
+        "message": "fixed bugs",
+        "files_changed": [
+          "Backend/routes/interview.js"
+        ]
+      },
+      {
+        "sha": "abbae6e",
+        "author": "Hitanshu",
+        "date": "2025-06-21T11:24:49Z",
+        "message": "fixed bugs",
+        "files_changed": [
+          "Frontend_new/src/pages/Profile.tsx"
+        ]
+      },
+      {
+        "sha": "f0e59d6",
+        "author": "Hitanshu",
+        "date": "2025-06-21T10:40:50Z",
+        "message": "Fixed few bugs",
+        "files_changed": [
+          "Frontend_new/src/components/dashboard/OutreachCenter.tsx",
+          "Frontend_new/src/services/candidateService.ts"
+        ]
+      },
+      {
+        "sha": "9a99a24",
+        "author": "Hitanshu",
+        "date": "2025-06-21T07:06:32Z",
+        "message": "few changes",
+        "files_changed": [
+          "Backend/Flask/app.py",
+          "Backend/Flask/cert.pem",
+          "Backend/Flask/key.pem",
+          "Backend/Flask/openssl.cnf",
+          "Frontend_new/src/services/candidateService.ts",
+          "Frontend_new/src/services/generatedCandidatesService.ts"
+        ]
+      }
+    ]
+  },
+  "architecture_manifests": {
+    "file_count": 13,
+    "files": {
+      "Backend/Flask/app.py": "from flask import Flask\nfrom flask_cors import CORS\nimport logging\nimport os\n\nfrom embeddings.candidate_embeddings import candidates_bp\n\napp = Flask(__name__)\nCORS(app)\nlogging.basicConfig(level=logging.INFO)\nlogger = logging.getLogger(__name__)\n\n# Register blueprints\napp.register_blueprint(candidates_bp, url_prefix='/candidates')\n\n@app.route('/')\ndef health_check():\n    return {\n        'status': 'healthy',\n        'service': 'Candidate Search API',\n        'version': '1.0'\n    }\n\nif __name__ == '__main__':\n    port = int(os.environ.get('PORT', 5001))\n    app.run(debug=False, host='0.0.0.0', port=port)",
+      "Backend/Flask/requirements.txt": "Flask\nflask-cors\npsycopg2-binary\nsentence-transformers\npython-dotenv\nnumpy\ngunicorn",
+      "Backend/dockerfile": "FROM node:19\n\nWORKDIR /app\n\nCOPY package*.json ./\n\nRUN npm install\n\nCOPY . .\n\nEXPOSE 4100\n\nCMD [\"npm\",\"run\",\"dev\"]",
+      "Backend/package.json": "{\n  \"name\": \"test\",\n  \"version\": \"1.0.0\",\n  \"main\": \"server.js\",\n  \"scripts\": {\n    \"test\": \"echo \\\"Error: no test specified\\\" && exit 1\",\n    \"dev\": \"nodemon server.js\",\n    \"start\": \"node server.js\"\n  },\n  \"author\": \"\",\n  \"license\": \"ISC\",\n  \"description\": \"\",\n  \"dependencies\": {\n    \"@google/generative-ai\": \"^0.24.1\",\n    \"@langchain/core\": \"^0.3.59\",\n    \"@langchain/google-genai\": \"^0.2.12\",\n    \"adm-zip\": \"^0.5.16\",\n    \"axios\": \"^1.9.0\",\n    \"bcrypt\": \"^6.0.0\",\n    \"body-parser\": \"^2.2.0\",\n    \"cors\": \"^2.8.5\",\n    \"dotenv\": \"^16.5.0\",\n    \"express\": \"^5.1.0\",\n    \"http-proxy-middleware\": \"^3.0.5\",\n    \"jsonwebtoken\": \"^9.0.2\",\n    \"mammoth\": \"^1.9.1\",\n    \"multer\": \"^2.0.1\",\n    \"nodemon\": \"^3.1.10\",\n    \"pdf-parse\": \"^1.1.1\",\n    \"pdfkit\": \"^0.17.1\",\n    \"pg\": \"^8.16.0\",\n    \"resend\": \"^4.5.2\",\n    \"sib-api-v3-sdk\": \"^8.5.0\"\n  }\n}\n",
+      "Backend/routes/index.js": "const express = require(\"express\")\nconst router = express.Router()\n\nrouter.get(\"/\",(req,res)=>{\n    res.render(\"index\")\n})\n\nmodule.exports = router;",
+      "Backendd/interview/app.py": "from flask import Flask, request, jsonify\nfrom flask_cors import CORS\nfrom dotenv import load_dotenv\nimport os\n\n# Load environment variables\nload_dotenv()\n\napp = Flask(__name__)\nCORS(app)\n\n# Configuration\napp.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB max file size\napp.config['UPLOAD_FOLDER'] = 'uploads'\n\n# Ensure upload directory exists\nos.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)\n\n@app.route('/api/interview/health', methods=['GET'])\ndef health_check():\n    return jsonify({\"status\": \"healthy\", \"service\": \"interview\"})\n\n@app.route('/api/interview/upload', methods=['POST'])\ndef upload_video():\n    if 'video' not in request.files:\n        return jsonify({\"error\": \"No video file provided\"}), 400\n    \n    video_file = request.files['video']\n    if video_file.filename == '':\n        return jsonify({\"error\": \"No selected file\"}), 400\n    \n    # TODO: Implement video upload logic\n    return jsonify({\"message\": \"Video upload endpoint ready\"}), 200\n\n@app.route('/api/interview/transcribe', methods=['POST'])\ndef transcribe_video():\n    # TODO: Implement transcription logic\n    return jsonify({\"message\": \"Transcription endpoint ready\"}), 200\n\n@app.route('/api/interview/evaluate', methods=['POST'])\ndef evaluate_response():\n    # TODO: Implement response evaluation logic\n    return jsonify({\"message\": \"Evaluation endpoint ready\"}), 200\n\nif __name__ == '__main__':\n    app.run(debug=True, port=5001) ",
+      "Backendd/interview/requirements.txt": "flask>=2.0.0\nflask-cors>=3.0.0\ngoogle-cloud-speech>=2.0.0\ngoogle-cloud-storage>=2.0.0\nopenai>=1.0.0\npython-dotenv>=0.19.0 ",
+      "Backendd/requirements.txt": "fastapi==0.109.2\nuvicorn==0.27.1\npython-multipart==0.0.9\nlangchain==0.1.9\nlangchain-google-genai==0.0.11\nlanggraph==0.0.26\npydantic==2.6.1\npython-docx==1.1.0\nPyPDF2==3.0.1\npython-magic-bin==0.4.14\nchardet==5.2.0\n",
+      "Backendd/resume/requirements.txt": "fastapi==0.104.1\nuvicorn==0.24.0\npython-multipart==0.0.6\nlanggraph==0.0.15\nlangchain-google-genai==0.0.5\nPyPDF2==3.0.1\npython-docx==1.0.1\npython-dotenv==1.0.0\npydantic==2.5.2\nlangchain-community\nlangchain\nfpdf\n",
+      "Backendd/server/index.js": "const express = require('express');\nconst mongoose = require('mongoose');\nconst cors = require('cors');\nconst dotenv = require('dotenv');\nconst authRoutes = require('./routes/auth.routes');\nconst outreachRoutes = require('./routes/outreach.routes');\n\n// Load environment variables\ndotenv.config();\n\nconst app = express();\n\n// Middleware\napp.use(cors());\napp.use(express.json());\n\n// MongoDB connection\nmongoose.connect(process.env.MONGODB_URI, {\n  useNewUrlParser: true,\n  useUnifiedTopology: true,\n})\n.then(() => console.log('Connected to MongoDB Atlas'))\n.catch(err => console.error('MongoDB connection error:', err));\n\n// Routes\napp.use('/api/auth', authRoutes);\napp.use('/api/outreach', outreachRoutes);\n\n// Error handling middleware\napp.use((err, req, res, next) => {\n  console.error(err.stack);\n  res.status(500).json({ message: 'Something went wrong!' });\n});\n\nconst PORT = process.env.PORT || 5000;\napp.listen(PORT, () => {\n  console.log(`Server running on port ${PORT}`);\n});\n",
+      "Backendd/server/package.json": "{\n  \"name\": \"server\",\n  \"version\": \"1.0.0\",\n  \"main\": \"index.js\",\n  \"scripts\": {\n    \"test\": \"echo \\\"Error: no test specified\\\" && exit 1\",\n    \"dev\": \"nodemon index.js\"\n  },\n  \"keywords\": [],\n  \"author\": \"\",\n  \"license\": \"ISC\",\n  \"dependencies\": {\n    \"@google/generative-ai\": \"^0.2.1\",\n    \"bcryptjs\": \"^3.0.2\",\n    \"cors\": \"^2.8.5\",\n    \"dotenv\": \"^16.5.0\",\n    \"express\": \"^5.1.0\",\n    \"jsonwebtoken\": \"^9.0.2\",\n    \"mongoose\": \"^8.15.1\"\n  },\n  \"devDependencies\": {\n    \"nodemon\": \"^3.1.10\"\n  },\n  \"description\": \"\"\n}\n",
+      "Frontend/package.json": "{\n  \"name\": \"my-v0-project\",\n  \"version\": \"0.1.0\",\n  \"private\": true,\n  \"scripts\": {\n    \"dev\": \"next dev\",\n    \"build\": \"next build\",\n    \"start\": \"next start\",\n    \"lint\": \"next lint\"\n  },\n  \"dependencies\": {\n    \"@ai-sdk/openai\": \"latest\",\n    \"@emotion/is-prop-valid\": \"latest\",\n    \"@hookform/resolvers\": \"^3.9.1\",\n    \"@radix-ui/react-accordion\": \"1.2.2\",\n    \"@radix-ui/react-alert-dialog\": \"1.1.4\",\n    \"@radix-ui/react-aspect-ratio\": \"1.1.1\",\n    \"@radix-ui/react-avatar\": \"latest\",\n    \"@radix-ui/react-checkbox\": \"1.1.3\",\n    \"@radix-ui/react-collapsible\": \"1.1.2\",\n    \"@radix-ui/react-context-menu\": \"2.2.4\",\n    \"@radix-ui/react-dialog\": \"1.1.4\",\n    \"@radix-ui/react-dropdown-menu\": \"2.1.4\",\n    \"@radix-ui/react-hover-card\": \"1.1.4\",\n    \"@radix-ui/react-label\": \"2.1.1\",\n    \"@radix-ui/react-menubar\": \"1.1.4\",\n    \"@radix-ui/react-navigation-menu\": \"1.2.3\",\n    \"@radix-ui/react-popover\": \"1.1.4\",\n    \"@radix-ui/react-progress\": \"latest\",\n    \"@radix-ui/react-radio-group\": \"1.2.2\",\n    \"@radix-ui/react-scroll-area\": \"1.2.2\",\n    \"@radix-ui/react-select\": \"2.1.4\",\n    \"@radix-ui/react-separator\": \"1.1.1\",\n    \"@radix-ui/react-slider\": \"1.2.2\",\n    \"@radix-ui/react-slot\": \"1.1.1\",\n    \"@radix-ui/react-switch\": \"1.1.2\",\n    \"@radix-ui/react-tabs\": \"latest\",\n    \"@radix-ui/react-toast\": \"1.2.4\",\n    \"@radix-ui/react-toggle\": \"1.1.1\",\n    \"@radix-ui/react-toggle-group\": \"1.1.1\",\n    \"@radix-ui/react-tooltip\": \"1.1.6\",\n    \"ai\": \"latest\",\n    \"autoprefixer\": \"^10.4.20\",\n    \"class-variance-authority\": \"^0.7.1\",\n    \"clsx\": \"^2.1.1\",\n    \"cmdk\": \"1.0.4\",\n    \"date-fns\": \"4.1.0\",\n    \"embla-carousel-react\": \"8.5.1\",\n    \"framer-motion\": \"latest\",\n    \"input-otp\": \"1.4.1\",\n    \"lucide-react\": \"^0.454.0\",\n    \"next\": \"15.2.4\",\n    \"next-auth\": \"^4.24.11\",\n    \"next-themes\": \"^0.4.4\",\n    \"react\": \"^19\",\n    \"react-day-picker\": \"8.10.1\",\n    \"react-dom\": \"^19\",\n    \"react-hook-form\": \"^7.54.1\",\n    \"react-resizable-panels\": \"^2.1.7\",\n    \"recharts\": \"2.15.0\",\n    \"sonner\": \"^1.7.1\",\n    \"tailwind-merge\": \"^2.5.5\",\n    \"tailwindcss-animate\": \"^1.0.7\",\n    \"vaul\": \"^0.9.6\",\n    \"zod\": \"latest\"\n  },\n  \"devDependencies\": {\n    \"@types/node\": \"^22\",\n    \"@types/react\": \"^19\",\n    \"@types/react-dom\": \"^19\",\n    \"postcss\": \"^8\",\n    \"tailwindcss\": \"^3.4.17\",\n    \"typescript\": \"^5\"\n  }\n}\n",
+      "Frontend_new/package.json": "{\n  \"name\": \"vite_react_shadcn_ts\",\n  \"private\": true,\n  \"version\": \"0.0.0\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"vite\",\n    \"build\": \"vite build\",\n    \"build:dev\": \"vite build --mode development\",\n    \"lint\": \"eslint .\",\n    \"preview\": \"vite preview\"\n  },\n  \"dependencies\": {\n    \"@hookform/resolvers\": \"^3.9.0\",\n    \"@radix-ui/react-accordion\": \"^1.2.0\",\n    \"@radix-ui/react-alert-dialog\": \"^1.1.1\",\n    \"@radix-ui/react-aspect-ratio\": \"^1.1.0\",\n    \"@radix-ui/react-avatar\": \"^1.1.0\",\n    \"@radix-ui/react-checkbox\": \"^1.1.1\",\n    \"@radix-ui/react-collapsible\": \"^1.1.0\",\n    \"@radix-ui/react-context-menu\": \"^2.2.1\",\n    \"@radix-ui/react-dialog\": \"^1.1.2\",\n    \"@radix-ui/react-dropdown-menu\": \"^2.1.1\",\n    \"@radix-ui/react-hover-card\": \"^1.1.1\",\n    \"@radix-ui/react-label\": \"^2.1.0\",\n    \"@radix-ui/react-menubar\": \"^1.1.1\",\n    \"@radix-ui/react-navigation-menu\": \"^1.2.0\",\n    \"@radix-ui/react-popover\": \"^1.1.1\",\n    \"@radix-ui/react-progress\": \"^1.1.0\",\n    \"@radix-ui/react-radio-group\": \"^1.2.0\",\n    \"@radix-ui/react-scroll-area\": \"^1.1.0\",\n    \"@radix-ui/react-select\": \"^2.1.1\",\n    \"@radix-ui/react-separator\": \"^1.1.0\",\n    \"@radix-ui/react-slider\": \"^1.2.0\",\n    \"@radix-ui/react-slot\": \"^1.1.0\",\n    \"@radix-ui/react-switch\": \"^1.1.0\",\n    \"@radix-ui/react-tabs\": \"^1.1.0\",\n    \"@radix-ui/react-toast\": \"^1.2.1\",\n    \"@radix-ui/react-toggle\": \"^1.1.0\",\n    \"@radix-ui/react-toggle-group\": \"^1.1.0\",\n    \"@radix-ui/react-tooltip\": \"^1.1.4\",\n    \"@tanstack/react-query\": \"^5.56.2\",\n    \"@types/uuid\": \"^10.0.0\",\n    \"axios\": \"^1.9.0\",\n    \"class-variance-authority\": \"^0.7.1\",\n    \"clsx\": \"^2.1.1\",\n    \"cmdk\": \"^1.0.0\",\n    \"date-fns\": \"^3.6.0\",\n    \"embla-carousel-react\": \"^8.3.0\",\n    \"gsap\": \"^3.13.0\",\n    \"input-otp\": \"^1.2.4\",\n    \"lottie-react\": \"^2.4.0\",\n    \"lucide-react\": \"^0.462.0\",\n    \"next-themes\": \"^0.3.0\",\n    \"react\": \"^18.3.1\",\n    \"react-day-picker\": \"^8.10.1\",\n    \"react-dom\": \"^18.3.1\",\n    \"react-hook-form\": \"^7.53.0\",\n    \"react-markdown\": \"^10.1.0\",\n    \"react-resizable-panels\": \"^2.1.3\",\n    \"react-router-dom\": \"^6.26.2\",\n    \"recharts\": \"^2.12.7\",\n    \"remark-gfm\": \"^4.0.1\",\n    \"sonner\": \"^1.5.0\",\n    \"tailwind-merge\": \"^2.5.2\",\n    \"tailwindcss-animate\": \"^1.0.7\",\n    \"uuid\": \"^11.1.0\",\n    \"vaul\": \"^0.9.3\",\n    \"zod\": \"^3.23.8\"\n  },\n  \"devDependencies\": {\n    \"@eslint/js\": \"^9.9.0\",\n    \"@tailwindcss/typography\": \"^0.5.15\",\n    \"@tailwindcss/vite\": \"^4.1.10\",\n    \"@types/node\": \"^22.5.5\",\n    \"@types/react\": \"^18.3.3\",\n    \"@types/react-dom\": \"^18.3.0\",\n    \"@vitejs/plugin-react-swc\": \"^3.5.0\",\n    \"autoprefixer\": \"^10.4.21\",\n    \"eslint\": \"^9.9.0\",\n    \"eslint-plugin-react-hooks\": \"^5.1.0-rc.0\",\n    \"eslint-plugin-react-refresh\": \"^0.4.9\",\n    \"globals\": \"^15.9.0\",\n    \"lovable-tagger\": \"^1.1.3\",\n    \"postcss\": \"^8.5.5\",\n    \"tailwindcss\": \"^3.4.17\",\n    \"typescript\": \"^5.5.3\",\n    \"typescript-eslint\": \"^8.0.1\",\n    \"vite\": \"^5.4.1\"\n  }\n}\n"
+    }
+  },
+  "tree_structure_summary": {
+    "total_files": 448,
+    "sample_tree": [
+      "Backend",
+      "Backend/.gitignore",
+      "Backend/Flask",
+      "Backend/Flask/app.py",
+      "Backend/Flask/cert.pem",
+      "Backend/Flask/embeddings",
+      "Backend/Flask/embeddings/.gitignore",
+      "Backend/Flask/embeddings/candidate_embeddings.py",
+      "Backend/Flask/embeddings/data",
+      "Backend/Flask/embeddings/data/candidates.json",
+      "Backend/Flask/fly.toml",
+      "Backend/Flask/interview",
+      "Backend/Flask/interview/interviewer_training.py",
+      "Backend/Flask/key.pem",
+      "Backend/Flask/openssl.cnf",
+      "Backend/Flask/render.yaml",
+      "Backend/Flask/requirements.txt",
+      "Backend/README.md",
+      "Backend/candidates.json",
+      "Backend/config",
+      "Backend/config/dbConfig.js",
+      "Backend/config/jwtConfig.js",
+      "Backend/config/passportConfig.js",
+      "Backend/controllers",
+      "Backend/controllers/jdController.js",
+      "Backend/controllers/outreachController.js",
+      "Backend/controllers/resumeController.js",
+      "Backend/docker-compose.yaml",
+      "Backend/dockerfile",
+      "Backend/middleware"
+    ]
+  },
+  "languages": {
+    "TypeScript": 1766279,
+    "Python": 110802,
+    "JavaScript": 80710,
+    "CSS": 24096,
+    "EJS": 2844,
+    "HTML": 613
+  }
+}

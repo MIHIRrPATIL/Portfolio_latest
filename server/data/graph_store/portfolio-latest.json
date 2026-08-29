@@ -1,0 +1,234 @@
+{
+  "repo_id": "portfolio-latest",
+  "nodes_count": 8,
+  "edges_count": 11,
+  "nodes": [
+    {
+      "id": "tech:python",
+      "type": "TECHNOLOGY",
+      "name": "Python",
+      "repo_id": "portfolio-latest",
+      "path": null,
+      "signature": null,
+      "docstring": "Python runtime environment and core dependency integrated within Portfolio_latest.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "16,234 bytes",
+        "ecosystem": "Python",
+        "target_project": "Portfolio_latest"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:typescript",
+      "type": "TECHNOLOGY",
+      "name": "TypeScript",
+      "repo_id": "portfolio-latest",
+      "path": null,
+      "signature": null,
+      "docstring": "TypeScript runtime environment and core dependency integrated within Portfolio_latest.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "181,974 bytes",
+        "ecosystem": "TypeScript",
+        "target_project": "Portfolio_latest"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:css",
+      "type": "TECHNOLOGY",
+      "name": "CSS",
+      "repo_id": "portfolio-latest",
+      "path": null,
+      "signature": null,
+      "docstring": "CSS runtime environment and core dependency integrated within Portfolio_latest.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "5,771 bytes",
+        "ecosystem": "CSS",
+        "target_project": "Portfolio_latest"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:javascript",
+      "type": "TECHNOLOGY",
+      "name": "JavaScript",
+      "repo_id": "portfolio-latest",
+      "path": null,
+      "signature": null,
+      "docstring": "JavaScript runtime environment and core dependency integrated within Portfolio_latest.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "559 bytes",
+        "ecosystem": "JavaScript",
+        "target_project": "Portfolio_latest"
+      },
+      "embedding": null
+    },
+    {
+      "id": "portfolio-latest",
+      "type": "PROJECT",
+      "name": "Portfolio_latest",
+      "repo_id": "portfolio-latest",
+      "path": null,
+      "signature": null,
+      "docstring": "TypeScript Architecture engineered by MIHIRrPATIL. Features modular codebase structure utilizing TypeScript, Python, CSS, JavaScript.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "architect": "MIHIRrPATIL",
+        "domain_scope": "TypeScript Architecture",
+        "primary_language": "TypeScript",
+        "languages": [
+          "TypeScript",
+          "Python",
+          "CSS",
+          "JavaScript"
+        ],
+        "graph_indexing": "AST Dependency Graph + BM25"
+      },
+      "embedding": null
+    },
+    {
+      "id": "portfolio-latest:server/app/main.py",
+      "type": "FILE",
+      "name": "main.py",
+      "repo_id": "portfolio-latest",
+      "path": "server/app/main.py",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Python",
+        "loc": 36
+      },
+      "embedding": null
+    },
+    {
+      "id": "portfolio-latest:server/app/main.py:root_health_check",
+      "type": "FUNCTION",
+      "name": "root_health_check",
+      "repo_id": "portfolio-latest",
+      "path": "server/app/main.py",
+      "signature": "async def root_health_check()",
+      "docstring": "",
+      "code_snippet": "async def root_health_check():\n    return {\n        \"status\": \"online\",\n        \"service\": \"Portfolio GitHub Webhook & Grading Engine\",\n        \"version\": \"1.0.0\",\n        \"configured_user\": settings.GITHUB_USERNAME,\n        \"token_configured\": bool(settings.GITHUB_PERSONAL_ACCESS_TOKEN and settings.GITHUB_PERSONAL_ACCESS_TOKEN != \"your_github_pat_token_here\"),\n        \"webhook_secret_configured\": bool(settings.GITHUB_WEBHOOK_SECRET and settings.GITHUB_WEBHOOK_SECRET != \"your_super_secret_webhook_key_here\"),\n        \"docs\": \"/docs\"\n    }",
+      "start_line": 27,
+      "end_line": 36,
+      "properties": {
+        "is_async": true,
+        "args": []
+      },
+      "embedding": null
+    },
+    {
+      "id": "portfolio-latest:server/app/main.py:bool",
+      "type": "FUNCTION",
+      "name": "bool",
+      "repo_id": "portfolio-latest",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    }
+  ],
+  "edges": [
+    {
+      "source_id": "portfolio-latest",
+      "target_id": "portfolio-latest:server/app/main.py",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "portfolio-latest",
+      "target_id": "tech:typescript",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "portfolio-latest",
+      "target_id": "tech:python",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "portfolio-latest",
+      "target_id": "tech:css",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "portfolio-latest",
+      "target_id": "tech:javascript",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "portfolio-latest:server/app/main.py",
+      "target_id": "portfolio-latest:server/app/main.py:root_health_check",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "portfolio-latest:server/app/main.py",
+      "target_id": "tech:app.api.v1.router",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "app.api.v1.router"
+      }
+    },
+    {
+      "source_id": "portfolio-latest:server/app/main.py",
+      "target_id": "tech:app.config",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "app.config"
+      }
+    },
+    {
+      "source_id": "portfolio-latest:server/app/main.py",
+      "target_id": "tech:fastapi",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "fastapi"
+      }
+    },
+    {
+      "source_id": "portfolio-latest:server/app/main.py",
+      "target_id": "tech:fastapi.middleware.cors",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "fastapi.middleware.cors"
+      }
+    },
+    {
+      "source_id": "portfolio-latest:server/app/main.py:root_health_check",
+      "target_id": "portfolio-latest:server/app/main.py:bool",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "bool"
+      }
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+{
+  "repo_name": "CDAC_ASR",
+  "owner": "MIHIRrPATIL",
+  "full_name": "MIHIRrPATIL/CDAC_ASR",
+  "indexed_at": "2026-08-28T15:59:49.565156+00:00",
+  "readme": {
+    "present": true,
+    "content": "---\ntitle: CDAC ASR Pronunciation Coach\nemoji: 🎤\ncolorFrom: yellow\ncolorTo: red\nsdk: docker\napp_port: 7860\n---\n\n# Phoneme Pronunciation Correction System\n\nAn advanced phoneme-level pronunciation correction system based on **Wav2Vec2** and **Contrastive CTC Alignment**. Designed for high-fidelity feedback and optimized for Indian English (NPTEL2020 dataset).\n\n## 🚀 Key Features\n- **Embedding-based Acoustic Model:** Uses cosine similarity for robust phoneme identification.\n- **Micro-Diagnostic Feedback:** Identifies precise phoneme-level errors (Substitutions, Deletions, Insertions).\n- **Audio Cleaning pipeline:** Integrated FFT spectral subtraction and Silero VAD (Voice Activity Detection).\n- **Streaming Training:** Optimized for low-disk environments (50GB limit) using direct Zenodo/HuggingFace streaming.\n- **Local Portability:** Easily export GPU-trained models for inference on standard laptop CPUs.\n\n## 📂 Project Structure\n- `phoneme_embedder.py`: Core model architecture.\n- `train_streaming.py`: Training pipeline with HF Hub integration.\n- `test_model.py`: Real-time inference and scoring script.\n- `audio_utils.py`: VAD and FFT preprocessing utilities.\n- `ScoreCalcs.py`: Phoneme alignment and scoring logic.\n- `export_for_local.py`: Script to prepare models for CPU/local use.\n- `processor_dir/`: Configuration for the Wav2Vec2 processor and tokenizer.\n- `g2p/`: Grapheme-to-Phoneme component (Dictionary, Utilities, Tests).\n- `docs/`: Technical reports and implementation details.\n\n## 🛠️ Getting Started\n\n### 1. Installation\n```bash\npip install -r requirements.txt\npip install soundfile\npython3 -c \"import nltk; nltk.download('averaged_perceptron_tagger_eng')\"\n```\n\n### 2. Training (Streaming)\n```bash\npython train_streaming.py --hub_model_id your-repo/nptel-embedder --batch_size 8 --steps 50000\n```\n\n### 3. Testing & Evaluation (Automated)\nRun this to calculate the **Phoneme Error Rate (PER)** on a portion of the dataset the model hasn't seen:\n```bash\npython3 evaluate_model.py --model_dir trained_models/20k_steps --num_samples 100 --skip 50000\n```\n\n### 4. Interactive Live Test (Microphone)\nRun this for a friendly CLI menu to test with your own voice:\n```bash\npython3 cli_test_menu.py\n```\n\n### 5. Local Export\n```bash\npython export_for_local.py --checkpoint path_to_checkpoint --output my_local_model\n```\n\n## 📚 Documentation\nFor deeper technical insights, check the `docs/` folder:\n- [Architecture Overview](docs/architecture_overview.md)\n- [G2P Analysis Report](docs/g2p_analysis_report.md)\n- [Implementation Plan](docs/implementation_plan.md)\n- [Walkthrough](docs/walkthrough.md)\n- [G2P Training & Maintenance Guide](g2p/training_guide.md)\n\n## 📡 Hardware Requirements\n- **Training:** Recommended NVIDIA GPU with 24GB+ VRAM (optimized for H100).\n- **Inference:** Runs on standard Laptop CPUs or modest Cloud server GPUs.\n\n\n## To run the training model use \n```bash \n    python train_streaming.py \\\n    --hub_model_id your-repo/nptel-embedder \\\n    --batch_size 16 \\\n    --grad_accum 2 \\\n    --num_workers 32 \\\n    --prefetch 256 \\\n    --steps 85000 \\\n    --save_steps 2000 \\\n    --push_hub\n```"
+  },
+  "recent_activity": {
+    "commit_count": 5,
+    "commits": [
+      {
+        "sha": "1ec19f6",
+        "author": "MIHIRrPATIL",
+        "date": "2026-08-04T17:23:02Z",
+        "message": "Report and Paper Template drafts in Latex updated",
+        "files_changed": [
+          "docs/research_and_product_report.pdf",
+          "docs/test_ipa.pdf",
+          "paper/images/asr_architecture.png",
+          "paper/images/product_navigation.png",
+          "paper/main.tex",
+          "paper/references.bib",
+          "paper/sn-jnl.cls",
+          "report/chapters/01_introduction.tex",
+          "report/chapters/02_literature_review.tex",
+          "report/chapters/03_system_architecture.tex",
+          "report/chapters/04_dataset_lexicon.tex",
+          "report/chapters/05_training_methodology.tex",
+          "report/chapters/06_evaluation_results.tex",
+          "report/chapters/07_engineering_challenges.tex",
+          "report/chapters/08_product_deployment.tex",
+          "report/chapters/09_conclusion.tex",
+          "report/chapters/abstract.tex",
+          "report/chapters/acknowledgements.tex",
+          "report/main.tex",
+          "report/references.bib",
+          "src/eval/fonts/DejaVuSans-Bold.ttf",
+          "src/eval/fonts/DejaVuSans.ttf"
+        ]
+      },
+      {
+        "sha": "068cc28",
+        "author": "MIHIRrPATIL",
+        "date": "2026-07-02T09:54:26Z",
+        "message": "docs: add presentation guide with embedded architecture and navigation diagrams for PDF export",
+        "files_changed": [
+          "docs/asr_architecture.png",
+          "docs/presentation_guide.md",
+          "docs/product_navigation.png"
+        ]
+      },
+      {
+        "sha": "f39aca6",
+        "author": "MIHIRrPATIL",
+        "date": "2026-07-02T09:51:23Z",
+        "message": "fix: resolve zero pitch/stress scores and add LLM-driven feedback simplification",
+        "files_changed": [
+          "product/backend/api/main.py",
+          "product/backend/services/llm.py",
+          "src/eval/ScoreCalcs.py"
+        ]
+      },
+      {
+        "sha": "ef89662",
+        "author": "MIHIRrPATIL",
+        "date": "2026-07-01T18:18:09Z",
+        "message": "feat: restrict logged-out navigation items to page section anchors and enrich landing page features & tech details",
+        "files_changed": [
+          "product/frontend/src/app/page.tsx",
+          "product/frontend/src/components/dynamic-navbar.tsx"
+        ]
+      },
+      {
+        "sha": "097c137",
+        "author": "MIHIRrPATIL",
+        "date": "2026-07-01T18:09:56Z",
+        "message": "fix: standardize brand to VoiceScore and remove custom cursor blob from all pages",
+        "files_changed": [
+          "product/frontend/src/app/ai-agent/page.tsx",
+          "product/frontend/src/app/analyzer/page.tsx",
+          "product/frontend/src/app/dashboard/page.tsx",
+          "product/frontend/src/app/drills/page.tsx",
+          "product/frontend/src/app/page.tsx",
+          "product/frontend/src/app/paragraphs/page.tsx",
+          "product/frontend/src/components/Header.tsx",
+          "product/frontend/src/components/Navbar.tsx",
+          "product/frontend/src/components/dynamic-navbar.tsx"
+        ]
+      }
+    ]
+  },
+  "architecture_manifests": {
+    "file_count": 6,
+    "files": {
+      "Dockerfile": "# Use a lightweight python base image\nFROM python:3.10-slim\n\n# Set environment variables\nENV PYTHONUNBUFFERED=1 \\\n    PYTHONDONTWRITEBYTECODE=1 \\\n    DEBIAN_FRONTEND=noninteractive \\\n    PORT=7860\n\n# Install system dependencies\nRUN apt-get update && apt-get install -y --no-install-recommends \\\n    ffmpeg \\\n    libsndfile1 \\\n    git \\\n    curl \\\n    && rm -rf /var/lib/apt/lists/*\n\n# Create a non-root user with UID 1000 (required for Hugging Face Spaces)\nRUN useradd -m -u 1000 user\n\n# Set up work directory and set ownership\nWORKDIR /app\nRUN chown user:user /app\n\n# Switch to the non-root user\nUSER user\nENV HOME=/home/user \\\n    PATH=/home/user/.local/bin:$PATH\n\n# Copy requirements file first for caching\nCOPY --chown=user:user requirements-docker.txt /app/requirements-docker.txt\n\n# Upgrade pip to ensure correct wheel tag resolution\nRUN pip3 install --no-cache-dir --user --upgrade pip\n\n# Install PyTorch CPU-only package (saves ~1.5GB of image size)\nRUN pip3 install --no-cache-dir --user torch==2.5.1 torchaudio==2.5.1 --index-url https://download.pytorch.org/whl/cpu\n\n# Install all other python requirements\nRUN pip3 install --no-cache-dir --user -r /app/requirements-docker.txt\n\n# Pre-download NLTK resources and ASR model weights to avoid runtime downloads/timeouts\nRUN python3 -c \"import nltk; nltk.download('averaged_perceptron_tagger_eng'); nltk.download('cmudict')\"\nRUN python3 -c \"from transformers import Wav2Vec2Processor, Wav2Vec2ForCTC; Wav2Vec2Processor.from_pretrained('MihirRPatil/nptel-asr-phoneme-v3'); Wav2Vec2ForCTC.from_pretrained('MihirRPatil/nptel-asr-phoneme-v3')\"\n\n# Copy the entire project codebase\nCOPY --chown=user:user . /app\n\n# Generate the Prisma client for Python\nRUN prisma generate --schema=/app/product/backend/prisma/schema.prisma\n\n# Expose the default Hugging Face Spaces port\nEXPOSE 7860\n\n# Command to run the application\nCMD [\"python3\", \"product/backend/app.py\"]\n",
+      "product/backend/api/main.py": "import os\nimport tempfile\nimport logging\nfrom fastapi import FastAPI, UploadFile, File, Form, HTTPException, Depends\nfrom fastapi.middleware.cors import CORSMiddleware\nfrom fastapi.responses import JSONResponse\nfrom backend.core.engine import ASREngine\nfrom api.auth_routes import router as auth_router\nfrom api.features_routes import router as features_router\nfrom database import get_db\nfrom prisma import Json\nfrom prisma.models import User\nfrom auth import get_current_user\n\nlogging.basicConfig(level=logging.INFO)\nlogger = logging.getLogger(__name__)\n\napp = FastAPI(title=\"Pronunciation Scoring API\")\napp.include_router(auth_router)\napp.include_router(features_router)\n\napp.add_middleware(\n    CORSMiddleware,\n    allow_origins=[\"*\"],\n    allow_credentials=True,\n    allow_methods=[\"*\"],\n    allow_headers=[\"*\"],\n)\n\n@app.get(\"/\")\ndef read_root():\n    return {\n        \"status\": \"online\",\n        \"service\": \"CDAC ASR Pronunciation Coach API\",\n        \"model\": \"MihirRPatil/nptel-asr-phoneme-v3\"\n    }\n\nengine = None\n\n@app.on_event(\"startup\")\nasync def startup_event():\n    global engine\n    # Initialize connection to Prisma using centralized helper\n    from database import try_connect_db\n    await try_connect_db()\n        \n    # Safe fallback if environment variable isn't set\n    model_dir = os.getenv(\"ASR_MODEL_DIR\", \"MihirRPatil/nptel-asr-phoneme-v3\")\n    logger.info(f\"Loading ASR Engine with model from {model_dir}\")\n    try:\n        engine = ASREngine(model_dir=model_dir)\n        logger.info(\"ASR Engine successfully initialized.\")\n    except Exception as e:\n        logger.error(f\"Failed to load ASR engine: {e}\")\n\n@app.on_event(\"shutdown\")\nasync def shutdown_event():\n    from database import db as prisma_db\n    if prisma_db.is_connected():\n        await prisma_db.disconnect()\n\ndef generate_actionable_feedback(results: dict) -> list:\n    feedback = []\n    \n    # 1. Phoneme errors analysis\n    error_stats = results.get(\"error_stats\", {})\n    subs = error_stats.get(\"sub\", 0)\n    ins = error_stats.get(\"ins\", 0)\n    dels = error_stats.get(\"del\", 0)\n    \n    # Overall statement\n    total_errors = subs + ins + dels\n    if total_errors == 0:\n        feedback.append(\"Excellent pronunciation! All phonemes aligned perfectly.\")\n    else:\n        feedback.append(f\"Pronunciation analysis detected {total_errors} variant sound{'s' if total_errors > 1 else ''}: {subs} substitution{'s' if subs != 1 else ''}, {dels} omission{'s' if dels != 1 else ''}, and {ins} extra sound{'s' if ins != 1 else ''}.\")\n\n    # 2. Specific segment level recommendations from alignment pairs\n    aligned_pairs = results.get(\"aligned_pairs\", [])\n    \n    # Find up to 3 specific error instances to guide the user\n    error_count = 0\n    for idx, (spoken, expected) in enumerate(aligned_pairs):\n        if error_count >= 3:\n            break\n            \n        if spoken == \"-\": # Deletion\n            feedback.append(f\"• You omitted the expected sound '{expected}' at position {idx+1}. Try to fully articulate it.\")\n            error_count += 1\n        elif expected == \"-\": # Insertion\n            feedback.append(f\"• You added an extra sound '{spoken}' at position {idx+1}. Practice transitioning without this extra sound.\")\n            error_count += 1\n        elif spoken != expected: # Substitution\n            feedback.append(f\"• You pronounced '{expected}' as '{spoken}' at position {idx+1}. Try adjusting your tongue shape to match the target sound.\")\n            error_count += 1\n\n    # 3. Prosody and Pitch recommendations\n    pitch_data = results.get(\"pitch\", {})\n    pitch_similarity = pitch_data.get(\"similarity\", 1.0) if isinstance(pitch_data, dict) else float(pitch_data)\n    if pitch_similarity < 0.60:\n        feedback.append(\"• Pitch Curve: Your intonation curve differs significantly from the reference. Focus on native-like sentence stress and rising/falling tones.\")\n    elif pitch_similarity < 0.80:\n        feedback.append(\"• Intonation: Good effort! Try matching the pitch rises and falls on the stressed vowel syllables to sound more natural.\")\n        \n    duration_data = results.get(\"duration\", {})\n    duration_accuracy = duration_data.get(\"accuracy\", 1.0) if isinstance(duration_data, dict) else float(duration_data)\n    if duration_accuracy < 0.65:\n        feedback.append(\"• Rhythm: The timing of some phonemes is too rushed or held too long. Practice syllable-by-syllable timing.\")\n        \n    return feedback\n\ndef transcode_to_wav(input_path: str) -> str:\n    \"\"\"\n    Transcodes any audio file to 16kHz mono WAV using ffmpeg.\n    Returns the path to the temporary output WAV file.\n    \"\"\"\n    import subprocess\n    temp_out = tempfile.NamedTemporaryFile(delete=False, suffix=\".wav\")\n    temp_out_path = temp_out.name\n    temp_out.close()\n    \n    try:\n        # Run ffmpeg to convert input to 16kHz mono PCM 16-bit WAV\n        cmd = [\n            \"ffmpeg\",\n            \"-y\",\n            \"-i\", input_path,\n            \"-vn\",\n            \"-acodec\", \"pcm_s16le\",\n            \"-ac\", \"1\",\n            \"-ar\", \"16000\",\n            temp_out_path\n        ]\n        result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)\n        if result.returncode != 0:\n            logger.error(f\"ffmpeg transcoding failed. Stderr: {result.stderr}\")\n            return input_path\n            \n        logger.info(f\"Successfully transcoded {input_path} to {temp_out_path}\")\n        return temp_out_path\n    except Exception as e:\n        logger.error(f\"Error during ffmpeg transcoding: {e}\")\n        return input_path\n\ndef analyze_words_pronunciation(target_word: str, aligned_pairs: list) -> list:\n    \"\"\"\n    Groups the flat aligned_pairs into individual words based on the expected phonemes.\n    \"\"\"\n    if not target_word:\n        return []",
+      "product/backend/app.py": "import uvicorn\nimport os\nimport sys\n\n# 1. Set a default Postgres URL if none is present to satisfy Prisma validation on startup\nif not os.environ.get(\"DATABASE_URL\") or not os.environ.get(\"DATABASE_URL\").startswith((\"postgresql://\", \"postgres://\")):\n    os.environ[\"DATABASE_URL\"] = \"postgresql://postgres:postgres@localhost:5432/postgres\"\n\n# 2. Automatically handle the Python Path (Find project root and product root)\nbackend_dir = os.path.dirname(os.path.abspath(__file__))\nproduct_dir = os.path.dirname(backend_dir)\nproject_root = os.path.dirname(product_dir)\n\nsys.path.append(product_dir)\nsys.path.append(project_root)\n\n# 2. Always resolve model path relative to the project root if it exists locally\nmodel_path = os.environ.get(\"ASR_MODEL_DIR\", \"MihirRPatil/nptel-asr-phoneme-v3\")\nif not os.path.isabs(model_path):\n    local_path = os.path.join(project_root, model_path)\n    if os.path.exists(local_path):\n        model_path = local_path\nos.environ[\"ASR_MODEL_DIR\"] = model_path\n\n# 3. Import the FastAPI app\ntry:\n    from api.main import app\nexcept ImportError:\n    try:\n        from backend.api.main import app\n    except ImportError as e:\n        print(f\"Error: Could not find the ASR modules. Details: {e}\")\n        sys.exit(1)\n\nif __name__ == \"__main__\":\n    print(f\"--- CDAC ASR Backend (Internal Entry Point) ---\")\n    print(f\"Project Root: {project_root}\")\n    print(f\"Loading Model from: {os.environ['ASR_MODEL_DIR']}\")\n    \n    # Run the server on PORT env var (defaults to 8000 for local development)\n    port = int(os.environ.get(\"PORT\", 8000))\n    print(f\"Server starting at http://0.0.0.0:{port}\")\n    uvicorn.run(app, host=\"0.0.0.0\", port=port)\n",
+      "product/frontend/package.json": "{\n  \"name\": \"web-app\",\n  \"version\": \"0.1.0\",\n  \"private\": true,\n  \"scripts\": {\n    \"dev\": \"next dev --webpack\",\n    \"build\": \"next build\",\n    \"start\": \"next start\",\n    \"lint\": \"eslint\"\n  },\n  \"dependencies\": {\n    \"@radix-ui/react-slot\": \"^1.2.4\",\n    \"axios\": \"^1.15.0\",\n    \"clsx\": \"^2.1.1\",\n    \"framer-motion\": \"^12.38.0\",\n    \"lucide-react\": \"^1.8.0\",\n    \"motion\": \"^12.38.0\",\n    \"next\": \"16.2.4\",\n    \"react\": \"19.2.4\",\n    \"react-dom\": \"19.2.4\",\n    \"recharts\": \"^3.8.1\",\n    \"shaders\": \"^2.5.100\",\n    \"tailwind-merge\": \"^3.5.0\",\n    \"tw-animate-css\": \"^1.4.0\"\n  },\n  \"devDependencies\": {\n    \"@tailwindcss/postcss\": \"^4\",\n    \"@types/node\": \"^20\",\n    \"@types/react\": \"^19\",\n    \"@types/react-dom\": \"^19\",\n    \"eslint\": \"^9\",\n    \"eslint-config-next\": \"16.2.4\",\n    \"tailwindcss\": \"^4\",\n    \"typescript\": \"^5\"\n  }\n}\n",
+      "requirements.txt": "datasets==2.18.0\ntransformers==4.38.2\nhuggingface-hub==0.21.4\nhttpx==0.26.0\ntorch\ntorchaudio\nsoundfile\nsounddevice\nnumpy\ntqdm\njiwer\nscipy\naccelerate>=0.26.0\ng2p-en\npronouncing\nevaluate\nmontreal-forced-aligner\npython-Levenshtein\nfastdtw\n# Note: sounddevice on Linux requires 'sudo apt-get install libportaudio2'\nfastapi\nuvicorn\npython-multipart\npydantic\n",
+      "src/g2p/dict_generator/requirements.txt": "montreal-forced-aligner\ntorch\ntorchaudio\ntransformers\ndatasets\nsoundfile\nsounddevice\npronouncing\ndatasets\ntqdm\nevaluate\nkalpy\ntorchcodec\naccelerate>=0.26.0"
+    }
+  },
+  "tree_structure_summary": {
+    "total_files": 201,
+    "sample_tree": [
+      ".dockerignore",
+      ".gitignore",
+      "Dockerfile",
+      "README.md",
+      "docs",
+      "docs/Indian_sounds_difference.md",
+      "docs/architecture_overview.md",
+      "docs/asr_architecture.png",
+      "docs/detailed_lexicon_generation.md",
+      "docs/g2p_analysis_report.md",
+      "docs/implementation_plan.md",
+      "docs/presentation_guide.md",
+      "docs/product_navigation.png",
+      "docs/research_and_product_report.pdf",
+      "docs/research_notes.md",
+      "docs/setup_gpu.md",
+      "docs/test_ipa.pdf",
+      "docs/walkthrough.md",
+      "models",
+      "models/processor_dir",
+      "models/processor_dir/added_tokens.json",
+      "models/processor_dir/preprocessor_config.json",
+      "models/processor_dir/special_tokens_map.json",
+      "models/processor_dir/tokenizer_config.json",
+      "models/processor_dir/vocab.json",
+      "paper",
+      "paper/images",
+      "paper/images/asr_architecture.png",
+      "paper/images/product_navigation.png",
+      "paper/main.tex"
+    ]
+  },
+  "languages": {
+    "Python": 339458,
+    "TypeScript": 193403,
+    "TeX": 78599,
+    "CSS": 5024,
+    "Shell": 1985,
+    "Dockerfile": 1910,
+    "JavaScript": 559
+  }
+}

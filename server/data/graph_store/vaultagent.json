@@ -1,0 +1,1901 @@
+{
+  "repo_id": "vaultagent",
+  "nodes_count": 85,
+  "edges_count": 84,
+  "nodes": [
+    {
+      "id": "vaultagent",
+      "type": "PROJECT",
+      "name": "VaultAgent",
+      "repo_id": "vaultagent",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "owner": "MIHIRrPATIL",
+        "domain_scope": "Autonomous AI Security & Vault Intelligence",
+        "primary_language": "TypeScript",
+        "languages": [
+          "TypeScript",
+          "Python",
+          "CSS",
+          "Rust",
+          "HTML"
+        ],
+        "readme_snippet": "# \ud83d\udee1\ufe0f VaultAgent\n\nVaultAgent is a state-of-the-art, local-first AI reasoning copilot designed to index, connect, and enrich your personal markdown note vaults (such as Obsidian vaults). Built with **Tauri v2**, **Rust**, **React (TypeScript)**, and a **Python backend**, it combines semantic search, local graph visualizations, web-scraping agents, and vector-based contextual memory databases into a "
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:react",
+      "type": "TECHNOLOGY",
+      "name": "React",
+      "repo_id": "vaultagent",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "popularity": 1
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:rust",
+      "type": "TECHNOLOGY",
+      "name": "Rust",
+      "repo_id": "vaultagent",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "popularity": 1
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:html",
+      "type": "TECHNOLOGY",
+      "name": "HTML",
+      "repo_id": "vaultagent",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "popularity": 1
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:python",
+      "type": "TECHNOLOGY",
+      "name": "Python",
+      "repo_id": "vaultagent",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "popularity": 1
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:sqlite",
+      "type": "TECHNOLOGY",
+      "name": "SQLite",
+      "repo_id": "vaultagent",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "popularity": 1
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:argon2id",
+      "type": "TECHNOLOGY",
+      "name": "Argon2id",
+      "repo_id": "vaultagent",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "popularity": 1
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:typescript",
+      "type": "TECHNOLOGY",
+      "name": "TypeScript",
+      "repo_id": "vaultagent",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "popularity": 1
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:tauri",
+      "type": "TECHNOLOGY",
+      "name": "Tauri",
+      "repo_id": "vaultagent",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "popularity": 1
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:css",
+      "type": "TECHNOLOGY",
+      "name": "CSS",
+      "repo_id": "vaultagent",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "popularity": 1
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:src-tauri/src/vault.rs",
+      "type": "FILE",
+      "name": "vault.rs",
+      "repo_id": "vaultagent",
+      "path": "src-tauri/src/vault.rs",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "path": "src-tauri/src/vault.rs"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:src-tauri/src/vault.rs:decrypt_vault_payload",
+      "type": "FUNCTION",
+      "name": "decrypt_vault_payload",
+      "repo_id": "vaultagent",
+      "path": "src-tauri/src/vault.rs",
+      "signature": "pub fn decrypt_vault_payload(encrypted_blob: &[u8], master_key: &Zeroizing<Key>) -> Result<VaultData>",
+      "docstring": "Zero-knowledge hardware-accelerated vault decryption using Argon2id key derivation and XChaCha20-Poly1305.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "signature": "pub fn decrypt_vault_payload(encrypted_blob: &[u8], master_key: &Zeroizing<Key>) -> Result<VaultData>",
+        "doc": "Zero-knowledge hardware-accelerated vault decryption using Argon2id key derivation and XChaCha20-Poly1305."
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:core/semantic_search.py",
+      "type": "FILE",
+      "name": "semantic_search.py",
+      "repo_id": "vaultagent",
+      "path": "core/semantic_search.py",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "path": "core/semantic_search.py"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:core/semantic_search.py:index_markdown_notes",
+      "type": "FUNCTION",
+      "name": "index_markdown_notes",
+      "repo_id": "vaultagent",
+      "path": "core/semantic_search.py",
+      "signature": "def index_markdown_notes(vault_path: Path, embed_dim: int = 384)",
+      "docstring": "Local vector search pipeline indexing Obsidian notes with bi-directional wikilink graph traversal.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "signature": "def index_markdown_notes(vault_path: Path, embed_dim: int = 384)",
+        "doc": "Local vector search pipeline indexing Obsidian notes with bi-directional wikilink graph traversal."
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:src/components/VaultGraph.tsx",
+      "type": "FILE",
+      "name": "VaultGraph.tsx",
+      "repo_id": "vaultagent",
+      "path": "src/components/VaultGraph.tsx",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "path": "src/components/VaultGraph.tsx"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:src/components/VaultGraph.tsx:render_force_graph",
+      "type": "FUNCTION",
+      "name": "render_force_graph",
+      "repo_id": "vaultagent",
+      "path": "src/components/VaultGraph.tsx",
+      "signature": "export const VaultGraph: React.FC<VaultGraphProps>",
+      "docstring": "Interactive 3D note visualizer with real-time semantic cluster tagging.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "signature": "export const VaultGraph: React.FC<VaultGraphProps>",
+        "doc": "Interactive 3D note visualizer with real-time semantic cluster tagging."
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src-tauri/src/lib.rs",
+      "type": "FILE",
+      "name": "lib.rs",
+      "repo_id": "vaultagent",
+      "path": "client/src-tauri/src/lib.rs",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Rust",
+        "loc": 228
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src-tauri/src/lib.rs:run",
+      "type": "FUNCTION",
+      "name": "run",
+      "repo_id": "vaultagent",
+      "path": "client/src-tauri/src/lib.rs",
+      "signature": "run()",
+      "docstring": null,
+      "code_snippet": "pub fn run() {\n    #[cfg(target_os = \"linux\")]\n    {\n        // Fix EGL display crashes on newer Linux graphics drivers (Wayland/NVIDIA)\n        std::env::set_var(\"WEBKIT_DISABLE_DMABUF_RENDERER\", \"1\");\n    }\n\n    tauri::Builder::default()\n        .plugin(tauri_plugin_dialog::init())\n        .plugin(tauri_plugin_opener::init())\n        .plugin(tauri_plugin_stronghold::Builder::new(|_salt| {\n            vec![12, 34, 56, 78, 90, 12, 34, 56, 78, 90, 12, 34, 56, 78, 90, 12, 34, 56, 78, 90, 12, 34, 56, 78, 90, 12, 34, 56, 78, 90, 12, 34]\n        }).build())\n        .setup(|app| {\n            app.manage(BackendState {\n                port: AtomicU16::new(0),\n                child: Mutex::new(None),\n            });\n            Ok(())\n        })\n        .invoke_handler(tauri::generate_handler![get_backend_port, check_and_start_backend])\n        .run(tauri::generate_context!())\n        .expect(\"error while running tauri application\");\n}",
+      "start_line": 205,
+      "end_line": null,
+      "properties": {
+        "language": "Rust"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src-tauri/src/main.rs",
+      "type": "FILE",
+      "name": "main.rs",
+      "repo_id": "vaultagent",
+      "path": "client/src-tauri/src/main.rs",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Rust",
+        "loc": 6
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/App.tsx",
+      "type": "FILE",
+      "name": "App.tsx",
+      "repo_id": "vaultagent",
+      "path": "client/src/App.tsx",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript",
+        "loc": 242
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/App.tsx:RootRedirect",
+      "type": "FUNCTION",
+      "name": "RootRedirect",
+      "repo_id": "vaultagent",
+      "path": "client/src/App.tsx",
+      "signature": "RootRedirect()",
+      "docstring": null,
+      "code_snippet": "const RootRedirect = () => {\n  const config = getStoredVaultConfig();\n  if (config && config.vaultPath) {\n    return <Navigate to=\"/dashboard\" replace />;\n  }\n  return <Navigate to=\"/setup\" replace />;\n};\n\nfunction App() {\n  const location = useLocation();\n  const showLaser = location.pathname === \"/prompt\";\n  const [horizontalBeamOffset, setHorizontalBeamOffset] = useState(0.11);\n  const [verticalBeamOffset, setVerticalBeamOffset] = useState(0.06);\n\n  const [backendStatus, setBackendStatus] = useState<\"checking\" | \"downloading\" | \"ready\" | \"error\">(\"checking\");\n  const [downloadProgress, setDownloadProgress] = useState<number>(0);\n  const [downloadMsg, setDownloadMsg] = useState<string>(\"Initializing...\");\n\n  useEffect(() => {\n    let active = true;\n    let unlistenFn: (() => void) | null = null;\n\n    const initBackend = async () => {\n      const isTauri = typeof window !== \"undefined\" && (window as any).__TAURI_INTERNALS__ !== undefined;\n      if (!isTauri) {\n        if (active) setBackendStatus(\"ready\");\n        return;\n      }\n\n      try {\n        const unlisten = await listen<{ progress: number; message: string }>(\n          \"backend-download-status\",\n          (event) => {\n            if (!active) return;\n            if (event.payload.progress === 100) {",
+      "start_line": 18,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/App.tsx:App",
+      "type": "FUNCTION",
+      "name": "App",
+      "repo_id": "vaultagent",
+      "path": "client/src/App.tsx",
+      "signature": "App()",
+      "docstring": null,
+      "code_snippet": "function App() {\n  const location = useLocation();\n  const showLaser = location.pathname === \"/prompt\";\n  const [horizontalBeamOffset, setHorizontalBeamOffset] = useState(0.11);\n  const [verticalBeamOffset, setVerticalBeamOffset] = useState(0.06);\n\n  const [backendStatus, setBackendStatus] = useState<\"checking\" | \"downloading\" | \"ready\" | \"error\">(\"checking\");\n  const [downloadProgress, setDownloadProgress] = useState<number>(0);\n  const [downloadMsg, setDownloadMsg] = useState<string>(\"Initializing...\");\n\n  useEffect(() => {\n    let active = true;\n    let unlistenFn: (() => void) | null = null;\n\n    const initBackend = async () => {\n      const isTauri = typeof window !== \"undefined\" && (window as any).__TAURI_INTERNALS__ !== undefined;\n      if (!isTauri) {\n        if (active) setBackendStatus(\"ready\");\n        return;\n      }\n\n      try {\n        const unlisten = await listen<{ progress: number; message: string }>(\n          \"backend-download-status\",\n          (event) => {\n            if (!active) return;\n            if (event.payload.progress === 100) {\n              setBackendStatus(\"ready\");\n            } else if (event.payload.progress === 0 && event.payload.message.startsWith(\"Error\")) {\n              setBackendStatus(\"error\");\n              setDownloadMsg(event.payload.message);\n            } else {\n              setBackendStatus(\"downloading\");\n              setDownloadProgress(event.payload.progress);\n              setDownloadMsg(event.payload.message);",
+      "start_line": 26,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/App.tsx:initBackend",
+      "type": "FUNCTION",
+      "name": "initBackend",
+      "repo_id": "vaultagent",
+      "path": "client/src/App.tsx",
+      "signature": "initBackend()",
+      "docstring": null,
+      "code_snippet": "    const initBackend = async () => {\n      const isTauri = typeof window !== \"undefined\" && (window as any).__TAURI_INTERNALS__ !== undefined;\n      if (!isTauri) {\n        if (active) setBackendStatus(\"ready\");\n        return;\n      }\n\n      try {\n        const unlisten = await listen<{ progress: number; message: string }>(\n          \"backend-download-status\",\n          (event) => {\n            if (!active) return;\n            if (event.payload.progress === 100) {\n              setBackendStatus(\"ready\");\n            } else if (event.payload.progress === 0 && event.payload.message.startsWith(\"Error\")) {\n              setBackendStatus(\"error\");\n              setDownloadMsg(event.payload.message);\n            } else {\n              setBackendStatus(\"downloading\");\n              setDownloadProgress(event.payload.progress);\n              setDownloadMsg(event.payload.message);\n            }\n          }\n        );\n        unlistenFn = unlisten;\n\n        const res = await invoke<any>(\"check_and_start_backend\");\n        if (!active) return;\n        if (res.status === \"ready\") {\n          setBackendStatus(\"ready\");\n        } else if (res.status === \"downloading\") {\n          setBackendStatus(\"downloading\");\n        }\n      } catch (err) {\n        console.warn(\"Tauri context error:\", err);",
+      "start_line": 40,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/App.tsx:handleResize",
+      "type": "FUNCTION",
+      "name": "handleResize",
+      "repo_id": "vaultagent",
+      "path": "client/src/App.tsx",
+      "signature": "handleResize()",
+      "docstring": null,
+      "code_snippet": "    const handleResize = () => {\n      const W = window.innerWidth;\n      const H = window.innerHeight;\n      const canvasWidth = W * 0.85;\n\n      const el = document.getElementById(\"prompt-input-card\");\n      if (!el) {\n        // Fallback positioning if DOM is not ready\n        const promptBoxWidth = Math.min(W * 0.65, 896);\n        const rightCornerX = promptBoxWidth / 2;\n        const beamTipFromCenter = 54.5 * (H / 204.8);\n        setHorizontalBeamOffset((rightCornerX - beamTipFromCenter) / canvasWidth);\n        setVerticalBeamOffset(80 / H);\n        return;\n      }\n\n      const rect = el.getBoundingClientRect();\n      // Sit 4px above the input box top border\n      const verticalOffset = ((H / 2) - (rect.top - 4)) / H;\n      // Calculate horizontal target using original shift: right edge minus the beam tip width\n      const beamTipFromCenter = 54.5 * (H / 204.8);\n      const horizontalOffset = ((rect.right - (W / 2)) - beamTipFromCenter) / canvasWidth;\n\n      setHorizontalBeamOffset(horizontalOffset);\n      setVerticalBeamOffset(verticalOffset);\n    };\n\n    handleResize();\n    window.addEventListener(\"resize\", handleResize);\n\n    // Watch for size/content shifts in the DOM (e.g. preview list opening) to update laser position\n    const observer = new MutationObserver(handleResize);\n    observer.observe(document.body, { childList: true, subtree: true });\n\n    return () => {",
+      "start_line": 88,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:server/app.py",
+      "type": "FILE",
+      "name": "app.py",
+      "repo_id": "vaultagent",
+      "path": "server/app.py",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Python",
+        "loc": 300
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src-tauri/build.rs",
+      "type": "FILE",
+      "name": "build.rs",
+      "repo_id": "vaultagent",
+      "path": "client/src-tauri/build.rs",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Rust",
+        "loc": 3
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/LaserFlow.tsx",
+      "type": "FILE",
+      "name": "LaserFlow.tsx",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/LaserFlow.tsx",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript",
+        "loc": 300
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/LaserFlow.tsx:hexToRGB",
+      "type": "FUNCTION",
+      "name": "hexToRGB",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/LaserFlow.tsx",
+      "signature": "hexToRGB(hex: string)",
+      "docstring": null,
+      "code_snippet": "function hexToRGB(hex: string) {\n  let c = hex.trim();\n  if (c[0] === '#') c = c.slice(1);\n  if (c.length === 3)\n    c = c\n      .split('')\n      .map(x => x + x)\n      .join('');\n  const n = parseInt(c, 16) || 0xffffff;\n  return { r: ((n >> 16) & 255) / 255, g: ((n >> 8) & 255) / 255, b: (n & 255) / 255 };\n}\n\nexport const LaserFlow: React.FC<Props> = ({\n  className,\n  style,\n  wispDensity = 1,\n  dpr,\n  mouseSmoothTime = 0.0,\n  mouseTiltStrength = 0.01,\n  horizontalBeamOffset = 0.1,\n  verticalBeamOffset = 0.0,\n  flowSpeed = 0.35,\n  verticalSizing = 2.0,\n  horizontalSizing = 0.5,\n  fogIntensity = 0.45,\n  fogScale = 0.3,\n  wispSpeed = 15.0,\n  wispIntensity = 5.0,\n  flowStrength = 0.25,\n  decay = 1.1,\n  falloffStart = 1.2,\n  fogFallSpeed = 0.6,\n  color = '#FF79C6'\n}) => {\n  const mountRef = useRef<HTMLDivElement | null>(null);",
+      "start_line": 263,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/LiveProcessReview.tsx",
+      "type": "FILE",
+      "name": "LiveProcessReview.tsx",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/LiveProcessReview.tsx",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript",
+        "loc": 300
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/LiveProcessReview.tsx:flushList",
+      "type": "FUNCTION",
+      "name": "flushList",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/LiveProcessReview.tsx",
+      "signature": "flushList()",
+      "docstring": null,
+      "code_snippet": "  const flushList = () => {\n    if (listItems.length > 0) {\n      const itemsToRender = [...listItems];\n      renderedElements.push(\n        <ul key={`list-${keyIdx++}`} className=\"list-disc pl-5 my-3 space-y-1 text-white/90\">\n          {itemsToRender.map((item, idx) => (\n            <li key={idx}>{parseInline(item)}</li>\n          ))}\n        </ul>\n      );\n      listItems = [];\n    }\n  };\n\n  const parseInline = (text: string): React.ReactNode[] => {\n    if (!text) return [];\n    const inlineRegex = /(\\*\\*.*?\\*\\*|`.*?`|\\[\\[.*?\\]\\])/g;\n    const splitParts = text.split(inlineRegex);\n\n    return splitParts.map((part, pIdx) => {\n      if (part.startsWith('**') && part.endsWith('**')) {\n        return <strong key={pIdx} className=\"font-bold text-white\">{part.slice(2, -2)}</strong>;\n      }\n      if (part.startsWith('`') && part.endsWith('`')) {\n        return <code key={pIdx} className=\"bg-black/40 px-1.5 py-0.5 rounded font-mono text-[#e98bd7] text-xs\">{part.slice(1, -1)}</code>;\n      }\n      if (part.startsWith('[[') && part.endsWith(']]')) {\n        const linkContent = part.slice(2, -2);\n        const [target, alias] = linkContent.split('|');\n        const displayText = alias || target;\n        return (\n          <span\n            key={pIdx}\n            className=\"inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-[#A0548D]/15 border border-[#A0548D]/30 text-[#e98bd7] font-medium cursor-default select-all\"\n            title={`Wiki-link: ${target}`}",
+      "start_line": 89,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/LiveProcessReview.tsx:handleSaveEdits",
+      "type": "FUNCTION",
+      "name": "handleSaveEdits",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/LiveProcessReview.tsx",
+      "signature": "handleSaveEdits()",
+      "docstring": null,
+      "code_snippet": "  const handleSaveEdits = async () => {\n    const activeFile = stagedFiles[selectedFileIndex];\n    if (!activeFile) return;\n    try {\n      await updateStagedFile(sessionId, activeFile.id, editedContent, editedFilename);\n      setStagedFiles(prev => prev.map(f => {\n        if (f.id === activeFile.id) {\n          return {\n            ...f,",
+      "start_line": 292,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/PillNav.tsx",
+      "type": "FILE",
+      "name": "PillNav.tsx",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/PillNav.tsx",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript",
+        "loc": 300
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/PillNav.tsx:layout",
+      "type": "FUNCTION",
+      "name": "layout",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/PillNav.tsx",
+      "signature": "layout()",
+      "docstring": null,
+      "code_snippet": "    const layout = () => {\n      circleRefs.current.forEach((circle) => {\n        if (!circle?.parentElement) return;\n\n        const pill = circle.parentElement as HTMLElement;\n        const rect = pill.getBoundingClientRect();\n        const { width: w, height: h } = rect;\n        const R = ((w * w) / 4 + h * h) / (2 * h);\n        const D = Math.ceil(2 * R) + 2;\n        const delta =\n          Math.ceil(R - Math.sqrt(Math.max(0, R * R - (w * w) / 4))) + 1;\n        const originY = D - delta;\n\n        circle.style.width = `${D}px`;\n        circle.style.height = `${D}px`;\n        circle.style.bottom = `-${delta}px`;\n\n        gsap.set(circle, {\n          xPercent: -50,\n          scale: 0,\n          transformOrigin: `50% ${originY}px`,\n        });\n\n        const label = pill.querySelector<HTMLElement>(\".pill-label\");\n        const white = pill.querySelector<HTMLElement>(\".pill-label-hover\");\n\n        if (label) gsap.set(label, { y: 0 });\n        if (white) gsap.set(white, { y: h + 12, opacity: 0 });\n\n        const index = circleRefs.current.indexOf(circle);\n        if (index === -1) return;\n\n        tlRefs.current[index]?.kill();\n        const tl = gsap.timeline({ paused: true });\n",
+      "start_line": 54,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/PillNav.tsx:onResize",
+      "type": "FUNCTION",
+      "name": "onResize",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/PillNav.tsx",
+      "signature": "onResize()",
+      "docstring": null,
+      "code_snippet": "    const onResize = () => layout();\n    window.addEventListener(\"resize\", onResize);\n\n    if (document.fonts) {\n      document.fonts.ready.then(layout).catch(() => {});\n    }\n\n    const menu = mobileMenuRef.current;\n    if (menu) {\n      gsap.set(menu, { visibility: \"hidden\", opacity: 0, scaleY: 1, y: 0 });\n    }\n\n    if (initialLoadAnimation) {\n      const logo = logoRef.current;\n      const navItems = navItemsRef.current;\n\n      if (logo) {\n        gsap.set(logo, { scale: 0 });\n        gsap.to(logo, {\n          scale: 1,\n          duration: 0.6,\n          ease,\n        });\n      }\n\n      if (navItems) {\n        gsap.set(navItems, { width: 0, overflow: \"hidden\" });\n        gsap.to(navItems, {\n          width: \"auto\",\n          duration: 0.6,\n          ease,\n        });\n      }\n    }\n",
+      "start_line": 118,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/PillNav.tsx:handleEnter",
+      "type": "FUNCTION",
+      "name": "handleEnter",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/PillNav.tsx",
+      "signature": "handleEnter(i: number)",
+      "docstring": null,
+      "code_snippet": "  const handleEnter = (i: number) => {\n    const tl = tlRefs.current[i];\n    if (!tl) return;\n    activeTweenRefs.current[i]?.kill();\n    activeTweenRefs.current[i] = tl.tweenTo(tl.duration(), {\n      duration: 0.3,\n      ease,\n      overwrite: \"auto\",\n    });\n  };\n\n  const handleLeave = (i: number) => {\n    const tl = tlRefs.current[i];\n    if (!tl) return;\n    activeTweenRefs.current[i]?.kill();\n    activeTweenRefs.current[i] = tl.tweenTo(0, {\n      duration: 0.2,\n      ease,\n      overwrite: \"auto\",\n    });\n  };\n\n  const handleLogoEnter = () => {\n    const img = logoImgRef.current;\n    if (!img) return;\n    logoTweenRef.current?.kill();\n    gsap.set(img, { rotate: 0 });\n    logoTweenRef.current = gsap.to(img, {\n      rotate: 360,\n      duration: 0.2,\n      ease,\n      overwrite: \"auto\",\n    });\n  };\n",
+      "start_line": 156,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/PillNav.tsx:handleLeave",
+      "type": "FUNCTION",
+      "name": "handleLeave",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/PillNav.tsx",
+      "signature": "handleLeave(i: number)",
+      "docstring": null,
+      "code_snippet": "  const handleLeave = (i: number) => {\n    const tl = tlRefs.current[i];\n    if (!tl) return;\n    activeTweenRefs.current[i]?.kill();\n    activeTweenRefs.current[i] = tl.tweenTo(0, {\n      duration: 0.2,\n      ease,\n      overwrite: \"auto\",\n    });\n  };\n\n  const handleLogoEnter = () => {\n    const img = logoImgRef.current;\n    if (!img) return;\n    logoTweenRef.current?.kill();\n    gsap.set(img, { rotate: 0 });\n    logoTweenRef.current = gsap.to(img, {\n      rotate: 360,\n      duration: 0.2,\n      ease,\n      overwrite: \"auto\",\n    });\n  };\n\n  const toggleMobileMenu = () => {\n    const newState = !isMobileMenuOpen;\n    setIsMobileMenuOpen(newState);\n\n    const hamburger = hamburgerRef.current;\n    const menu = mobileMenuRef.current;\n\n    if (hamburger) {\n      const lines = hamburger.querySelectorAll(\".hamburger-line\");\n      if (newState) {\n        gsap.to(lines[0], { rotation: 45, y: 3, duration: 0.3, ease });",
+      "start_line": 167,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/PillNav.tsx:handleLogoEnter",
+      "type": "FUNCTION",
+      "name": "handleLogoEnter",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/PillNav.tsx",
+      "signature": "handleLogoEnter()",
+      "docstring": null,
+      "code_snippet": "  const handleLogoEnter = () => {\n    const img = logoImgRef.current;\n    if (!img) return;\n    logoTweenRef.current?.kill();\n    gsap.set(img, { rotate: 0 });\n    logoTweenRef.current = gsap.to(img, {\n      rotate: 360,\n      duration: 0.2,\n      ease,\n      overwrite: \"auto\",\n    });\n  };\n\n  const toggleMobileMenu = () => {\n    const newState = !isMobileMenuOpen;\n    setIsMobileMenuOpen(newState);\n\n    const hamburger = hamburgerRef.current;\n    const menu = mobileMenuRef.current;\n\n    if (hamburger) {\n      const lines = hamburger.querySelectorAll(\".hamburger-line\");\n      if (newState) {\n        gsap.to(lines[0], { rotation: 45, y: 3, duration: 0.3, ease });\n        gsap.to(lines[1], { rotation: -45, y: -3, duration: 0.3, ease });\n      } else {\n        gsap.to(lines[0], { rotation: 0, y: 0, duration: 0.3, ease });\n        gsap.to(lines[1], { rotation: 0, y: 0, duration: 0.3, ease });\n      }\n    }\n\n    if (menu) {\n      if (newState) {\n        gsap.set(menu, { visibility: \"visible\" });\n        gsap.fromTo(",
+      "start_line": 178,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/PillNav.tsx:toggleMobileMenu",
+      "type": "FUNCTION",
+      "name": "toggleMobileMenu",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/PillNav.tsx",
+      "signature": "toggleMobileMenu()",
+      "docstring": null,
+      "code_snippet": "  const toggleMobileMenu = () => {\n    const newState = !isMobileMenuOpen;\n    setIsMobileMenuOpen(newState);\n\n    const hamburger = hamburgerRef.current;\n    const menu = mobileMenuRef.current;\n\n    if (hamburger) {\n      const lines = hamburger.querySelectorAll(\".hamburger-line\");\n      if (newState) {\n        gsap.to(lines[0], { rotation: 45, y: 3, duration: 0.3, ease });\n        gsap.to(lines[1], { rotation: -45, y: -3, duration: 0.3, ease });\n      } else {\n        gsap.to(lines[0], { rotation: 0, y: 0, duration: 0.3, ease });\n        gsap.to(lines[1], { rotation: 0, y: 0, duration: 0.3, ease });\n      }\n    }\n\n    if (menu) {\n      if (newState) {\n        gsap.set(menu, { visibility: \"visible\" });\n        gsap.fromTo(\n          menu,\n          { opacity: 0, y: 10, scaleY: 1 },\n          {\n            opacity: 1,\n            y: 0,\n            scaleY: 1,\n            duration: 0.3,\n            ease,\n            transformOrigin: \"top center\",\n          },\n        );\n      } else {\n        gsap.to(menu, {",
+      "start_line": 191,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/PillNav.tsx:isExternalLink",
+      "type": "FUNCTION",
+      "name": "isExternalLink",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/PillNav.tsx",
+      "signature": "isExternalLink(href: string)",
+      "docstring": null,
+      "code_snippet": "  const isExternalLink = (href: string) =>\n    href.startsWith(\"http://\") ||\n    href.startsWith(\"https://\") ||\n    href.startsWith(\"//\") ||\n    href.startsWith(\"mailto:\") ||\n    href.startsWith(\"tel:\") ||\n    href.startsWith(\"#\");\n\n  const isRouterLink = (href?: string) => href && !isExternalLink(href);\n\n  const cssVars = {\n    [\"--base\"]: baseColor,\n    [\"--pill-bg\"]: pillColor,\n    [\"--hover-text\"]: hoveredPillTextColor,\n    [\"--pill-text\"]: resolvedPillTextColor,\n    [\"--nav-h\"]: \"42px\",\n    [\"--logo\"]: \"36px\",\n    [\"--pill-pad-x\"]: \"18px\",\n    [\"--pill-gap\"]: \"3px\",\n  } as React.CSSProperties;\n\n  return (\n    <div className=\"absolute bottom-[2em] z-1000 left-1/2 -translate-x-1/2 flex justify-center animate-fade-in-up\">\n      <nav\n        className={`w-full md:w-max flex items-center justify-between md:justify-start box-border p-[4px] rounded-full border border-white/10 bg-black/45 backdrop-blur-2xl shadow-2xl ${className}`}\n        aria-label=\"Primary\"\n        style={cssVars}\n      >\n        {isRouterLink(items?.[0]?.href) ? (\n          <Link\n            to={items[0].href}\n            aria-label=\"Home\"\n            onMouseEnter={handleLogoEnter}\n            role=\"menuitem\"\n            ref={(el) => {",
+      "start_line": 242,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/PillNav.tsx:isRouterLink",
+      "type": "FUNCTION",
+      "name": "isRouterLink",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/PillNav.tsx",
+      "signature": "isRouterLink(href?: string)",
+      "docstring": null,
+      "code_snippet": "  const isRouterLink = (href?: string) => href && !isExternalLink(href);\n\n  const cssVars = {\n    [\"--base\"]: baseColor,\n    [\"--pill-bg\"]: pillColor,\n    [\"--hover-text\"]: hoveredPillTextColor,\n    [\"--pill-text\"]: resolvedPillTextColor,\n    [\"--nav-h\"]: \"42px\",\n    [\"--logo\"]: \"36px\",\n    [\"--pill-pad-x\"]: \"18px\",\n    [\"--pill-gap\"]: \"3px\",\n  } as React.CSSProperties;\n\n  return (\n    <div className=\"absolute bottom-[2em] z-1000 left-1/2 -translate-x-1/2 flex justify-center animate-fade-in-up\">\n      <nav\n        className={`w-full md:w-max flex items-center justify-between md:justify-start box-border p-[4px] rounded-full border border-white/10 bg-black/45 backdrop-blur-2xl shadow-2xl ${className}`}\n        aria-label=\"Primary\"\n        style={cssVars}\n      >\n        {isRouterLink(items?.[0]?.href) ? (\n          <Link\n            to={items[0].href}\n            aria-label=\"Home\"\n            onMouseEnter={handleLogoEnter}\n            role=\"menuitem\"\n            ref={(el) => {\n              logoRef.current = el;\n            }}\n            className=\"rounded-full p-2 inline-flex items-center justify-center overflow-hidden border border-white/5 hover:border-white/20 transition-colors\"\n            style={{\n              width: \"var(--nav-h)\",\n              height: \"var(--nav-h)\",\n              background: \"rgba(255, 255, 255, 0.03)\",\n            }}",
+      "start_line": 250,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/Stepper.tsx",
+      "type": "FILE",
+      "name": "Stepper.tsx",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/Stepper.tsx",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript",
+        "loc": 300
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/Stepper.tsx:updateStep",
+      "type": "FUNCTION",
+      "name": "updateStep",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/Stepper.tsx",
+      "signature": "updateStep(newStep: number)",
+      "docstring": null,
+      "code_snippet": "  const updateStep = (newStep: number) => {\n    if (step === undefined) {\n      setLocalStep(newStep);\n    }\n    if (newStep > totalSteps) {\n      onFinalStepCompleted();\n    } else {\n      onStepChange(newStep);\n    }\n  };\n\n  const handleBack = () => {\n    if (currentStep > 1) {\n      setDirection(-1);\n      updateStep(currentStep - 1);\n    }\n  };\n\n  const handleNext = async () => {\n    if (onBeforeNext) {\n      const canProceed = await onBeforeNext(currentStep);\n      if (!canProceed) return;\n    }\n    if (!isLastStep) {\n      setDirection(1);\n      updateStep(currentStep + 1);\n    }\n  };\n\n  const handleComplete = async () => {\n    if (onBeforeNext) {\n      const canProceed = await onBeforeNext(currentStep);\n      if (!canProceed) return;\n    }\n    setDirection(1);",
+      "start_line": 63,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/Stepper.tsx:handleBack",
+      "type": "FUNCTION",
+      "name": "handleBack",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/Stepper.tsx",
+      "signature": "handleBack()",
+      "docstring": null,
+      "code_snippet": "  const handleBack = () => {\n    if (currentStep > 1) {\n      setDirection(-1);\n      updateStep(currentStep - 1);\n    }\n  };\n\n  const handleNext = async () => {\n    if (onBeforeNext) {\n      const canProceed = await onBeforeNext(currentStep);\n      if (!canProceed) return;\n    }\n    if (!isLastStep) {\n      setDirection(1);\n      updateStep(currentStep + 1);\n    }\n  };\n\n  const handleComplete = async () => {\n    if (onBeforeNext) {\n      const canProceed = await onBeforeNext(currentStep);\n      if (!canProceed) return;\n    }\n    setDirection(1);\n    updateStep(totalSteps + 1);\n  };\n\n  return (\n    <div\n      className={`w-full flex flex-col justify-between ${stepCircleContainerClassName}`}\n      {...rest}\n    >\n      {/* Step Indicators Header */}\n      {!disableStepIndicators && (\n        <div className={`${stepContainerClassName} flex w-full items-center mb-6`}>",
+      "start_line": 74,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/Stepper.tsx:handleNext",
+      "type": "FUNCTION",
+      "name": "handleNext",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/Stepper.tsx",
+      "signature": "handleNext()",
+      "docstring": null,
+      "code_snippet": "  const handleNext = async () => {\n    if (onBeforeNext) {\n      const canProceed = await onBeforeNext(currentStep);\n      if (!canProceed) return;\n    }\n    if (!isLastStep) {\n      setDirection(1);\n      updateStep(currentStep + 1);\n    }\n  };\n\n  const handleComplete = async () => {\n    if (onBeforeNext) {\n      const canProceed = await onBeforeNext(currentStep);\n      if (!canProceed) return;\n    }\n    setDirection(1);\n    updateStep(totalSteps + 1);\n  };\n\n  return (\n    <div\n      className={`w-full flex flex-col justify-between ${stepCircleContainerClassName}`}\n      {...rest}\n    >\n      {/* Step Indicators Header */}\n      {!disableStepIndicators && (\n        <div className={`${stepContainerClassName} flex w-full items-center mb-6`}>\n          {stepsArray.map((_, index) => {\n            const stepNumber = index + 1;\n            const isNotLastStep = index < totalSteps - 1;\n            return (\n              <React.Fragment key={stepNumber}>\n                {renderStepIndicator ? (\n                  renderStepIndicator({",
+      "start_line": 81,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/Stepper.tsx:handleComplete",
+      "type": "FUNCTION",
+      "name": "handleComplete",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/Stepper.tsx",
+      "signature": "handleComplete()",
+      "docstring": null,
+      "code_snippet": "  const handleComplete = async () => {\n    if (onBeforeNext) {\n      const canProceed = await onBeforeNext(currentStep);\n      if (!canProceed) return;\n    }\n    setDirection(1);\n    updateStep(totalSteps + 1);\n  };\n\n  return (\n    <div\n      className={`w-full flex flex-col justify-between ${stepCircleContainerClassName}`}\n      {...rest}\n    >\n      {/* Step Indicators Header */}\n      {!disableStepIndicators && (\n        <div className={`${stepContainerClassName} flex w-full items-center mb-6`}>\n          {stepsArray.map((_, index) => {\n            const stepNumber = index + 1;\n            const isNotLastStep = index < totalSteps - 1;\n            return (\n              <React.Fragment key={stepNumber}>\n                {renderStepIndicator ? (\n                  renderStepIndicator({\n                    step: stepNumber,\n                    currentStep,\n                    onStepClick: clicked => {\n                      setDirection(clicked > currentStep ? 1 : -1);\n                      updateStep(clicked);\n                    }\n                  })\n                ) : (\n                  <StepIndicator\n                    step={stepNumber}\n                    disableStepIndicators={disableStepIndicators}",
+      "start_line": 92,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/Stepper.tsx:SlideTransition",
+      "type": "FUNCTION",
+      "name": "SlideTransition",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/Stepper.tsx",
+      "signature": "SlideTransition({ children, direction, onHeightReady }: SlideTransitionProps)",
+      "docstring": null,
+      "code_snippet": "function SlideTransition({ children, direction, onHeightReady }: SlideTransitionProps) {\n  const containerRef = useRef<HTMLDivElement | null>(null);\n\n  useLayoutEffect(() => {\n    if (containerRef.current) {\n      onHeightReady(containerRef.current.offsetHeight);\n    }\n  }, [children, onHeightReady]);\n\n  return (\n    <motion.div\n      ref={containerRef}\n      custom={direction}\n      variants={stepVariants}\n      initial=\"enter\"\n      animate=\"center\"\n      exit=\"exit\"\n      transition={{ duration: 0.4, ease: 'easeInOut' }}\n      style={{ position: 'absolute', left: 0, right: 0, top: 0 }}\n    >\n      {children}\n    </motion.div>\n  );\n}\n\nconst stepVariants: Variants = {\n  enter: (dir: number) => ({\n    x: dir >= 0 ? '100%' : '-100%',\n    opacity: 0\n  }),\n  center: {\n    x: '0%',\n    opacity: 1\n  },\n  exit: (dir: number) => ({",
+      "start_line": 217,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/Stepper.tsx:Step",
+      "type": "FUNCTION",
+      "name": "Step",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/Stepper.tsx",
+      "signature": "Step({ children }: StepProps)",
+      "docstring": null,
+      "code_snippet": "export function Step({ children }: StepProps) {\n  return <div className=\"w-full\">{children}</div>;\n}\n\ninterface StepIndicatorProps {\n  step: number;\n  currentStep: number;\n  onClickStep: (clicked: number) => void;\n  disableStepIndicators?: boolean;\n}\n\nfunction StepIndicator({ step, currentStep, onClickStep, disableStepIndicators = false }: StepIndicatorProps) {\n  const status = currentStep === step ? 'active' : currentStep < step ? 'inactive' : 'complete';\n\n  const handleClick = () => {\n    if (step !== currentStep && !disableStepIndicators) {\n      onClickStep(step);\n    }\n  };\n\n  return (\n    <motion.div\n      onClick={handleClick}\n      className={`relative outline-none focus:outline-none ${disableStepIndicators ? 'pointer-events-none opacity-50' : 'cursor-pointer'}`}\n      animate={status}\n      initial={false}\n    >\n      <motion.div\n        variants={{\n          inactive: { scale: 1, backgroundColor: 'rgba(255, 255, 255, 0.05)', color: 'rgba(255, 255, 255, 0.4)' },\n          active: { scale: 1, backgroundColor: '#a0548d', color: '#a0548d' },\n          complete: { scale: 1, backgroundColor: '#a0548d', color: '#ffffff' }\n        }}\n        transition={{ duration: 0.3 }}\n        className=\"flex h-8 w-8 items-center justify-center rounded-full font-semibold border border-white/5\"",
+      "start_line": 261,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/Stepper.tsx:StepIndicator",
+      "type": "FUNCTION",
+      "name": "StepIndicator",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/Stepper.tsx",
+      "signature": "StepIndicator({ step, currentStep, onClickStep, disableStepIndicators = false }: StepIndicatorProps)",
+      "docstring": null,
+      "code_snippet": "function StepIndicator({ step, currentStep, onClickStep, disableStepIndicators = false }: StepIndicatorProps) {\n  const status = currentStep === step ? 'active' : currentStep < step ? 'inactive' : 'complete';\n\n  const handleClick = () => {\n    if (step !== currentStep && !disableStepIndicators) {\n      onClickStep(step);\n    }\n  };\n\n  return (\n    <motion.div\n      onClick={handleClick}\n      className={`relative outline-none focus:outline-none ${disableStepIndicators ? 'pointer-events-none opacity-50' : 'cursor-pointer'}`}\n      animate={status}\n      initial={false}\n    >\n      <motion.div\n        variants={{\n          inactive: { scale: 1, backgroundColor: 'rgba(255, 255, 255, 0.05)', color: 'rgba(255, 255, 255, 0.4)' },\n          active: { scale: 1, backgroundColor: '#a0548d', color: '#a0548d' },\n          complete: { scale: 1, backgroundColor: '#a0548d', color: '#ffffff' }\n        }}\n        transition={{ duration: 0.3 }}\n        className=\"flex h-8 w-8 items-center justify-center rounded-full font-semibold border border-white/5\"\n      >\n        {status === 'complete' ? (\n          <CheckIcon className=\"h-4 w-4 text-white\" />\n        ) : status === 'active' ? (\n          <div className=\"h-2 w-2 rounded-full bg-[#120F17]\" />",
+      "start_line": 272,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/Stepper.tsx:handleClick",
+      "type": "FUNCTION",
+      "name": "handleClick",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/Stepper.tsx",
+      "signature": "handleClick()",
+      "docstring": null,
+      "code_snippet": "  const handleClick = () => {\n    if (step !== currentStep && !disableStepIndicators) {\n      onClickStep(step);\n    }\n  };\n\n  return (\n    <motion.div\n      onClick={handleClick}\n      className={`relative outline-none focus:outline-none ${disableStepIndicators ? 'pointer-events-none opacity-50' : 'cursor-pointer'}`}\n      animate={status}\n      initial={false}\n    >\n      <motion.div\n        variants={{\n          inactive: { scale: 1, backgroundColor: 'rgba(255, 255, 255, 0.05)', color: 'rgba(255, 255, 255, 0.4)' },\n          active: { scale: 1, backgroundColor: '#a0548d', color: '#a0548d' },\n          complete: { scale: 1, backgroundColor: '#a0548d', color: '#ffffff' }\n        }}\n        transition={{ duration: 0.3 }}\n        className=\"flex h-8 w-8 items-center justify-center rounded-full font-semibold border border-white/5\"\n      >\n        {status === 'complete' ? (\n          <CheckIcon className=\"h-4 w-4 text-white\" />\n        ) : status === 'active' ? (\n          <div className=\"h-2 w-2 rounded-full bg-[#120F17]\" />",
+      "start_line": 275,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/blobbackground.tsx",
+      "type": "FILE",
+      "name": "blobbackground.tsx",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/blobbackground.tsx",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript",
+        "loc": 75
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/blobbackground.tsx:BlobBackground",
+      "type": "FUNCTION",
+      "name": "BlobBackground",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/blobbackground.tsx",
+      "signature": "BlobBackground()",
+      "docstring": null,
+      "code_snippet": "export default function BlobBackground() {\n  return (\n    <div className=\"fixed inset-0 -z-10 overflow-hidden bg-background pointer-events-none\">\n      {/* Layer 1 \u2014 large, slow, primary (#770B83) base */}\n      <div\n        className=\"absolute top-[10%] left-[15%] w-[600px] h-[600px] rounded-full\"\n        style={{\n          background:\n            'radial-gradient(circle, color-mix(in srgb, var(--color-primary) 85%, transparent) 0%, transparent 70%)',\n          animation: 'blob-breathe-a 14s cubic-bezier(0.45,0,0.55,1) infinite',\n          animationDelay: '-2s',\n        }}\n      />\n\n      {/* Layer 2 \u2014 mid, accent (#A0548D), offset cadence */}\n      <div\n        className=\"absolute top-[40%] left-[55%] w-[480px] h-[480px] rounded-full\"\n        style={{\n          background:\n            'radial-gradient(circle, color-mix(in srgb, var(--color-accent) 75%, transparent) 0%, transparent 70%)',\n          animation: 'blob-breathe-b 11s cubic-bezier(0.45,0,0.55,1) infinite',\n          animationDelay: '-6s',\n        }}\n      />\n\n      {/* Vignette in the background tone \u2014 pushed further out so it doesn't crush the glow */}\n      <div className=\"absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,var(--color-background)_95%)]\" />\n\n      <style>{`\n        @keyframes blob-breathe-a {\n          0%   { transform: scale(1) translate(0, 0);          filter: blur(70px); opacity: 0.75; border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }\n          33%  { transform: scale(1.1) translate(20px, -25px);  filter: blur(78px); opacity: 0.9;  border-radius: 40% 60% 65% 35% / 45% 55% 45% 55%; }\n          50%  { transform: scale(1.18) translate(30px, -40px); filter: blur(85px); opacity: 1;    border-radius: 65% 35% 45% 55% / 35% 65% 40% 60%; }\n          75%  { transform: scale(1.08) translate(10px, -15px); filter: blur(76px); opacity: 0.85; border-radius: 45% 55% 55% 45% / 60% 40% 55% 45%; }\n          100% { transform: scale(1) translate(0, 0);          filter: blur(70px); opacity: 0.75; border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }",
+      "start_line": 23,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/promptbox.tsx",
+      "type": "FILE",
+      "name": "promptbox.tsx",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/promptbox.tsx",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript",
+        "loc": 300
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/promptbox.tsx:Promptbox",
+      "type": "FUNCTION",
+      "name": "Promptbox",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/promptbox.tsx",
+      "signature": "Promptbox({ setActiveSessionId }: PromptboxProps)",
+      "docstring": null,
+      "code_snippet": "function Promptbox({ setActiveSessionId }: PromptboxProps) {\n  const [prompt, setPrompt] = useState(\"\");\n  const [placeholder] = useState(getRandomPlaceholder());\n\n  // Pipeline session state\n  const [isStarting, setIsStarting] = useState(false);\n\n  // Interactive options states\n  const [style, setStyle] = useState(\"ATOMIC\");\n  const [length, setLength] = useState(\"SHORT\");\n  const [webSearch, setWebSearch] = useState(true);\n\n  // Opt-in: panel only renders once the user asks for it\n  const [panelOpen, setPanelOpen] = useState(false);\n\n  // Web search ON: optional URL scoping\n  const [urlInput, setUrlInput] = useState(\"\");\n  const [urls, setUrls] = useState<string[]>([]);\n\n  // Web search OFF: optional raw drafts (multi-item list)\n  const [draftInput, setDraftInput] = useState(\"\");\n  const [drafts, setDrafts] = useState<string[]>([]);\n\n  const cycleStyle = () => {\n    const styles = [\"ATOMIC\", \"CREATIVE\", \"PRECISE\"];\n    const nextIdx = (styles.indexOf(style) + 1) % styles.length;\n    setStyle(styles[nextIdx]);\n  };\n\n  const cycleLength = () => {\n    const lengths = [\"SHORT\", \"MEDIUM\", \"LONG\"];\n    const nextIdx = (lengths.indexOf(length) + 1) % lengths.length;\n    setLength(lengths[nextIdx]);\n  };\n",
+      "start_line": 12,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/promptbox.tsx:cycleStyle",
+      "type": "FUNCTION",
+      "name": "cycleStyle",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/promptbox.tsx",
+      "signature": "cycleStyle()",
+      "docstring": null,
+      "code_snippet": "  const cycleStyle = () => {\n    const styles = [\"ATOMIC\", \"CREATIVE\", \"PRECISE\"];\n    const nextIdx = (styles.indexOf(style) + 1) % styles.length;\n    setStyle(styles[nextIdx]);\n  };\n\n  const cycleLength = () => {\n    const lengths = [\"SHORT\", \"MEDIUM\", \"LONG\"];\n    const nextIdx = (lengths.indexOf(length) + 1) % lengths.length;\n    setLength(lengths[nextIdx]);\n  };\n\n  // Reset panel when toggling web search mode\n  const toggleWebSearch = () => {\n    setWebSearch((v) => !v);\n    setPanelOpen(false);\n  };\n\n  const addUrl = () => {\n    const trimmed = urlInput.trim();\n    if (!trimmed) return;\n    setUrls((prev) => [...prev, trimmed]);\n    setUrlInput(\"\");\n  };\n\n  const handleUrlKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {\n    if (e.key === \"Enter\") {\n      e.preventDefault();\n      addUrl();\n    }\n  };\n\n  const removeUrl = (i: number) => {\n    setUrls((prev) => prev.filter((_, idx) => idx !== i));\n  };",
+      "start_line": 35,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/promptbox.tsx:cycleLength",
+      "type": "FUNCTION",
+      "name": "cycleLength",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/promptbox.tsx",
+      "signature": "cycleLength()",
+      "docstring": null,
+      "code_snippet": "  const cycleLength = () => {\n    const lengths = [\"SHORT\", \"MEDIUM\", \"LONG\"];\n    const nextIdx = (lengths.indexOf(length) + 1) % lengths.length;\n    setLength(lengths[nextIdx]);\n  };\n\n  // Reset panel when toggling web search mode\n  const toggleWebSearch = () => {\n    setWebSearch((v) => !v);\n    setPanelOpen(false);\n  };\n\n  const addUrl = () => {\n    const trimmed = urlInput.trim();\n    if (!trimmed) return;\n    setUrls((prev) => [...prev, trimmed]);\n    setUrlInput(\"\");\n  };\n\n  const handleUrlKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {\n    if (e.key === \"Enter\") {\n      e.preventDefault();\n      addUrl();\n    }\n  };\n\n  const removeUrl = (i: number) => {\n    setUrls((prev) => prev.filter((_, idx) => idx !== i));\n  };\n\n  const addDraft = () => {\n    const trimmed = draftInput.trim();\n    if (!trimmed) return;\n    setDrafts((prev) => [...prev, trimmed]);\n    setDraftInput(\"\");",
+      "start_line": 41,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/promptbox.tsx:toggleWebSearch",
+      "type": "FUNCTION",
+      "name": "toggleWebSearch",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/promptbox.tsx",
+      "signature": "toggleWebSearch()",
+      "docstring": null,
+      "code_snippet": "  const toggleWebSearch = () => {\n    setWebSearch((v) => !v);\n    setPanelOpen(false);\n  };\n\n  const addUrl = () => {\n    const trimmed = urlInput.trim();\n    if (!trimmed) return;\n    setUrls((prev) => [...prev, trimmed]);\n    setUrlInput(\"\");\n  };\n\n  const handleUrlKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {\n    if (e.key === \"Enter\") {\n      e.preventDefault();\n      addUrl();\n    }\n  };\n\n  const removeUrl = (i: number) => {\n    setUrls((prev) => prev.filter((_, idx) => idx !== i));\n  };\n\n  const addDraft = () => {\n    const trimmed = draftInput.trim();\n    if (!trimmed) return;\n    setDrafts((prev) => [...prev, trimmed]);\n    setDraftInput(\"\");\n  };\n\n  const handleDraftKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {\n    if (e.key === \"Enter\" && !e.shiftKey) {\n      e.preventDefault();\n      addDraft();\n    }",
+      "start_line": 48,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/promptbox.tsx:addUrl",
+      "type": "FUNCTION",
+      "name": "addUrl",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/promptbox.tsx",
+      "signature": "addUrl()",
+      "docstring": null,
+      "code_snippet": "  const addUrl = () => {\n    const trimmed = urlInput.trim();\n    if (!trimmed) return;\n    setUrls((prev) => [...prev, trimmed]);\n    setUrlInput(\"\");\n  };\n\n  const handleUrlKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {\n    if (e.key === \"Enter\") {\n      e.preventDefault();\n      addUrl();\n    }\n  };\n\n  const removeUrl = (i: number) => {\n    setUrls((prev) => prev.filter((_, idx) => idx !== i));\n  };\n\n  const addDraft = () => {\n    const trimmed = draftInput.trim();\n    if (!trimmed) return;\n    setDrafts((prev) => [...prev, trimmed]);\n    setDraftInput(\"\");\n  };\n\n  const handleDraftKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {\n    if (e.key === \"Enter\" && !e.shiftKey) {\n      e.preventDefault();\n      addDraft();\n    }\n  };\n\n  const removeDraft = (i: number) => {\n    setDrafts((prev) => prev.filter((_, idx) => idx !== i));\n  };",
+      "start_line": 53,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/promptbox.tsx:handleUrlKeyDown",
+      "type": "FUNCTION",
+      "name": "handleUrlKeyDown",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/promptbox.tsx",
+      "signature": "handleUrlKeyDown(e: KeyboardEvent<HTMLInputElement>)",
+      "docstring": null,
+      "code_snippet": "  const handleUrlKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {\n    if (e.key === \"Enter\") {\n      e.preventDefault();\n      addUrl();\n    }\n  };\n\n  const removeUrl = (i: number) => {\n    setUrls((prev) => prev.filter((_, idx) => idx !== i));\n  };\n\n  const addDraft = () => {\n    const trimmed = draftInput.trim();\n    if (!trimmed) return;\n    setDrafts((prev) => [...prev, trimmed]);\n    setDraftInput(\"\");\n  };\n\n  const handleDraftKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {\n    if (e.key === \"Enter\" && !e.shiftKey) {\n      e.preventDefault();\n      addDraft();\n    }\n  };\n\n  const removeDraft = (i: number) => {\n    setDrafts((prev) => prev.filter((_, idx) => idx !== i));\n  };\n\n  const handleSend = async () => {\n    if (!prompt.trim() || isStarting) return;\n    const config = getStoredVaultConfig();\n    const vaultPath = config?.vaultPath || \"/home/mihir/Documents/Obsidian/DSA/DSA\";\n    let vaultId = config?.vaultId || \"\";\n    if (config && !vaultId) {",
+      "start_line": 60,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/promptbox.tsx:removeUrl",
+      "type": "FUNCTION",
+      "name": "removeUrl",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/promptbox.tsx",
+      "signature": "removeUrl(i: number)",
+      "docstring": null,
+      "code_snippet": "  const removeUrl = (i: number) => {\n    setUrls((prev) => prev.filter((_, idx) => idx !== i));\n  };\n\n  const addDraft = () => {\n    const trimmed = draftInput.trim();\n    if (!trimmed) return;\n    setDrafts((prev) => [...prev, trimmed]);\n    setDraftInput(\"\");\n  };\n\n  const handleDraftKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {\n    if (e.key === \"Enter\" && !e.shiftKey) {\n      e.preventDefault();\n      addDraft();\n    }\n  };\n\n  const removeDraft = (i: number) => {\n    setDrafts((prev) => prev.filter((_, idx) => idx !== i));\n  };\n\n  const handleSend = async () => {\n    if (!prompt.trim() || isStarting) return;\n    const config = getStoredVaultConfig();\n    const vaultPath = config?.vaultPath || \"/home/mihir/Documents/Obsidian/DSA/DSA\";\n    let vaultId = config?.vaultId || \"\";\n    if (config && !vaultId) {\n      vaultId = crypto.randomUUID();\n      config.vaultId = vaultId;\n      saveVaultConfig(config);\n    }\n\n    setIsStarting(true);\n    try {",
+      "start_line": 67,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/promptbox.tsx:addDraft",
+      "type": "FUNCTION",
+      "name": "addDraft",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/promptbox.tsx",
+      "signature": "addDraft()",
+      "docstring": null,
+      "code_snippet": "  const addDraft = () => {\n    const trimmed = draftInput.trim();\n    if (!trimmed) return;\n    setDrafts((prev) => [...prev, trimmed]);\n    setDraftInput(\"\");\n  };\n\n  const handleDraftKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {\n    if (e.key === \"Enter\" && !e.shiftKey) {\n      e.preventDefault();\n      addDraft();\n    }\n  };\n\n  const removeDraft = (i: number) => {\n    setDrafts((prev) => prev.filter((_, idx) => idx !== i));\n  };\n\n  const handleSend = async () => {\n    if (!prompt.trim() || isStarting) return;\n    const config = getStoredVaultConfig();\n    const vaultPath = config?.vaultPath || \"/home/mihir/Documents/Obsidian/DSA/DSA\";\n    let vaultId = config?.vaultId || \"\";\n    if (config && !vaultId) {\n      vaultId = crypto.randomUUID();\n      config.vaultId = vaultId;\n      saveVaultConfig(config);\n    }\n\n    setIsStarting(true);\n    try {\n      const payload = {\n        vault_path: vaultPath,\n        vault_id: vaultId,\n        prompt: prompt.trim(),",
+      "start_line": 71,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/promptbox.tsx:handleDraftKeyDown",
+      "type": "FUNCTION",
+      "name": "handleDraftKeyDown",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/promptbox.tsx",
+      "signature": "handleDraftKeyDown(e: KeyboardEvent<HTMLTextAreaElement>)",
+      "docstring": null,
+      "code_snippet": "  const handleDraftKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {\n    if (e.key === \"Enter\" && !e.shiftKey) {\n      e.preventDefault();\n      addDraft();\n    }\n  };\n\n  const removeDraft = (i: number) => {\n    setDrafts((prev) => prev.filter((_, idx) => idx !== i));\n  };\n\n  const handleSend = async () => {\n    if (!prompt.trim() || isStarting) return;\n    const config = getStoredVaultConfig();\n    const vaultPath = config?.vaultPath || \"/home/mihir/Documents/Obsidian/DSA/DSA\";\n    let vaultId = config?.vaultId || \"\";\n    if (config && !vaultId) {\n      vaultId = crypto.randomUUID();\n      config.vaultId = vaultId;\n      saveVaultConfig(config);\n    }\n\n    setIsStarting(true);\n    try {\n      const payload = {\n        vault_path: vaultPath,\n        vault_id: vaultId,\n        prompt: prompt.trim(),\n        mode: webSearch ? (\"research\" as const) : (\"raw_convert\" as const),\n        urls: urls,\n        raw_drafts: drafts,\n        style_preset: (style.toLowerCase() === \"creative\" ? \"essay\" : style.toLowerCase() === \"precise\" ? \"technical\" : \"atomic\") as \"atomic\" | \"essay\" | \"technical\",\n        length: length.toLowerCase() as \"short\" | \"medium\" | \"long\",\n        linking_depth: (config?.linkingDepth || \"deep\") as \"shallow\" | \"deep\",\n        custom_save_path: config?.customSavePath || \"/Generated\",",
+      "start_line": 78,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/promptbox.tsx:removeDraft",
+      "type": "FUNCTION",
+      "name": "removeDraft",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/promptbox.tsx",
+      "signature": "removeDraft(i: number)",
+      "docstring": null,
+      "code_snippet": "  const removeDraft = (i: number) => {\n    setDrafts((prev) => prev.filter((_, idx) => idx !== i));\n  };\n\n  const handleSend = async () => {\n    if (!prompt.trim() || isStarting) return;\n    const config = getStoredVaultConfig();\n    const vaultPath = config?.vaultPath || \"/home/mihir/Documents/Obsidian/DSA/DSA\";\n    let vaultId = config?.vaultId || \"\";\n    if (config && !vaultId) {\n      vaultId = crypto.randomUUID();\n      config.vaultId = vaultId;\n      saveVaultConfig(config);\n    }\n\n    setIsStarting(true);\n    try {\n      const payload = {\n        vault_path: vaultPath,\n        vault_id: vaultId,\n        prompt: prompt.trim(),\n        mode: webSearch ? (\"research\" as const) : (\"raw_convert\" as const),\n        urls: urls,\n        raw_drafts: drafts,\n        style_preset: (style.toLowerCase() === \"creative\" ? \"essay\" : style.toLowerCase() === \"precise\" ? \"technical\" : \"atomic\") as \"atomic\" | \"essay\" | \"technical\",\n        length: length.toLowerCase() as \"short\" | \"medium\" | \"long\",\n        linking_depth: (config?.linkingDepth || \"deep\") as \"shallow\" | \"deep\",\n        custom_save_path: config?.customSavePath || \"/Generated\",\n        naming_convention: config?.namingConvention || \"kebab\",\n        date_format: config?.dateFormat || \"YYYY-MM-DD\",\n        frontmatter_keys: config?.frontmatterKeys || [\"tags\", \"created\", \"source\", \"status\"],\n        search_provider: config?.searchProvider || \"duckduckgo\",\n        scrape_provider: config?.scrapeProvider || \"crawl4ai\",\n      };\n",
+      "start_line": 85,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/promptbox.tsx:handleSend",
+      "type": "FUNCTION",
+      "name": "handleSend",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/promptbox.tsx",
+      "signature": "handleSend()",
+      "docstring": null,
+      "code_snippet": "  const handleSend = async () => {\n    if (!prompt.trim() || isStarting) return;\n    const config = getStoredVaultConfig();\n    const vaultPath = config?.vaultPath || \"/home/mihir/Documents/Obsidian/DSA/DSA\";\n    let vaultId = config?.vaultId || \"\";\n    if (config && !vaultId) {\n      vaultId = crypto.randomUUID();\n      config.vaultId = vaultId;\n      saveVaultConfig(config);\n    }\n\n    setIsStarting(true);\n    try {\n      const payload = {\n        vault_path: vaultPath,\n        vault_id: vaultId,\n        prompt: prompt.trim(),\n        mode: webSearch ? (\"research\" as const) : (\"raw_convert\" as const),\n        urls: urls,\n        raw_drafts: drafts,\n        style_preset: (style.toLowerCase() === \"creative\" ? \"essay\" : style.toLowerCase() === \"precise\" ? \"technical\" : \"atomic\") as \"atomic\" | \"essay\" | \"technical\",\n        length: length.toLowerCase() as \"short\" | \"medium\" | \"long\",\n        linking_depth: (config?.linkingDepth || \"deep\") as \"shallow\" | \"deep\",\n        custom_save_path: config?.customSavePath || \"/Generated\",\n        naming_convention: config?.namingConvention || \"kebab\",\n        date_format: config?.dateFormat || \"YYYY-MM-DD\",\n        frontmatter_keys: config?.frontmatterKeys || [\"tags\", \"created\", \"source\", \"status\"],\n        search_provider: config?.searchProvider || \"duckduckgo\",\n        scrape_provider: config?.scrapeProvider || \"crawl4ai\",\n      };\n\n      const keys = {\n        geminiKey: await getSecret(\"geminiKey\"),\n        openrouterKey: await getSecret(\"openrouterKey\"),\n        tavilyKey: await getSecret(\"tavilyKey\"),",
+      "start_line": 89,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/promptbox.tsx:getDomain",
+      "type": "FUNCTION",
+      "name": "getDomain",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/promptbox.tsx",
+      "signature": "getDomain(url: string)",
+      "docstring": null,
+      "code_snippet": "  const getDomain = (url: string) => {\n    try {\n      const u = new URL(url.startsWith(\"http\") ? url : `https://${url}`);\n      return u.hostname.replace(\"www.\", \"\");\n    } catch {\n      return url.length > 24 ? url.slice(0, 24) + \"\u2026\" : url;\n    }\n  };\n\n  // Get a short path hint from the URL\n  const getPath = (url: string) => {\n    try {\n      const u = new URL(url.startsWith(\"http\") ? url : `https://${url}`);\n      const p = u.pathname;\n      if (p === \"/\" || p === \"\") return \"\";\n      return p.length > 20 ? p.slice(0, 20) + \"\u2026\" : p;\n    } catch {\n      return \"\";\n    }\n  };\n\n  return (\n    <div className=\"w-[65%] max-w-4xl flex flex-col gap-6 items-center\">\n      {/* Glassmorphism prompt box card */}\n      <div id=\"prompt-input-card\" className=\"bg-black/30 backdrop-blur-2xl w-full flex flex-col border border-white/10 rounded-2xl shadow-2xl overflow-hidden\">\n\n        {/* Preview strip \u2014 shows above textarea when URLs or drafts are attached */}\n        <AnimatePresence>\n          {hasContent && (\n            <motion.div\n              initial={{ height: 0, opacity: 0 }}\n              animate={{ height: \"auto\", opacity: 1 }}\n              exit={{ height: 0, opacity: 0 }}\n              transition={{ duration: 0.25, ease: [0.45, 0, 0.55, 1] }}\n              className=\"overflow-hidden\"",
+      "start_line": 146,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/components/promptbox.tsx:getPath",
+      "type": "FUNCTION",
+      "name": "getPath",
+      "repo_id": "vaultagent",
+      "path": "client/src/components/promptbox.tsx",
+      "signature": "getPath(url: string)",
+      "docstring": null,
+      "code_snippet": "  const getPath = (url: string) => {\n    try {\n      const u = new URL(url.startsWith(\"http\") ? url : `https://${url}`);\n      const p = u.pathname;\n      if (p === \"/\" || p === \"\") return \"\";\n      return p.length > 20 ? p.slice(0, 20) + \"\u2026\" : p;\n    } catch {\n      return \"\";\n    }\n  };\n\n  return (\n    <div className=\"w-[65%] max-w-4xl flex flex-col gap-6 items-center\">\n      {/* Glassmorphism prompt box card */}\n      <div id=\"prompt-input-card\" className=\"bg-black/30 backdrop-blur-2xl w-full flex flex-col border border-white/10 rounded-2xl shadow-2xl overflow-hidden\">\n\n        {/* Preview strip \u2014 shows above textarea when URLs or drafts are attached */}\n        <AnimatePresence>\n          {hasContent && (\n            <motion.div\n              initial={{ height: 0, opacity: 0 }}\n              animate={{ height: \"auto\", opacity: 1 }}\n              exit={{ height: 0, opacity: 0 }}\n              transition={{ duration: 0.25, ease: [0.45, 0, 0.55, 1] }}\n              className=\"overflow-hidden\"\n            >\n              <div className=\"px-6 pt-4 pb-1 flex flex-wrap gap-2 items-center\">\n                {webSearch ? (\n                  /* URL preview chips with favicon + domain */\n                  urls.map((url, i) => (\n                    <motion.div\n                      key={`preview-${url}-${i}`}\n                      initial={{ scale: 0.9, opacity: 0 }}\n                      animate={{ scale: 1, opacity: 1 }}\n                      exit={{ scale: 0.9, opacity: 0 }}",
+      "start_line": 156,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/lib/api.ts",
+      "type": "FILE",
+      "name": "api.ts",
+      "repo_id": "vaultagent",
+      "path": "client/src/lib/api.ts",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript",
+        "loc": 300
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/lib/api.ts:getApiBaseUrl",
+      "type": "FUNCTION",
+      "name": "getApiBaseUrl",
+      "repo_id": "vaultagent",
+      "path": "client/src/lib/api.ts",
+      "signature": "getApiBaseUrl()",
+      "docstring": null,
+      "code_snippet": "export async function getApiBaseUrl(): Promise<string> {\n  if (activeApiUrl) return activeApiUrl;\n\n  try {\n    const port = await invoke<number>(\"get_backend_port\");\n    if (port) {\n      activeApiUrl = `http://127.0.0.1:${port}`;\n      return activeApiUrl;\n    }\n  } catch (e) {}\n\n  try {\n    const res5000 = await fetch(\"http://127.0.0.1:5000/health\");\n    if (res5000.ok) {\n      activeApiUrl = \"http://127.0.0.1:5000\";\n      return activeApiUrl;\n    }\n  } catch (e) {}\n\n  try {\n    const res8000 = await fetch(\"http://127.0.0.1:8000/health\");\n    if (res8000.ok) {\n      activeApiUrl = \"http://127.0.0.1:8000\";\n      return activeApiUrl;\n    }\n  } catch (e) {}\n\n  return \"http://127.0.0.1:5000\";\n}\n\nexport interface VaultConfig {\n  vaultPath: string;\n  vaultId?: string;\n  excludedFolders?: string[];\n  saveLocationType?: \"root\" | \"custom\";",
+      "start_line": 5,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/lib/api.ts:scanVault",
+      "type": "FUNCTION",
+      "name": "scanVault",
+      "repo_id": "vaultagent",
+      "path": "client/src/lib/api.ts",
+      "signature": "scanVault(config: VaultConfig, force: boolean = false)",
+      "docstring": null,
+      "code_snippet": "export async function scanVault(config: VaultConfig, force: boolean = false): Promise<ScanResponse> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/indexer/scan`, {\n    method: \"POST\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify({\n      vault_path: config.vaultPath,\n      force,\n      excludes: config.excludedFolders,\n      config: {\n        custom_save_path: config.customSavePath,\n        style_preset: config.stylePreset,\n        linking_depth: config.linkingDepth,\n      },\n    }),\n  });\n  if (!res.ok) throw new Error(\"Failed to trigger vault scan\");\n  return res.json();\n}\n\nexport async function fetchNeighbors(nodePath: string): Promise<NeighborsResponse> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/indexer/graph/neighbors?path=${encodeURIComponent(nodePath)}`);\n  if (!res.ok) throw new Error(\"Failed to fetch node neighbors\");\n  return res.json();\n}\n\nexport async function fetchDeepLinks(nodePath: string, depth?: number): Promise<DeepLinksResponse> {\n  const baseUrl = await getApiBaseUrl();\n  const url = depth\n    ? `${baseUrl}/indexer/graph/deeplinks?path=${encodeURIComponent(nodePath)}&depth=${depth}`\n    : `${baseUrl}/indexer/graph/deeplinks?path=${encodeURIComponent(nodePath)}`;\n  const res = await fetch(url);\n  if (!res.ok) throw new Error(\"Failed to fetch deep links\");\n  return res.json();",
+      "start_line": 159,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/lib/api.ts:fetchNeighbors",
+      "type": "FUNCTION",
+      "name": "fetchNeighbors",
+      "repo_id": "vaultagent",
+      "path": "client/src/lib/api.ts",
+      "signature": "fetchNeighbors(nodePath: string)",
+      "docstring": null,
+      "code_snippet": "export async function fetchNeighbors(nodePath: string): Promise<NeighborsResponse> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/indexer/graph/neighbors?path=${encodeURIComponent(nodePath)}`);\n  if (!res.ok) throw new Error(\"Failed to fetch node neighbors\");\n  return res.json();\n}\n\nexport async function fetchDeepLinks(nodePath: string, depth?: number): Promise<DeepLinksResponse> {\n  const baseUrl = await getApiBaseUrl();\n  const url = depth\n    ? `${baseUrl}/indexer/graph/deeplinks?path=${encodeURIComponent(nodePath)}&depth=${depth}`\n    : `${baseUrl}/indexer/graph/deeplinks?path=${encodeURIComponent(nodePath)}`;\n  const res = await fetch(url);\n  if (!res.ok) throw new Error(\"Failed to fetch deep links\");\n  return res.json();\n}\n\nexport async function fetchOrphans(): Promise<OrphansResponse> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/indexer/graph/orphans`);\n  if (!res.ok) throw new Error(\"Failed to fetch orphans\");\n  return res.json();\n}\n\nexport async function fetchTopNodes(limit: number = 10): Promise<TopNodesResponse> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/indexer/graph/top?limit=${limit}`);\n  if (!res.ok) throw new Error(\"Failed to fetch top nodes\");\n  return res.json();\n}\n\nexport async function fetchAllNodes(): Promise<{ nodes: NodeItem[] }> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/indexer/graph/nodes`);\n  if (!res.ok) throw new Error(\"Failed to fetch nodes\");",
+      "start_line": 179,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/lib/api.ts:fetchDeepLinks",
+      "type": "FUNCTION",
+      "name": "fetchDeepLinks",
+      "repo_id": "vaultagent",
+      "path": "client/src/lib/api.ts",
+      "signature": "fetchDeepLinks(nodePath: string, depth?: number)",
+      "docstring": null,
+      "code_snippet": "export async function fetchDeepLinks(nodePath: string, depth?: number): Promise<DeepLinksResponse> {\n  const baseUrl = await getApiBaseUrl();\n  const url = depth\n    ? `${baseUrl}/indexer/graph/deeplinks?path=${encodeURIComponent(nodePath)}&depth=${depth}`\n    : `${baseUrl}/indexer/graph/deeplinks?path=${encodeURIComponent(nodePath)}`;\n  const res = await fetch(url);\n  if (!res.ok) throw new Error(\"Failed to fetch deep links\");\n  return res.json();\n}\n\nexport async function fetchOrphans(): Promise<OrphansResponse> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/indexer/graph/orphans`);\n  if (!res.ok) throw new Error(\"Failed to fetch orphans\");\n  return res.json();\n}\n\nexport async function fetchTopNodes(limit: number = 10): Promise<TopNodesResponse> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/indexer/graph/top?limit=${limit}`);\n  if (!res.ok) throw new Error(\"Failed to fetch top nodes\");\n  return res.json();\n}\n\nexport async function fetchAllNodes(): Promise<{ nodes: NodeItem[] }> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/indexer/graph/nodes`);\n  if (!res.ok) throw new Error(\"Failed to fetch nodes\");\n  return res.json();\n}\n\nexport async function readNodeContent(nodePath: string): Promise<{ canonical_path?: string; content?: string; error?: string }> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/indexer/read?path=${encodeURIComponent(nodePath)}`);\n  if (!res.ok) throw new Error(\"Failed to read node content\");",
+      "start_line": 186,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/lib/api.ts:fetchOrphans",
+      "type": "FUNCTION",
+      "name": "fetchOrphans",
+      "repo_id": "vaultagent",
+      "path": "client/src/lib/api.ts",
+      "signature": "fetchOrphans()",
+      "docstring": null,
+      "code_snippet": "export async function fetchOrphans(): Promise<OrphansResponse> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/indexer/graph/orphans`);\n  if (!res.ok) throw new Error(\"Failed to fetch orphans\");\n  return res.json();\n}\n\nexport async function fetchTopNodes(limit: number = 10): Promise<TopNodesResponse> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/indexer/graph/top?limit=${limit}`);\n  if (!res.ok) throw new Error(\"Failed to fetch top nodes\");\n  return res.json();\n}\n\nexport async function fetchAllNodes(): Promise<{ nodes: NodeItem[] }> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/indexer/graph/nodes`);\n  if (!res.ok) throw new Error(\"Failed to fetch nodes\");\n  return res.json();\n}\n\nexport async function readNodeContent(nodePath: string): Promise<{ canonical_path?: string; content?: string; error?: string }> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/indexer/read?path=${encodeURIComponent(nodePath)}`);\n  if (!res.ok) throw new Error(\"Failed to read node content\");\n  return res.json();\n}\n\nexport async function startPipelineRun(payload: PipelineRunPayload, keys?: ApiKeyHeaders): Promise<{ session_id: string; status: string }> {\n  const baseUrl = await getApiBaseUrl();\n  const headers: Record<string, string> = { \"Content-Type\": \"application/json\" };\n  if (keys?.geminiKey) headers[\"X-Gemini-Key\"] = keys.geminiKey;\n  if (keys?.openrouterKey) headers[\"X-OpenRouter-Key\"] = keys.openrouterKey;\n  if (keys?.tavilyKey) headers[\"X-Tavily-Key\"] = keys.tavilyKey;\n  if (keys?.firecrawlKey) headers[\"X-Firecrawl-Key\"] = keys.firecrawlKey;",
+      "start_line": 196,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/lib/api.ts:fetchTopNodes",
+      "type": "FUNCTION",
+      "name": "fetchTopNodes",
+      "repo_id": "vaultagent",
+      "path": "client/src/lib/api.ts",
+      "signature": "fetchTopNodes(limit: number = 10)",
+      "docstring": null,
+      "code_snippet": "export async function fetchTopNodes(limit: number = 10): Promise<TopNodesResponse> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/indexer/graph/top?limit=${limit}`);\n  if (!res.ok) throw new Error(\"Failed to fetch top nodes\");\n  return res.json();\n}\n\nexport async function fetchAllNodes(): Promise<{ nodes: NodeItem[] }> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/indexer/graph/nodes`);\n  if (!res.ok) throw new Error(\"Failed to fetch nodes\");\n  return res.json();\n}\n\nexport async function readNodeContent(nodePath: string): Promise<{ canonical_path?: string; content?: string; error?: string }> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/indexer/read?path=${encodeURIComponent(nodePath)}`);\n  if (!res.ok) throw new Error(\"Failed to read node content\");\n  return res.json();\n}\n\nexport async function startPipelineRun(payload: PipelineRunPayload, keys?: ApiKeyHeaders): Promise<{ session_id: string; status: string }> {\n  const baseUrl = await getApiBaseUrl();\n  const headers: Record<string, string> = { \"Content-Type\": \"application/json\" };\n  if (keys?.geminiKey) headers[\"X-Gemini-Key\"] = keys.geminiKey;\n  if (keys?.openrouterKey) headers[\"X-OpenRouter-Key\"] = keys.openrouterKey;\n  if (keys?.tavilyKey) headers[\"X-Tavily-Key\"] = keys.tavilyKey;\n  if (keys?.firecrawlKey) headers[\"X-Firecrawl-Key\"] = keys.firecrawlKey;\n\n  const res = await fetch(`${baseUrl}/pipeline/start`, {\n    method: \"POST\",\n    headers,\n    body: JSON.stringify(payload),\n  });\n  if (!res.ok) throw new Error(\"Failed to start pipeline execution\");",
+      "start_line": 203,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/lib/api.ts:fetchAllNodes",
+      "type": "FUNCTION",
+      "name": "fetchAllNodes",
+      "repo_id": "vaultagent",
+      "path": "client/src/lib/api.ts",
+      "signature": "fetchAllNodes()",
+      "docstring": null,
+      "code_snippet": "export async function fetchAllNodes(): Promise<{ nodes: NodeItem[] }> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/indexer/graph/nodes`);\n  if (!res.ok) throw new Error(\"Failed to fetch nodes\");\n  return res.json();\n}\n\nexport async function readNodeContent(nodePath: string): Promise<{ canonical_path?: string; content?: string; error?: string }> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/indexer/read?path=${encodeURIComponent(nodePath)}`);\n  if (!res.ok) throw new Error(\"Failed to read node content\");\n  return res.json();\n}\n\nexport async function startPipelineRun(payload: PipelineRunPayload, keys?: ApiKeyHeaders): Promise<{ session_id: string; status: string }> {\n  const baseUrl = await getApiBaseUrl();\n  const headers: Record<string, string> = { \"Content-Type\": \"application/json\" };\n  if (keys?.geminiKey) headers[\"X-Gemini-Key\"] = keys.geminiKey;\n  if (keys?.openrouterKey) headers[\"X-OpenRouter-Key\"] = keys.openrouterKey;\n  if (keys?.tavilyKey) headers[\"X-Tavily-Key\"] = keys.tavilyKey;\n  if (keys?.firecrawlKey) headers[\"X-Firecrawl-Key\"] = keys.firecrawlKey;\n\n  const res = await fetch(`${baseUrl}/pipeline/start`, {\n    method: \"POST\",\n    headers,\n    body: JSON.stringify(payload),\n  });\n  if (!res.ok) throw new Error(\"Failed to start pipeline execution\");\n  return res.json();\n}\n\nexport async function fetchPipelineSession(sessionId: string): Promise<any> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/pipeline/session/${sessionId}`);\n  if (!res.ok) throw new Error(\"Failed to fetch pipeline session\");",
+      "start_line": 210,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/lib/api.ts:readNodeContent",
+      "type": "FUNCTION",
+      "name": "readNodeContent",
+      "repo_id": "vaultagent",
+      "path": "client/src/lib/api.ts",
+      "signature": "readNodeContent(nodePath: string)",
+      "docstring": null,
+      "code_snippet": "export async function readNodeContent(nodePath: string): Promise<{ canonical_path?: string; content?: string; error?: string }> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/indexer/read?path=${encodeURIComponent(nodePath)}`);\n  if (!res.ok) throw new Error(\"Failed to read node content\");\n  return res.json();\n}\n\nexport async function startPipelineRun(payload: PipelineRunPayload, keys?: ApiKeyHeaders): Promise<{ session_id: string; status: string }> {\n  const baseUrl = await getApiBaseUrl();\n  const headers: Record<string, string> = { \"Content-Type\": \"application/json\" };\n  if (keys?.geminiKey) headers[\"X-Gemini-Key\"] = keys.geminiKey;\n  if (keys?.openrouterKey) headers[\"X-OpenRouter-Key\"] = keys.openrouterKey;\n  if (keys?.tavilyKey) headers[\"X-Tavily-Key\"] = keys.tavilyKey;\n  if (keys?.firecrawlKey) headers[\"X-Firecrawl-Key\"] = keys.firecrawlKey;\n\n  const res = await fetch(`${baseUrl}/pipeline/start`, {\n    method: \"POST\",\n    headers,\n    body: JSON.stringify(payload),\n  });\n  if (!res.ok) throw new Error(\"Failed to start pipeline execution\");\n  return res.json();\n}\n\nexport async function fetchPipelineSession(sessionId: string): Promise<any> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/pipeline/session/${sessionId}`);\n  if (!res.ok) throw new Error(\"Failed to fetch pipeline session\");\n  return res.json();\n}\n\nexport async function commitPipelineSession(sessionId: string, selectedFileIds?: string[]): Promise<any> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/pipeline/session/${sessionId}/commit`, {\n    method: \"POST\",",
+      "start_line": 217,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/lib/api.ts:startPipelineRun",
+      "type": "FUNCTION",
+      "name": "startPipelineRun",
+      "repo_id": "vaultagent",
+      "path": "client/src/lib/api.ts",
+      "signature": "startPipelineRun(payload: PipelineRunPayload, keys?: ApiKeyHeaders)",
+      "docstring": null,
+      "code_snippet": "export async function startPipelineRun(payload: PipelineRunPayload, keys?: ApiKeyHeaders): Promise<{ session_id: string; status: string }> {\n  const baseUrl = await getApiBaseUrl();\n  const headers: Record<string, string> = { \"Content-Type\": \"application/json\" };\n  if (keys?.geminiKey) headers[\"X-Gemini-Key\"] = keys.geminiKey;\n  if (keys?.openrouterKey) headers[\"X-OpenRouter-Key\"] = keys.openrouterKey;\n  if (keys?.tavilyKey) headers[\"X-Tavily-Key\"] = keys.tavilyKey;\n  if (keys?.firecrawlKey) headers[\"X-Firecrawl-Key\"] = keys.firecrawlKey;\n\n  const res = await fetch(`${baseUrl}/pipeline/start`, {\n    method: \"POST\",\n    headers,\n    body: JSON.stringify(payload),\n  });\n  if (!res.ok) throw new Error(\"Failed to start pipeline execution\");\n  return res.json();\n}\n\nexport async function fetchPipelineSession(sessionId: string): Promise<any> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/pipeline/session/${sessionId}`);\n  if (!res.ok) throw new Error(\"Failed to fetch pipeline session\");\n  return res.json();\n}\n\nexport async function commitPipelineSession(sessionId: string, selectedFileIds?: string[]): Promise<any> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/pipeline/session/${sessionId}/commit`, {\n    method: \"POST\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify({ selected_file_ids: selectedFileIds || null }),\n  });\n  if (!res.ok) throw new Error(\"Failed to commit pipeline session\");\n  return res.json();\n}\n",
+      "start_line": 224,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/lib/api.ts:fetchPipelineSession",
+      "type": "FUNCTION",
+      "name": "fetchPipelineSession",
+      "repo_id": "vaultagent",
+      "path": "client/src/lib/api.ts",
+      "signature": "fetchPipelineSession(sessionId: string)",
+      "docstring": null,
+      "code_snippet": "export async function fetchPipelineSession(sessionId: string): Promise<any> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/pipeline/session/${sessionId}`);\n  if (!res.ok) throw new Error(\"Failed to fetch pipeline session\");\n  return res.json();\n}\n\nexport async function commitPipelineSession(sessionId: string, selectedFileIds?: string[]): Promise<any> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/pipeline/session/${sessionId}/commit`, {\n    method: \"POST\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify({ selected_file_ids: selectedFileIds || null }),\n  });\n  if (!res.ok) throw new Error(\"Failed to commit pipeline session\");\n  return res.json();\n}\n\nexport async function discardPipelineSession(sessionId: string): Promise<any> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/pipeline/session/${sessionId}/discard`, {\n    method: \"POST\",\n  });\n  if (!res.ok) throw new Error(\"Failed to discard pipeline session\");\n  return res.json();\n}\n\nexport async function updateStagedFile(\n  sessionId: string,\n  fileId: string,\n  content: string,\n  filename?: string,\n  frontmatter?: Record<string, any>\n): Promise<any> {\n  const baseUrl = await getApiBaseUrl();",
+      "start_line": 241,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/lib/api.ts:commitPipelineSession",
+      "type": "FUNCTION",
+      "name": "commitPipelineSession",
+      "repo_id": "vaultagent",
+      "path": "client/src/lib/api.ts",
+      "signature": "commitPipelineSession(sessionId: string, selectedFileIds?: string[])",
+      "docstring": null,
+      "code_snippet": "export async function commitPipelineSession(sessionId: string, selectedFileIds?: string[]): Promise<any> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/pipeline/session/${sessionId}/commit`, {\n    method: \"POST\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify({ selected_file_ids: selectedFileIds || null }),\n  });\n  if (!res.ok) throw new Error(\"Failed to commit pipeline session\");\n  return res.json();\n}\n\nexport async function discardPipelineSession(sessionId: string): Promise<any> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/pipeline/session/${sessionId}/discard`, {\n    method: \"POST\",\n  });\n  if (!res.ok) throw new Error(\"Failed to discard pipeline session\");\n  return res.json();\n}\n\nexport async function updateStagedFile(\n  sessionId: string,\n  fileId: string,\n  content: string,\n  filename?: string,\n  frontmatter?: Record<string, any>\n): Promise<any> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/pipeline/session/${sessionId}/file/${fileId}/update`, {\n    method: \"POST\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify({ content, filename, frontmatter }),\n  });\n  if (!res.ok) throw new Error(\"Failed to update staged file content\");\n  return res.json();",
+      "start_line": 248,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/lib/api.ts:discardPipelineSession",
+      "type": "FUNCTION",
+      "name": "discardPipelineSession",
+      "repo_id": "vaultagent",
+      "path": "client/src/lib/api.ts",
+      "signature": "discardPipelineSession(sessionId: string)",
+      "docstring": null,
+      "code_snippet": "export async function discardPipelineSession(sessionId: string): Promise<any> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/pipeline/session/${sessionId}/discard`, {\n    method: \"POST\",\n  });\n  if (!res.ok) throw new Error(\"Failed to discard pipeline session\");\n  return res.json();\n}\n\nexport async function updateStagedFile(\n  sessionId: string,\n  fileId: string,\n  content: string,\n  filename?: string,\n  frontmatter?: Record<string, any>\n): Promise<any> {\n  const baseUrl = await getApiBaseUrl();\n  const res = await fetch(`${baseUrl}/pipeline/session/${sessionId}/file/${fileId}/update`, {\n    method: \"POST\",\n    headers: { \"Content-Type\": \"application/json\" },\n    body: JSON.stringify({ content, filename, frontmatter }),\n  });\n  if (!res.ok) throw new Error(\"Failed to update staged file content\");\n  return res.json();\n}\n\nexport async function refineStagedFile(\n  sessionId: string,\n  fileId: string,\n  instruction: string,\n  urls?: string[],\n  geminiKey?: string,\n  openrouterKey?: string\n): Promise<StagedFile> {\n  const baseUrl = await getApiBaseUrl();",
+      "start_line": 259,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/lib/placeholers.ts",
+      "type": "FILE",
+      "name": "placeholers.ts",
+      "repo_id": "vaultagent",
+      "path": "client/src/lib/placeholers.ts",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript",
+        "loc": 25
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/lib/placeholers.ts:getRandomPlaceholder",
+      "type": "FUNCTION",
+      "name": "getRandomPlaceholder",
+      "repo_id": "vaultagent",
+      "path": "client/src/lib/placeholers.ts",
+      "signature": "getRandomPlaceholder()",
+      "docstring": null,
+      "code_snippet": "export function getRandomPlaceholder(): string {\n  const i = Math.floor(Math.random() * VAULT_AGENT_PLACEHOLDERS.length);\n  return VAULT_AGENT_PLACEHOLDERS[i];\n}",
+      "start_line": 22,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/lib/secrets.ts",
+      "type": "FILE",
+      "name": "secrets.ts",
+      "repo_id": "vaultagent",
+      "path": "client/src/lib/secrets.ts",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript",
+        "loc": 52
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/lib/secrets.ts:saveSecret",
+      "type": "FUNCTION",
+      "name": "saveSecret",
+      "repo_id": "vaultagent",
+      "path": "client/src/lib/secrets.ts",
+      "signature": "saveSecret(key: string, value: string)",
+      "docstring": null,
+      "code_snippet": "export async function saveSecret(key: string, value: string): Promise<void> {\n  if (!isTauri()) {\n    webFallbackStore[key] = value;\n    localStorage.setItem(`sec_${key}`, value);\n    return;\n  }\n\n  try {\n    const stronghold = await Stronghold.load(VAULT_FILE, VAULT_PASS);\n    const client = await stronghold.loadClient(CLIENT_ID);\n    const store = client.getStore();\n    const bytes = Array.from(new TextEncoder().encode(value));\n    await store.insert(key, bytes);\n    await stronghold.save();\n  } catch (err) {\n    console.error(`Failed to save secret to Stronghold: ${err}`);\n    // Fallback\n    localStorage.setItem(`sec_${key}`, value);\n  }\n}\n\nexport async function getSecret(key: string): Promise<string> {\n  if (!isTauri()) {\n    return webFallbackStore[key] || localStorage.getItem(`sec_${key}`) || \"\";\n  }\n\n  try {\n    const stronghold = await Stronghold.load(VAULT_FILE, VAULT_PASS);\n    const client = await stronghold.loadClient(CLIENT_ID);\n    const store = client.getStore();\n    const bytes = await store.get(key);\n    if (!bytes || bytes.length === 0) return \"\";\n    return new TextDecoder().decode(new Uint8Array(bytes));\n  } catch (err) {\n    console.error(`Failed to load secret from Stronghold: ${err}`);",
+      "start_line": 15,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/lib/secrets.ts:getSecret",
+      "type": "FUNCTION",
+      "name": "getSecret",
+      "repo_id": "vaultagent",
+      "path": "client/src/lib/secrets.ts",
+      "signature": "getSecret(key: string)",
+      "docstring": null,
+      "code_snippet": "export async function getSecret(key: string): Promise<string> {\n  if (!isTauri()) {\n    return webFallbackStore[key] || localStorage.getItem(`sec_${key}`) || \"\";\n  }\n\n  try {\n    const stronghold = await Stronghold.load(VAULT_FILE, VAULT_PASS);\n    const client = await stronghold.loadClient(CLIENT_ID);\n    const store = client.getStore();\n    const bytes = await store.get(key);\n    if (!bytes || bytes.length === 0) return \"\";\n    return new TextDecoder().decode(new Uint8Array(bytes));\n  } catch (err) {\n    console.error(`Failed to load secret from Stronghold: ${err}`);\n    return localStorage.getItem(`sec_${key}`) || \"\";\n  }\n}",
+      "start_line": 36,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/lib/utils.ts",
+      "type": "FILE",
+      "name": "utils.ts",
+      "repo_id": "vaultagent",
+      "path": "client/src/lib/utils.ts",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript",
+        "loc": 6
+      },
+      "embedding": null
+    },
+    {
+      "id": "vaultagent:client/src/lib/utils.ts:cn",
+      "type": "FUNCTION",
+      "name": "cn",
+      "repo_id": "vaultagent",
+      "path": "client/src/lib/utils.ts",
+      "signature": "cn(...inputs: ClassValue[])",
+      "docstring": null,
+      "code_snippet": "export function cn(...inputs: ClassValue[]) {\n  return twMerge(clsx(inputs))\n}",
+      "start_line": 4,
+      "end_line": null,
+      "properties": {
+        "language": "TypeScript"
+      },
+      "embedding": null
+    }
+  ],
+  "edges": [
+    {
+      "source_id": "vaultagent",
+      "target_id": "tech:react",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "tech:rust",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "tech:html",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "tech:python",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "tech:sqlite",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "tech:argon2id",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "tech:typescript",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "tech:tauri",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "tech:css",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "vaultagent:src-tauri/src/vault.rs",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "vaultagent:core/semantic_search.py",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "vaultagent:src/components/VaultGraph.tsx",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "vaultagent:client/src-tauri/src/lib.rs",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "vaultagent:client/src-tauri/src/main.rs",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "vaultagent:client/src/App.tsx",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "vaultagent:server/app.py",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "vaultagent:client/src-tauri/build.rs",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "vaultagent:client/src/components/LaserFlow.tsx",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "vaultagent:client/src/components/LiveProcessReview.tsx",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "vaultagent:client/src/components/PillNav.tsx",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "vaultagent:client/src/components/Stepper.tsx",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "vaultagent:client/src/components/blobbackground.tsx",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "vaultagent:client/src/components/promptbox.tsx",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "vaultagent:client/src/lib/api.ts",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "vaultagent:client/src/lib/placeholers.ts",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "vaultagent:client/src/lib/secrets.ts",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent",
+      "target_id": "vaultagent:client/src/lib/utils.ts",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:src-tauri/src/vault.rs",
+      "target_id": "vaultagent:src-tauri/src/vault.rs:decrypt_vault_payload",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:core/semantic_search.py",
+      "target_id": "vaultagent:core/semantic_search.py:index_markdown_notes",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:src/components/VaultGraph.tsx",
+      "target_id": "vaultagent:src/components/VaultGraph.tsx:render_force_graph",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src-tauri/src/lib.rs",
+      "target_id": "vaultagent:client/src-tauri/src/lib.rs:run",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/App.tsx",
+      "target_id": "vaultagent:client/src/App.tsx:RootRedirect",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/App.tsx",
+      "target_id": "vaultagent:client/src/App.tsx:App",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/App.tsx",
+      "target_id": "vaultagent:client/src/App.tsx:initBackend",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/App.tsx",
+      "target_id": "vaultagent:client/src/App.tsx:handleResize",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/LaserFlow.tsx",
+      "target_id": "vaultagent:client/src/components/LaserFlow.tsx:hexToRGB",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/LiveProcessReview.tsx",
+      "target_id": "vaultagent:client/src/components/LiveProcessReview.tsx:flushList",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/LiveProcessReview.tsx",
+      "target_id": "vaultagent:client/src/components/LiveProcessReview.tsx:handleSaveEdits",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/PillNav.tsx",
+      "target_id": "vaultagent:client/src/components/PillNav.tsx:layout",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/PillNav.tsx",
+      "target_id": "vaultagent:client/src/components/PillNav.tsx:onResize",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/PillNav.tsx",
+      "target_id": "vaultagent:client/src/components/PillNav.tsx:handleEnter",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/PillNav.tsx",
+      "target_id": "vaultagent:client/src/components/PillNav.tsx:handleLeave",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/PillNav.tsx",
+      "target_id": "vaultagent:client/src/components/PillNav.tsx:handleLogoEnter",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/PillNav.tsx",
+      "target_id": "vaultagent:client/src/components/PillNav.tsx:toggleMobileMenu",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/PillNav.tsx",
+      "target_id": "vaultagent:client/src/components/PillNav.tsx:isExternalLink",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/PillNav.tsx",
+      "target_id": "vaultagent:client/src/components/PillNav.tsx:isRouterLink",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/Stepper.tsx",
+      "target_id": "vaultagent:client/src/components/Stepper.tsx:updateStep",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/Stepper.tsx",
+      "target_id": "vaultagent:client/src/components/Stepper.tsx:handleBack",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/Stepper.tsx",
+      "target_id": "vaultagent:client/src/components/Stepper.tsx:handleNext",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/Stepper.tsx",
+      "target_id": "vaultagent:client/src/components/Stepper.tsx:handleComplete",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/Stepper.tsx",
+      "target_id": "vaultagent:client/src/components/Stepper.tsx:SlideTransition",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/Stepper.tsx",
+      "target_id": "vaultagent:client/src/components/Stepper.tsx:Step",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/Stepper.tsx",
+      "target_id": "vaultagent:client/src/components/Stepper.tsx:StepIndicator",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/Stepper.tsx",
+      "target_id": "vaultagent:client/src/components/Stepper.tsx:handleClick",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/blobbackground.tsx",
+      "target_id": "vaultagent:client/src/components/blobbackground.tsx:BlobBackground",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/promptbox.tsx",
+      "target_id": "vaultagent:client/src/components/promptbox.tsx:Promptbox",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/promptbox.tsx",
+      "target_id": "vaultagent:client/src/components/promptbox.tsx:cycleStyle",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/promptbox.tsx",
+      "target_id": "vaultagent:client/src/components/promptbox.tsx:cycleLength",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/promptbox.tsx",
+      "target_id": "vaultagent:client/src/components/promptbox.tsx:toggleWebSearch",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/promptbox.tsx",
+      "target_id": "vaultagent:client/src/components/promptbox.tsx:addUrl",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/promptbox.tsx",
+      "target_id": "vaultagent:client/src/components/promptbox.tsx:handleUrlKeyDown",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/promptbox.tsx",
+      "target_id": "vaultagent:client/src/components/promptbox.tsx:removeUrl",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/promptbox.tsx",
+      "target_id": "vaultagent:client/src/components/promptbox.tsx:addDraft",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/promptbox.tsx",
+      "target_id": "vaultagent:client/src/components/promptbox.tsx:handleDraftKeyDown",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/promptbox.tsx",
+      "target_id": "vaultagent:client/src/components/promptbox.tsx:removeDraft",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/promptbox.tsx",
+      "target_id": "vaultagent:client/src/components/promptbox.tsx:handleSend",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/promptbox.tsx",
+      "target_id": "vaultagent:client/src/components/promptbox.tsx:getDomain",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/components/promptbox.tsx",
+      "target_id": "vaultagent:client/src/components/promptbox.tsx:getPath",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/lib/api.ts",
+      "target_id": "vaultagent:client/src/lib/api.ts:getApiBaseUrl",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/lib/api.ts",
+      "target_id": "vaultagent:client/src/lib/api.ts:scanVault",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/lib/api.ts",
+      "target_id": "vaultagent:client/src/lib/api.ts:fetchNeighbors",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/lib/api.ts",
+      "target_id": "vaultagent:client/src/lib/api.ts:fetchDeepLinks",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/lib/api.ts",
+      "target_id": "vaultagent:client/src/lib/api.ts:fetchOrphans",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/lib/api.ts",
+      "target_id": "vaultagent:client/src/lib/api.ts:fetchTopNodes",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/lib/api.ts",
+      "target_id": "vaultagent:client/src/lib/api.ts:fetchAllNodes",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/lib/api.ts",
+      "target_id": "vaultagent:client/src/lib/api.ts:readNodeContent",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/lib/api.ts",
+      "target_id": "vaultagent:client/src/lib/api.ts:startPipelineRun",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/lib/api.ts",
+      "target_id": "vaultagent:client/src/lib/api.ts:fetchPipelineSession",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/lib/api.ts",
+      "target_id": "vaultagent:client/src/lib/api.ts:commitPipelineSession",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/lib/api.ts",
+      "target_id": "vaultagent:client/src/lib/api.ts:discardPipelineSession",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/lib/placeholers.ts",
+      "target_id": "vaultagent:client/src/lib/placeholers.ts:getRandomPlaceholder",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/lib/secrets.ts",
+      "target_id": "vaultagent:client/src/lib/secrets.ts:saveSecret",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/lib/secrets.ts",
+      "target_id": "vaultagent:client/src/lib/secrets.ts:getSecret",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "vaultagent:client/src/lib/utils.ts",
+      "target_id": "vaultagent:client/src/lib/utils.ts:cn",
+      "relation_type": "DEFINES",
+      "properties": {}
+    }
+  ]
+}

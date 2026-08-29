@@ -1,0 +1,186 @@
+{
+  "repo_id": "hi-pace-wealth",
+  "nodes_count": 7,
+  "edges_count": 6,
+  "nodes": [
+    {
+      "id": "tech:html",
+      "type": "TECHNOLOGY",
+      "name": "HTML",
+      "repo_id": "hi-pace-wealth",
+      "path": null,
+      "signature": null,
+      "docstring": "HTML runtime environment and core dependency integrated within HI-PACE-WEALTH.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "13,925,316 bytes",
+        "ecosystem": "HTML",
+        "target_project": "HI-PACE-WEALTH"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:python",
+      "type": "TECHNOLOGY",
+      "name": "Python",
+      "repo_id": "hi-pace-wealth",
+      "path": null,
+      "signature": null,
+      "docstring": "Python runtime environment and core dependency integrated within HI-PACE-WEALTH.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "64,710 bytes",
+        "ecosystem": "Python",
+        "target_project": "HI-PACE-WEALTH"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:typescript",
+      "type": "TECHNOLOGY",
+      "name": "TypeScript",
+      "repo_id": "hi-pace-wealth",
+      "path": null,
+      "signature": null,
+      "docstring": "TypeScript runtime environment and core dependency integrated within HI-PACE-WEALTH.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "211,211 bytes",
+        "ecosystem": "TypeScript",
+        "target_project": "HI-PACE-WEALTH"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:css",
+      "type": "TECHNOLOGY",
+      "name": "CSS",
+      "repo_id": "hi-pace-wealth",
+      "path": null,
+      "signature": null,
+      "docstring": "CSS runtime environment and core dependency integrated within HI-PACE-WEALTH.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "27,012 bytes",
+        "ecosystem": "CSS",
+        "target_project": "HI-PACE-WEALTH"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:javascript",
+      "type": "TECHNOLOGY",
+      "name": "JavaScript",
+      "repo_id": "hi-pace-wealth",
+      "path": null,
+      "signature": null,
+      "docstring": "JavaScript runtime environment and core dependency integrated within HI-PACE-WEALTH.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "173 bytes",
+        "ecosystem": "JavaScript",
+        "target_project": "HI-PACE-WEALTH"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:shell",
+      "type": "TECHNOLOGY",
+      "name": "Shell",
+      "repo_id": "hi-pace-wealth",
+      "path": null,
+      "signature": null,
+      "docstring": "Shell runtime environment and core dependency integrated within HI-PACE-WEALTH.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "321 bytes",
+        "ecosystem": "Shell",
+        "target_project": "HI-PACE-WEALTH"
+      },
+      "embedding": null
+    },
+    {
+      "id": "hi-pace-wealth",
+      "type": "PROJECT",
+      "name": "HI-PACE-WEALTH",
+      "repo_id": "hi-pace-wealth",
+      "path": null,
+      "signature": null,
+      "docstring": "HTML Architecture engineered by MIHIRrPATIL. Features modular codebase structure utilizing HTML, TypeScript, Python, CSS, Shell, JavaScript.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "architect": "MIHIRrPATIL",
+        "domain_scope": "HTML Architecture",
+        "primary_language": "HTML",
+        "languages": [
+          "HTML",
+          "TypeScript",
+          "Python",
+          "CSS",
+          "Shell",
+          "JavaScript"
+        ],
+        "graph_indexing": "AST Dependency Graph + BM25"
+      },
+      "embedding": null
+    }
+  ],
+  "edges": [
+    {
+      "source_id": "hi-pace-wealth",
+      "target_id": "tech:html",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "hi-pace-wealth",
+      "target_id": "tech:typescript",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "hi-pace-wealth",
+      "target_id": "tech:python",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "hi-pace-wealth",
+      "target_id": "tech:css",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "hi-pace-wealth",
+      "target_id": "tech:shell",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "hi-pace-wealth",
+      "target_id": "tech:javascript",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    }
+  ]
+}

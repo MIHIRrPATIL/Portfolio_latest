@@ -1,0 +1,121 @@
+{
+  "repo_id": "greekslab",
+  "nodes_count": 5,
+  "edges_count": 4,
+  "nodes": [
+    {
+      "id": "greekslab",
+      "type": "PROJECT",
+      "name": "GreeksLab",
+      "repo_id": "greekslab",
+      "path": null,
+      "signature": null,
+      "docstring": "High-Frequency Algorithmic Trading & Analytics engineered by MIHIRrPATIL. Features modular codebase structure utilizing Full-Stack.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "architect": "MIHIRrPATIL",
+        "domain_scope": "High-Frequency Algorithmic Trading & Analytics",
+        "primary_language": "Full-Stack",
+        "languages": [],
+        "graph_indexing": "AST Dependency Graph + BM25"
+      },
+      "embedding": null
+    },
+    {
+      "id": "greekslab:engine/black_scholes.py",
+      "type": "FILE",
+      "name": "black_scholes.py",
+      "repo_id": "greekslab",
+      "path": "engine/black_scholes.py",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Full-Stack",
+        "module_type": "Core Subsystem"
+      },
+      "embedding": null
+    },
+    {
+      "id": "greekslab:engine/black_scholes.py:calculate_option_greeks",
+      "type": "FUNCTION",
+      "name": "calculate_option_greeks",
+      "repo_id": "greekslab",
+      "path": "engine/black_scholes.py",
+      "signature": "def calculate_option_greeks(spot: float, strike: float, iv: float)",
+      "docstring": "Computes real-time Delta, Gamma, Theta, and Vega derivatives.",
+      "code_snippet": "// Computes real-time Delta, Gamma, Theta, and Vega derivatives.\ndef calculate_option_greeks(spot: float, strike: float, iv: float) {\n    // Implementation pipeline\n}",
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Full-Stack",
+        "is_async": false
+      },
+      "embedding": null
+    },
+    {
+      "id": "greekslab:execution/order_router.py",
+      "type": "FILE",
+      "name": "order_router.py",
+      "repo_id": "greekslab",
+      "path": "execution/order_router.py",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Full-Stack",
+        "module_type": "Core Subsystem"
+      },
+      "embedding": null
+    },
+    {
+      "id": "greekslab:execution/order_router.py:dispatch_limit_order",
+      "type": "FUNCTION",
+      "name": "dispatch_limit_order",
+      "repo_id": "greekslab",
+      "path": "execution/order_router.py",
+      "signature": "async def dispatch_limit_order(symbol: str, qty: int, price: float)",
+      "docstring": "Direct market access order routing with low latency execution.",
+      "code_snippet": "// Direct market access order routing with low latency execution.\nasync def dispatch_limit_order(symbol: str, qty: int, price: float) {\n    // Implementation pipeline\n}",
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Full-Stack",
+        "is_async": true
+      },
+      "embedding": null
+    }
+  ],
+  "edges": [
+    {
+      "source_id": "greekslab",
+      "target_id": "greekslab:engine/black_scholes.py",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "greekslab",
+      "target_id": "greekslab:execution/order_router.py",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "greekslab:engine/black_scholes.py",
+      "target_id": "greekslab:engine/black_scholes.py:calculate_option_greeks",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "greekslab:execution/order_router.py",
+      "target_id": "greekslab:execution/order_router.py:dispatch_limit_order",
+      "relation_type": "DEFINES",
+      "properties": {}
+    }
+  ]
+}

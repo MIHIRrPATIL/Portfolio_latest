@@ -1,0 +1,180 @@
+{
+  "repo_id": "synapse",
+  "nodes_count": 7,
+  "edges_count": 6,
+  "nodes": [
+    {
+      "id": "tech:html",
+      "type": "TECHNOLOGY",
+      "name": "HTML",
+      "repo_id": "synapse",
+      "path": null,
+      "signature": null,
+      "docstring": "HTML runtime environment and core dependency integrated within Synapse.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "357 bytes",
+        "ecosystem": "HTML",
+        "target_project": "Synapse"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:python",
+      "type": "TECHNOLOGY",
+      "name": "Python",
+      "repo_id": "synapse",
+      "path": null,
+      "signature": null,
+      "docstring": "Python runtime environment and core dependency integrated within Synapse.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "18,399 bytes",
+        "ecosystem": "Python",
+        "target_project": "Synapse"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:css",
+      "type": "TECHNOLOGY",
+      "name": "CSS",
+      "repo_id": "synapse",
+      "path": null,
+      "signature": null,
+      "docstring": "CSS runtime environment and core dependency integrated within Synapse.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "1,212 bytes",
+        "ecosystem": "CSS",
+        "target_project": "Synapse"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:javascript",
+      "type": "TECHNOLOGY",
+      "name": "JavaScript",
+      "repo_id": "synapse",
+      "path": null,
+      "signature": null,
+      "docstring": "JavaScript runtime environment and core dependency integrated within Synapse.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "253,528 bytes",
+        "ecosystem": "JavaScript",
+        "target_project": "Synapse"
+      },
+      "embedding": null
+    },
+    {
+      "id": "synapse",
+      "type": "PROJECT",
+      "name": "Synapse",
+      "repo_id": "synapse",
+      "path": null,
+      "signature": null,
+      "docstring": "JavaScript Architecture engineered by ManipalHackathon2024. Features modular codebase structure utilizing JavaScript, Python, CSS, HTML.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "architect": "ManipalHackathon2024",
+        "domain_scope": "JavaScript Architecture",
+        "primary_language": "JavaScript",
+        "languages": [
+          "JavaScript",
+          "Python",
+          "CSS",
+          "HTML"
+        ],
+        "graph_indexing": "AST Dependency Graph + BM25"
+      },
+      "embedding": null
+    },
+    {
+      "id": "synapse:Server/AIFeatures/GenIternary/main.py",
+      "type": "FILE",
+      "name": "main.py",
+      "repo_id": "synapse",
+      "path": "Server/AIFeatures/GenIternary/main.py",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Python",
+        "loc": 150
+      },
+      "embedding": null
+    },
+    {
+      "id": "synapse:Server/index.js",
+      "type": "FILE",
+      "name": "index.js",
+      "repo_id": "synapse",
+      "path": "Server/index.js",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "JavaScript",
+        "loc": 36
+      },
+      "embedding": null
+    }
+  ],
+  "edges": [
+    {
+      "source_id": "synapse",
+      "target_id": "synapse:Server/AIFeatures/GenIternary/main.py",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "synapse",
+      "target_id": "synapse:Server/index.js",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "synapse",
+      "target_id": "tech:javascript",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "synapse",
+      "target_id": "tech:python",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "synapse",
+      "target_id": "tech:css",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "synapse",
+      "target_id": "tech:html",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "repo_name": "Synapse",
+  "owner": "ManipalHackathon2024",
+  "full_name": "ManipalHackathon2024/Synapse",
+  "indexed_at": "2026-08-28T17:06:15.153798+00:00",
+  "readme": {
+    "present": true,
+    "content": "# Manipal Hackathon 2024 README Template\n\n**Team Name:** `Synapse`\n\n**Problem Statement:** `G-2: Tourism often lacks engagement and interactive experiences, leading to missed opportunities for travelers to discover unique local attractions and fully immerse themselves in local culture. Design a sophisticated gamified tourism application that motivates users to thoroughly explore their destination by earning points through uncovering hidden attractions and completing challenges and quests such as uploading photos taken from specific angles to match reference images. The application should also feature leaderboards, rewards, and integrated social sharing capabilities.`\n\n## 📜 Introduction\n\nTourism in India often lacks engagement, leading to missed opportunities for travelers to explore local culture.To overcome all these problems ,We are developing a gamified tourism platform designed to revolutionize how travelers explore their destinations. Our application will guide users to hidden attractions and cultural experiences through interactive challenges and quests, transforming the act of discovery into an engaging adventure. Leveraging AI-driven personalization, users will receive customized itineraries that adapt to their preferences and real-time conditions. This platform not only enriches the travel experience but also fosters a deeper connection with local culture, making every journey memorable.\n\n## ✨ Features\n\nWebsite:\n- Eco-Friendly Travel Encouragement: The **Green Points System** rewards eco-friendly actions like sustainable travel choices and walking with points that can be redeemed for local rewards, encouraging sustainable behavior. The **Carbon Footprint Tracker** monitors trip emissions and suggests greener alternatives to reduce environmental impact, promoting responsible travel decisions.\n- AI-Powered Personalization: The **Dynamic Itinerary Generator** in Travello uses AI to create personalized travel plans, adjusting them based on user preferences, real-time events, and weather updates. This ensures a customized and flexible travel experience.\n- Gamification: Travello rewards users with points, badges, and achievements for completing challenges, encouraging exploration. As users level up, they unlock exclusive content and discover hidden locations.\n- Challenges & Quest: Travello offers gamified experiences with photo challenges, leaderboards, and culture-based quests, enhancing user engagement. Successful participation earns rewards, making travel both fun and competitive.\n\n\n\n\n\n\n\n## Installation and Setup\n\nFollow these steps to run the project locally:\n\n1. **Clone the repository**\n   ```bash\n   git clone https://github.com/ArshTiwari2004/Travello.git\n   ```\n```bash\ncd Travello\n```\nFor running the backend:\n\n\n```bash\ncd server\n```\n\n```bash\nnpm install\n```\nIn the root directory of Server create a .env file and enter the following configuration\n\n```bash\n# Server Configuration\nPORT=5000\n\n# JWT Configuration\nJWT_SECRET= \"a4V#9@c7eM^f8&nL!t3QzY*2WjD$bG7\"\n\n# MongoDB Configuration\nMONGO_URI=your-mongodb-uri-here\n```\n```bash\nnpm run dev\n```\n\n## Environment Setup\n\nBefore running the project, you'll need to set up some environment variables:\n\n *MongoDB URI*: \n   - If you don't have a MongoDB account, sign up on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).\n   - Create a new cluster and a database.\n   - Obtain your MongoDB connection string (URI) from the MongoDB Atlas dashboard.\n   - Replace <password> and <dbname> in the URI with your MongoDB password and database name.\n\n\n\n\nFor running the frontend :\n\nOpen another terminal for running frontend\n\n```bash\ncd Travello\n```\n```bash\nnpm install\n```\n```bash\nnpm run dev\n```\n\n\nAccess the application only on [http://localhost:5173/](http://localhost:5173/)\n\nPPT Link :[https://www.canva.com/design/DAGRmUqx4zc/Z-kPH1L-QoIF-AjqNOYwjA/edit?utm_content=DAGRmUqx4zc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton](\nhttps://www.canva.com/design/DAGRmUqx4zc/Z-kPH1L-QoIF-AjqNOYwjA/edit?utm_content=DAGRmUqx4zc&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+  },
+  "recent_activity": {
+    "commit_count": 5,
+    "commits": [
+      {
+        "sha": "8e1a398",
+        "author": "Arsh Tiwari",
+        "date": "2024-10-18T01:21:43Z",
+        "message": "Update README.md",
+        "files_changed": [
+          "README.md"
+        ]
+      },
+      {
+        "sha": "721639a",
+        "author": "Priyanshi Bothra",
+        "date": "2024-10-18T00:39:15Z",
+        "message": "Update README.md",
+        "files_changed": [
+          "README.md"
+        ]
+      },
+      {
+        "sha": "46104d3",
+        "author": "Priyanshi Bothra",
+        "date": "2024-10-18T00:36:52Z",
+        "message": "Update README.md",
+        "files_changed": [
+          "README.md"
+        ]
+      },
+      {
+        "sha": "7b7ea11",
+        "author": "Priyanshi Bothra",
+        "date": "2024-10-18T00:35:46Z",
+        "message": "Update README.md",
+        "files_changed": [
+          "README.md"
+        ]
+      },
+      {
+        "sha": "dedd7bb",
+        "author": "Priyanshi Bothra",
+        "date": "2024-10-18T00:34:01Z",
+        "message": "Update README.md",
+        "files_changed": [
+          "README.md"
+        ]
+      }
+    ]
+  },
+  "architecture_manifests": {
+    "file_count": 6,
+    "files": {
+      "Server/AIFeatures/GenIternary/main.py": "import os\nimport requests\nfrom flask import Flask, render_template, request, jsonify\nfrom dotenv import load_dotenv\n\napp = Flask(__name__)\n\n# Load environment variables from .env\nload_dotenv()\n\n# Set API key and base URL for GroQ API\nAPI_KEY = os.getenv('API_KEY', 'undefined')\nGROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions'\n\n# Set your LocationIQ API key\nLOCATIONIQ_API_KEY = os.getenv('LOCATIONIQ_API_KEY', 'undefined')  \nLOCATIONIQ_API_URL = 'https://api.locationiq.com/v1/reverse'\n\n# Set your OpenWeather API key\nWEATHER_API_KEY = os.getenv('Weather_API', 'undefined')\nBASE_URL = 'http://api.weatherapi.com/v1'\n\n\n@app.route('/')\ndef home():\n    return render_template('index.html')\n\n\n# Helper function to get weather based on destination\ndef get_weather(location):\n    # Use the location parameter directly here\n    current_weather_url = f'{BASE_URL}/current.json?key={WEATHER_API_KEY}&q={location}&aqi=yes'\n    forecast_url = f'{BASE_URL}/forecast.json?key={WEATHER_API_KEY}&q={location}&days=7&aqi=yes'\n\n    try:\n        # Fetch current weather\n        current_response = requests.get(current_weather_url)\n        current_data = current_response.json()\n\n        # Fetch weather forecast\n        forecast_response = requests.get(forecast_url)\n        forecast_data = forecast_response.json()\n\n        if 'error' not in current_data and 'error' not in forecast_data:\n            # Format current weather\n            current_weather = (f\"Location: {current_data['location']['name']}\\n\"\n                               f\"Temperature: {current_data['current']['temp_c']}°C\\n\"\n                               f\"Condition: {current_data['current']['condition']['text']}\\n\"\n                               f\"Air Quality Index: {current_data['current']['air_quality']['pm2_5']}\\n\")\n\n            # Format forecast details\n            forecast_weather = \"Weather Forecast:\\n\"\n            for day in forecast_data['forecast']['forecastday']:\n                forecast_weather += (f\"Date: {day['date']}\\n\"\n                                    f\"Max Temp: {day['day']['maxtemp_c']}°C\\n\"\n                                    f\"Min Temp: {day['day']['mintemp_c']}°C\\n\"\n                                    f\"Condition: {day['day']['condition']['text']}\\n\\n\")\n\n            # Return formatted weather details as a dictionary\n            return {\n                'current': {\n                    'location': current_data['location']['name'],\n                    'temp_c': current_data['current']['temp_c'],\n                    'condition': current_data['current']['condition']['text'],\n                    'air_quality_index': current_data['current']['air_quality']['pm2_5'],\n                },\n                'forecast': [\n                    {\n                        'date': day['date'],\n                        'max_temp_c': day['day']['maxtemp_c'],\n                        'min_temp_c': day['day']['mintemp_c'],\n                        'condition': day['day']['condition']['text'],\n                    }\n                    for day in forecast_data['forecast']['forecastday']\n                ]\n            }\n\n        else:\n            return {\"error\": \"Weather data unavailable.\"}\n\n    except requests.exceptions.RequestException as e:\n        print(f\"Error fetching weather data: {e}\")\n        return {\"error\": \"Weather data unavailable.\"}\n\n@app.route('/location', methods=['POST'])\ndef handle_location():\n    data = request.get_json()\n    destination = data.get('destination')\n    # Process the destination as needed\n    print(f'Received destination: {destination}')\n    \n    return jsonify({'message': 'Destination received successfully!'}), 200\n\n@app.route('/generate_itinerary', methods=['POST'])\ndef generate_itinerary():\n    user_data = request.get_json()\n    destination = user_data.get('destinations', 'unknown destination')\n\n    # Fetch weather data for the selected destination\n    weather_data = get_weather(destination)\n\n    # Initialize weather_details as an empty list\n    weather_details = []\n\n    # Check if weather data is valid\n    if 'error' not in weather_data:\n        # Get current weather\n        current_temp = weather_data['current']['temp_c']\n        current_condition = weather_data['current']['condition']\n        current_date = \"Today\"\n\n        # Append current weather to weather_details\n        weather_details.append({\n            'date': current_date,\n            'temperature': f\"{current_temp}°C\",\n            'description': current_condition\n        })\n\n        # Add forecast data\n        for day in weather_data['forecast']:\n            weather_details.append({\n                'date': day['date'],\n                'temperature': f\"Max: {day['max_temp_c']}°C, Min: {day['min_temp_c']}°C\",\n                'description': day['condition'],\n            })\n\n        # Construct a detailed prompt with a dedicated weather block\n        prompt = f\"\"\"\n        Create a detailed {user_data.get('duration', 7)}-day travel itinerary for a trip to {destination}.\n        \n        Traveler Information:\n        - Budget: {user_data.get('budget', 'standard')}\n        - Interests: {user_data.get('interests', 'none')}\n        - Travel style: {user_data.get('travel_style', 'explorer')}\n        - Previous visits: {user_data.get('previous_visits', 'first time')}\n        - Food preferences: {user_data.get('food_preferences', 'none')}\n        - Traveling with: {user_data.get('traveling_with', 'solo')}\n        - Explore hidden gems: {user_data.get('hidden_gems', 'yes')}\n        - Cultural tips: {user_data.get('cultural_tips', 'none')}\n        - Local events: {user_data.get('events', 'none')}\n        \n        Weather Information for {destination}:\n        {weather_details}\n\n        Please generate an itinerary that includes places to visit, recommended activities, and suggestions         Please generate an itinerary that includes places to visit, recommended activities, and suggestions for meals based on this information.\nfor meals based on this information.\n        \"\"\"\n\n        try:\n            # Fetch the itinerary from the GroQ API based on the prompt",
+      "Server/AIFeatures/GenIternary/requirements.txt": "Flask==2.3.2\nrequests==2.31.0\npython-dotenv==1.0.0\n",
+      "Server/index.js": "import express from 'express';\nimport mongoose from 'mongoose';\nimport cors from 'cors';\nimport cookieParser from 'cookie-parser';\nimport authRoutes from './routes/auth.routes.js';\nimport InfoRoutes from './routes/user.routes.js';\nimport questRoutes from './routes/quests.routes.js';\nimport './config/dotenv.js';\n\nconst app = express();\napp.use(cors({\n    origin: 'http://localhost:5173', \n    credentials: true,                \n  }));\n\napp.use(express.json());\napp.use(cookieParser());\n\n\nmongoose.connect(process.env.MONGO_URI, {\n    useNewUrlParser: true,\n    useUnifiedTopology: true,\n})\n    .then(() => console.log('Connected to Database Successfully ! '))\n    .catch((err) => console.error(err));\n\napp.use('/api/auth', authRoutes);\napp.use('/api/user', InfoRoutes);\napp.use('/api/quests', questRoutes);\n\napp.get(\"/\",(req,res)=>{\n    res.send(\"Testing\")\n})\n\nconst PORT = process.env.PORT || 3000;\napp.listen(PORT, () => console.log(`Server running on port ${PORT}`));",
+      "Server/package.json": "{\n  \"name\": \"server\",\n  \"version\": \"1.0.0\",\n  \"description\": \"\",\n  \"main\": \"index.js\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"nodemon index.js\"\n  },\n  \"keywords\": [],\n  \"author\": \"\",\n  \"license\": \"ISC\",\n  \"dependencies\": {\n    \"bcrypt\": \"^5.1.1\",\n    \"body-parser\": \"^1.20.3\",\n    \"cookie-parser\": \"^1.4.7\",\n    \"cors\": \"^2.8.5\",\n    \"dotenv\": \"^16.4.5\",\n    \"express\": \"^4.21.0\",\n    \"express-rate-limit\": \"^7.4.1\",\n    \"express-validator\": \"^7.2.0\",\n    \"firebase-admin\": \"^12.6.0\",\n    \"jsonwebtoken\": \"^9.0.2\",\n    \"mongoose\": \"^8.7.0\",\n    \"multer\": \"^1.4.5-lts.1\"\n  },\n  \"devDependencies\": {\n    \"nodemon\": \"^3.1.7\"\n  }\n}\n",
+      "Travello/package.json": "{\n  \"name\": \"travello\",\n  \"private\": true,\n  \"version\": \"0.0.0\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"vite\",\n    \"build\": \"vite build\",\n    \"lint\": \"eslint .\",\n    \"preview\": \"vite preview\"\n  },\n  \"dependencies\": {\n    \"@fortawesome/free-solid-svg-icons\": \"^6.6.0\",\n    \"@fortawesome/react-fontawesome\": \"^0.2.2\",\n    \"@heroicons/react\": \"^1.0.6\",\n    \"@mapbox/mapbox-gl-geocoder\": \"^5.0.3\",\n    \"@material-tailwind/react\": \"^2.1.10\",\n    \"@radix-ui/react-icons\": \"^1.3.0\",\n    \"@radix-ui/react-slot\": \"^1.1.0\",\n    \"@splinetool/react-spline\": \"^4.0.0\",\n    \"@splinetool/runtime\": \"^1.9.28\",\n    \"@turf/turf\": \"^7.1.0\",\n    \"axios\": \"^1.7.7\",\n    \"chart.js\": \"^4.4.4\",\n    \"class-variance-authority\": \"^0.7.0\",\n    \"clsx\": \"^2.1.1\",\n    \"file-saver\": \"^2.0.5\",\n    \"firebase\": \"^10.14.0\",\n    \"flag-icons\": \"^7.2.3\",\n    \"framer-motion\": \"^11.11.8\",\n    \"gamify.js\": \"^1.0.0\",\n    \"idb\": \"^8.0.0\",\n    \"lucide-react\": \"^0.452.0\",\n    \"mapbox-gl\": \"^3.7.0\",\n    \"react\": \"^18.3.1\",\n    \"react-badges\": \"^1.0.1\",\n    \"react-chartjs-2\": \"^5.2.0\",\n    \"react-comments\": \"^0.0.0\",\n    \"react-comments-section\": \"^3.2.0\",\n    \"react-confetti\": \"^6.1.0\",\n    \"react-countup\": \"^6.5.3\",\n    \"react-dom\": \"^18.3.1\",\n    \"react-hot-toast\": \"^2.4.1\",\n    \"react-icons\": \"^5.3.0\",\n    \"react-map-gl\": \"^7.1.7\",\n    \"react-responsive-carousel\": \"^3.2.23\",\n    \"react-router-dom\": \"^6.26.2\",\n    \"react-select\": \"^5.8.1\",\n    \"react-share\": \"^5.1.0\",\n    \"react-slick\": \"^0.30.2\",\n    \"react-spinners\": \"^0.14.1\",\n    \"react-spring\": \"^9.7.4\",\n    \"react-toastify\": \"^10.0.5\",\n    \"react-tooltip\": \"^5.28.0\",\n    \"react-transition-group\": \"^4.4.5\",\n    \"react-typing-effect\": \"^2.0.5\",\n    \"slick-carousel\": \"^1.8.1\",\n    \"socket.io\": \"^4.8.0\",\n    \"socket.io-client\": \"^4.8.0\",\n    \"styled-components\": \"^6.1.13\",\n    \"tailwind-merge\": \"^2.5.3\",\n    \"tailwindcss-animate\": \"^1.0.7\",\n    \"typewriter-effect\": \"^2.21.0\",\n    \"uuid\": \"^10.0.0\"\n  },\n  \"devDependencies\": {\n    \"@eslint/js\": \"^9.11.1\",\n    \"@types/react\": \"^18.3.10\",\n    \"@types/react-dom\": \"^18.3.0\",\n    \"@vitejs/plugin-react\": \"^4.3.2\",\n    \"autoprefixer\": \"^10.4.20\",\n    \"eslint\": \"^9.11.1\",\n    \"eslint-plugin-react\": \"^7.37.0\",\n    \"eslint-plugin-react-hooks\": \"^5.1.0-rc.0\",\n    \"eslint-plugin-react-refresh\": \"^0.4.12\",\n    \"globals\": \"^15.9.0\",\n    \"postcss\": \"^8.4.47\",\n    \"postcss-preset-env\": \"^10.0.7\",\n    \"tailwindcss\": \"^3.4.14\",\n    \"vite\": \"^5.4.8\"\n  }\n}\n",
+      "package.json": "{\n  \"devDependencies\": {\n    \"autoprefixer\": \"^10.4.20\",\n    \"postcss\": \"^8.4.47\",\n    \"tailwindcss\": \"^3.4.14\"\n  }\n}\n"
+    }
+  },
+  "tree_structure_summary": {
+    "total_files": 249,
+    "sample_tree": [
+      "Instructions.md",
+      "M#TechnicalRuleBookRound2.pdf",
+      "README.md",
+      "Server",
+      "Server/.gitignore",
+      "Server/AIFeatures",
+      "Server/AIFeatures/GenIternary",
+      "Server/AIFeatures/GenIternary/api_key",
+      "Server/AIFeatures/GenIternary/main.py",
+      "Server/AIFeatures/GenIternary/requirements.txt",
+      "Server/AIFeatures/GenIternary/tempCodeRunnerFile.py",
+      "Server/AIFeatures/GenIternary/weath_tu.py",
+      "Server/AIFeatures/__pycache__",
+      "Server/AIFeatures/__pycache__/groq.cpython-311.pyc",
+      "Server/Firebase",
+      "Server/Firebase/TravelloData.json",
+      "Server/Firebase/firebase.js",
+      "Server/config",
+      "Server/config/db.js",
+      "Server/config/dotenv.js",
+      "Server/controllers",
+      "Server/controllers/info.controller.js",
+      "Server/controllers/social.controller.js",
+      "Server/controllers/user.controller.js",
+      "Server/index.js",
+      "Server/middlewares",
+      "Server/middlewares/LoginLimiter.js",
+      "Server/middlewares/auth.js",
+      "Server/models",
+      "Server/models/googleuser.model.js"
+    ]
+  },
+  "languages": {
+    "JavaScript": 253528,
+    "Python": 18399,
+    "CSS": 1212,
+    "HTML": 357
+  }
+}

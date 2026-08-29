@@ -1,0 +1,696 @@
+{
+  "repo_id": "reflectos",
+  "nodes_count": 25,
+  "edges_count": 38,
+  "nodes": [
+    {
+      "id": "tech:html",
+      "type": "TECHNOLOGY",
+      "name": "HTML",
+      "repo_id": "reflectos",
+      "path": null,
+      "signature": null,
+      "docstring": "HTML runtime environment and core dependency integrated within ReflectOS.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "357,635 bytes",
+        "ecosystem": "HTML",
+        "target_project": "ReflectOS"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:python",
+      "type": "TECHNOLOGY",
+      "name": "Python",
+      "repo_id": "reflectos",
+      "path": null,
+      "signature": null,
+      "docstring": "Python runtime environment and core dependency integrated within ReflectOS.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "242,347 bytes",
+        "ecosystem": "Python",
+        "target_project": "ReflectOS"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:typescript",
+      "type": "TECHNOLOGY",
+      "name": "TypeScript",
+      "repo_id": "reflectos",
+      "path": null,
+      "signature": null,
+      "docstring": "TypeScript runtime environment and core dependency integrated within ReflectOS.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "160,342 bytes",
+        "ecosystem": "TypeScript",
+        "target_project": "ReflectOS"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:css",
+      "type": "TECHNOLOGY",
+      "name": "CSS",
+      "repo_id": "reflectos",
+      "path": null,
+      "signature": null,
+      "docstring": "CSS runtime environment and core dependency integrated within ReflectOS.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "6,569 bytes",
+        "ecosystem": "CSS",
+        "target_project": "ReflectOS"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:javascript",
+      "type": "TECHNOLOGY",
+      "name": "JavaScript",
+      "repo_id": "reflectos",
+      "path": null,
+      "signature": null,
+      "docstring": "JavaScript runtime environment and core dependency integrated within ReflectOS.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "559 bytes",
+        "ecosystem": "JavaScript",
+        "target_project": "ReflectOS"
+      },
+      "embedding": null
+    },
+    {
+      "id": "reflectos",
+      "type": "PROJECT",
+      "name": "ReflectOS",
+      "repo_id": "reflectos",
+      "path": null,
+      "signature": null,
+      "docstring": "Cloud Operating System & Web Desktop engineered by MIHIRrPATIL. Features modular codebase structure utilizing HTML, Python, TypeScript, CSS, JavaScript.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "architect": "MIHIRrPATIL",
+        "domain_scope": "Cloud Operating System & Web Desktop",
+        "primary_language": "HTML",
+        "languages": [
+          "HTML",
+          "Python",
+          "TypeScript",
+          "CSS",
+          "JavaScript"
+        ],
+        "graph_indexing": "AST Dependency Graph + BM25"
+      },
+      "embedding": null
+    },
+    {
+      "id": "reflectos:backend/app.py",
+      "type": "FILE",
+      "name": "app.py",
+      "repo_id": "reflectos",
+      "path": "backend/app.py",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Python",
+        "loc": 133
+      },
+      "embedding": null
+    },
+    {
+      "id": "reflectos:backend/app.py:create_app",
+      "type": "FUNCTION",
+      "name": "create_app",
+      "repo_id": "reflectos",
+      "path": "backend/app.py",
+      "signature": "def create_app()",
+      "docstring": "",
+      "code_snippet": "def create_app():\n    CORS(app)\n    app.register_blueprint(object_bp, url_prefix='/api/object')\n    app.register_blueprint(outfit_bp, url_prefix='/api/outfit')\n    app.register_blueprint(ocr_bp, url_prefix='/api/ocr')\n    app.register_blueprint(task_bp, url_prefix='/api/tasks')\n    app.register_blueprint(spotify_bp, url_prefix='/api/spotify')\n    app.register_blueprint(expense_bp, url_prefix='/api/expenses')\n\n    @app.route('/')\n    def health_check():\n        return {\"status\": \"ReflectOS Backend Online\", \"version\": \"1.1\"}\n\n    socketio.init_app(\n        app, \n        cors_allowed_origins=\"*\",\n        max_http_buffer_size=10 * 1024 * 1024, # 10MB to handle large TTS payloads\n        ping_timeout=60, # 60s for long AI execution turns\n        ping_interval=25,\n        async_mode='eventlet'\n    )\n    \n    # Inject Emitter into AI Service\n    def socket_emitter(msg_id, msg_type, payload):\n        socketio.emit('message', {\"uuid\": msg_id, \"type\": msg_type, \"payload\": payload})\n    \n    ai_service.set_emitter(socket_emitter)\n    \n    return app",
+      "start_line": 23,
+      "end_line": 51,
+      "properties": {
+        "is_async": false,
+        "args": []
+      },
+      "embedding": null
+    },
+    {
+      "id": "reflectos:backend/app.py:handle_multiplexed_message",
+      "type": "FUNCTION",
+      "name": "handle_multiplexed_message",
+      "repo_id": "reflectos",
+      "path": "backend/app.py",
+      "signature": "def handle_multiplexed_message(msg)",
+      "docstring": "Unified entry point for all WebSocket messages.\nDelegates to appropriate services.",
+      "code_snippet": "def handle_multiplexed_message(msg):\n    \"\"\"\n    Unified entry point for all WebSocket messages.\n    Delegates to appropriate services.\n    \"\"\"\n    msg_id = msg.get(\"uuid\")\n    msg_type = msg.get(\"type\")\n    payload = msg.get(\"payload\", {})\n    image_data = payload.get(\"image\")\n\n    print(f\"[SOCKET] Message Received: type={msg_type}, uuid={msg_id}\")\n\n    if msg_type == \"INTERRUPT\":\n        ai_service.handle_interrupt()\n        emit('message', {\"uuid\": msg_id, \"type\": \"RESPONSE\", \"payload\": {\"status\": \"interrupted\"}})\n\n    elif msg_type == \"VOICE_COMMAND\":\n        command_text = payload.get(\"command\", \"\")\n        print(f\"[STT] Voice Command: {command_text}\")\n        # ALWAYS run in background to keep socket heartbeats alive\n        socketio.start_background_task(\n            ai_service.process_stt_logic, \n            command_text, \n            msg_id=msg_id, \n            image_data=image_data\n        )\n\n    elif msg_type == \"TOOL_CALL\":\n        action = payload.get(\"action\")\n        print(f\"[TOOL] Tool Call (Menu): {action}\")\n        \n        intent_map = {\n            \"OCR\": \"OCR\",\n            \"VISION\": \"OBJECT_DETECTION\",\n            \"OBJECT_DETECTION\": \"OBJECT_DETECTION\",\n            \"SPOTIFY\": \"SPOTIFY_PLAYBACK\"\n        }\n        \n        intent = intent_map.get(action)\n        if intent:\n            fake_command = f\"Run {action}\"\n            # Run in background\n            socketio.start_background_task(\n                ai_service.process_stt_logic, \n                fake_command, \n                msg_id=msg_id, \n                image_data=image_data, \n                forced_intents=[intent]\n            )\n        else:\n            emit('message', {\"uuid\": msg_id, \"type\": \"RESPONSE\", \"payload\": {\"status\": \"error\", \"error\": f\"Unknown tool: {action}\"}})\n\n    elif msg_type == \"GESTURE\":\n        gesture = payload.get(\"gesture\", \"\")\n        print(f\"[GESTURE] Received: {gesture}\")\n        \n        if gesture.startswith(\"VOLUME:\"):\n            try:\n                level = int(gesture.split(\":\")[1])\n                set_volume(level)\n            except Exception as e:\n                print(f\"[ERROR] Volume parsing: {e}\")\n        else:\n            reset_volume_buffer()\n        \n        emit('message', {\"uuid\": msg_id, \"type\": \"RESPONSE\", \"payload\": {\"status\": \"gesture_processed\"}})\n\n    else:\n        print(f\"[SOCKET] Unknown message type: {msg_type}\")\n        emit('message', {\"uuid\": msg_id, \"type\": \"RESPONSE\", \"payload\": {\"status\": \"error\", \"error\": \"Unknown type",
+      "start_line": 54,
+      "end_line": 123,
+      "properties": {
+        "is_async": false,
+        "args": [
+          "msg"
+        ]
+      },
+      "embedding": null
+    },
+    {
+      "id": "reflectos:backend/app.py:handle_connect",
+      "type": "FUNCTION",
+      "name": "handle_connect",
+      "repo_id": "reflectos",
+      "path": "backend/app.py",
+      "signature": "def handle_connect()",
+      "docstring": "",
+      "code_snippet": "def handle_connect():\n    print(\"[SOCKET] Client Connected (Multiplexed)\")",
+      "start_line": 126,
+      "end_line": 127,
+      "properties": {
+        "is_async": false,
+        "args": []
+      },
+      "embedding": null
+    },
+    {
+      "id": "reflectos:backend/app.py:CORS",
+      "type": "FUNCTION",
+      "name": "CORS",
+      "repo_id": "reflectos",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "reflectos:backend/app.py:register_blueprint",
+      "type": "FUNCTION",
+      "name": "register_blueprint",
+      "repo_id": "reflectos",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "reflectos:backend/app.py:route",
+      "type": "FUNCTION",
+      "name": "route",
+      "repo_id": "reflectos",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "reflectos:backend/app.py:init_app",
+      "type": "FUNCTION",
+      "name": "init_app",
+      "repo_id": "reflectos",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "reflectos:backend/app.py:emit",
+      "type": "FUNCTION",
+      "name": "emit",
+      "repo_id": "reflectos",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "reflectos:backend/app.py:set_emitter",
+      "type": "FUNCTION",
+      "name": "set_emitter",
+      "repo_id": "reflectos",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "reflectos:backend/app.py:get",
+      "type": "FUNCTION",
+      "name": "get",
+      "repo_id": "reflectos",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "reflectos:backend/app.py:print",
+      "type": "FUNCTION",
+      "name": "print",
+      "repo_id": "reflectos",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "reflectos:backend/app.py:handle_interrupt",
+      "type": "FUNCTION",
+      "name": "handle_interrupt",
+      "repo_id": "reflectos",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "reflectos:backend/app.py:start_background_task",
+      "type": "FUNCTION",
+      "name": "start_background_task",
+      "repo_id": "reflectos",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "reflectos:backend/app.py:startswith",
+      "type": "FUNCTION",
+      "name": "startswith",
+      "repo_id": "reflectos",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "reflectos:backend/app.py:reset_volume_buffer",
+      "type": "FUNCTION",
+      "name": "reset_volume_buffer",
+      "repo_id": "reflectos",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "reflectos:backend/app.py:int",
+      "type": "FUNCTION",
+      "name": "int",
+      "repo_id": "reflectos",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "reflectos:backend/app.py:set_volume",
+      "type": "FUNCTION",
+      "name": "set_volume",
+      "repo_id": "reflectos",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "reflectos:backend/app.py:split",
+      "type": "FUNCTION",
+      "name": "split",
+      "repo_id": "reflectos",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    }
+  ],
+  "edges": [
+    {
+      "source_id": "reflectos",
+      "target_id": "reflectos:backend/app.py",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "reflectos",
+      "target_id": "tech:html",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "reflectos",
+      "target_id": "tech:python",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "reflectos",
+      "target_id": "tech:typescript",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "reflectos",
+      "target_id": "tech:css",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "reflectos",
+      "target_id": "tech:javascript",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "reflectos:backend/app.py",
+      "target_id": "reflectos:backend/app.py:create_app",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "reflectos:backend/app.py",
+      "target_id": "reflectos:backend/app.py:handle_multiplexed_message",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "reflectos:backend/app.py",
+      "target_id": "reflectos:backend/app.py:handle_connect",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "reflectos:backend/app.py",
+      "target_id": "tech:services.volume_service",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "services.volume_service"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py",
+      "target_id": "tech:routes.object_route",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "routes.object_route"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py",
+      "target_id": "tech:routes.outfit_route",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "routes.outfit_route"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py",
+      "target_id": "tech:routes.ocr_route",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "routes.ocr_route"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py",
+      "target_id": "tech:routes.spotify_routes",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "routes.spotify_routes"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py",
+      "target_id": "tech:flask_socketio",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "flask_socketio"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py",
+      "target_id": "tech:routes.expense_routes",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "routes.expense_routes"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py",
+      "target_id": "tech:flask",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "flask"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py",
+      "target_id": "tech:services.ai_service",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "services.ai_service"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py",
+      "target_id": "tech:core.patches",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "core.patches"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py",
+      "target_id": "tech:flask_cors",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "flask_cors"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py",
+      "target_id": "tech:routes.task_routes",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "routes.task_routes"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py:create_app",
+      "target_id": "reflectos:backend/app.py:CORS",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "CORS"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py:create_app",
+      "target_id": "reflectos:backend/app.py:register_blueprint",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "register_blueprint"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py:create_app",
+      "target_id": "reflectos:backend/app.py:route",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "route"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py:create_app",
+      "target_id": "reflectos:backend/app.py:init_app",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "init_app"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py:create_app",
+      "target_id": "reflectos:backend/app.py:emit",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "emit"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py:create_app",
+      "target_id": "reflectos:backend/app.py:set_emitter",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "set_emitter"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py:handle_multiplexed_message",
+      "target_id": "reflectos:backend/app.py:get",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "get"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py:handle_multiplexed_message",
+      "target_id": "reflectos:backend/app.py:print",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "print"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py:handle_multiplexed_message",
+      "target_id": "reflectos:backend/app.py:handle_interrupt",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "handle_interrupt"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py:handle_multiplexed_message",
+      "target_id": "reflectos:backend/app.py:emit",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "emit"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py:handle_multiplexed_message",
+      "target_id": "reflectos:backend/app.py:start_background_task",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "start_background_task"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py:handle_multiplexed_message",
+      "target_id": "reflectos:backend/app.py:startswith",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "startswith"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py:handle_multiplexed_message",
+      "target_id": "reflectos:backend/app.py:reset_volume_buffer",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "reset_volume_buffer"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py:handle_multiplexed_message",
+      "target_id": "reflectos:backend/app.py:int",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "int"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py:handle_multiplexed_message",
+      "target_id": "reflectos:backend/app.py:set_volume",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "set_volume"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py:handle_multiplexed_message",
+      "target_id": "reflectos:backend/app.py:split",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "split"
+      }
+    },
+    {
+      "source_id": "reflectos:backend/app.py:handle_connect",
+      "target_id": "reflectos:backend/app.py:print",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "print"
+      }
+    }
+  ]
+}

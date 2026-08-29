@@ -1,0 +1,121 @@
+{
+  "repo_id": "ipd",
+  "nodes_count": 5,
+  "edges_count": 4,
+  "nodes": [
+    {
+      "id": "ipd",
+      "type": "PROJECT",
+      "name": "IPD",
+      "repo_id": "ipd",
+      "path": null,
+      "signature": null,
+      "docstring": "Distributed Incremental Federated Learning engineered by MIHIRrPATIL. Features modular codebase structure utilizing Full-Stack.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "architect": "MIHIRrPATIL",
+        "domain_scope": "Distributed Incremental Federated Learning",
+        "primary_language": "Full-Stack",
+        "languages": [],
+        "graph_indexing": "AST Dependency Graph + BM25"
+      },
+      "embedding": null
+    },
+    {
+      "id": "ipd:federated/aggregator.py",
+      "type": "FILE",
+      "name": "aggregator.py",
+      "repo_id": "ipd",
+      "path": "federated/aggregator.py",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Full-Stack",
+        "module_type": "Core Subsystem"
+      },
+      "embedding": null
+    },
+    {
+      "id": "ipd:federated/aggregator.py:aggregate_federated_weights",
+      "type": "FUNCTION",
+      "name": "aggregate_federated_weights",
+      "repo_id": "ipd",
+      "path": "federated/aggregator.py",
+      "signature": "def aggregate_federated_weights(client_updates: List[ModelDelta])",
+      "docstring": "Applies FedAvg and incremental differential privacy weight fusion across edge clients.",
+      "code_snippet": "// Applies FedAvg and incremental differential privacy weight fusion across edge clients.\ndef aggregate_federated_weights(client_updates: List[ModelDelta]) {\n    // Implementation pipeline\n}",
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Full-Stack",
+        "is_async": false
+      },
+      "embedding": null
+    },
+    {
+      "id": "ipd:edge/worker.py",
+      "type": "FILE",
+      "name": "worker.py",
+      "repo_id": "ipd",
+      "path": "edge/worker.py",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Full-Stack",
+        "module_type": "Core Subsystem"
+      },
+      "embedding": null
+    },
+    {
+      "id": "ipd:edge/worker.py:train_incremental_epoch",
+      "type": "FUNCTION",
+      "name": "train_incremental_epoch",
+      "repo_id": "ipd",
+      "path": "edge/worker.py",
+      "signature": "async def train_incremental_epoch(batch: TensorBatch)",
+      "docstring": "Executes local gradient descent on decentralized edge devices.",
+      "code_snippet": "// Executes local gradient descent on decentralized edge devices.\nasync def train_incremental_epoch(batch: TensorBatch) {\n    // Implementation pipeline\n}",
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Full-Stack",
+        "is_async": true
+      },
+      "embedding": null
+    }
+  ],
+  "edges": [
+    {
+      "source_id": "ipd",
+      "target_id": "ipd:federated/aggregator.py",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "ipd",
+      "target_id": "ipd:edge/worker.py",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "ipd:federated/aggregator.py",
+      "target_id": "ipd:federated/aggregator.py:aggregate_federated_weights",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "ipd:edge/worker.py",
+      "target_id": "ipd:edge/worker.py:train_incremental_epoch",
+      "relation_type": "DEFINES",
+      "properties": {}
+    }
+  ]
+}

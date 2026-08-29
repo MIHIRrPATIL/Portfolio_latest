@@ -1,0 +1,603 @@
+{
+  "repo_id": "hireai",
+  "nodes_count": 21,
+  "edges_count": 32,
+  "nodes": [
+    {
+      "id": "hireai",
+      "type": "PROJECT",
+      "name": "HireAI",
+      "repo_id": "hireai",
+      "path": null,
+      "signature": null,
+      "docstring": "Enterprise Technical Assessment Platform engineered by Indra55. Features modular codebase structure utilizing TypeScript, Python, JavaScript, CSS, EJS, HTML.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "architect": "Indra55",
+        "domain_scope": "Enterprise Technical Assessment Platform",
+        "primary_language": "TypeScript",
+        "languages": [
+          "TypeScript",
+          "Python",
+          "JavaScript",
+          "CSS",
+          "EJS",
+          "HTML"
+        ],
+        "graph_indexing": "AST Dependency Graph + BM25"
+      },
+      "embedding": null
+    },
+    {
+      "id": "hireai:core/evaluator.ts",
+      "type": "FILE",
+      "name": "evaluator.ts",
+      "repo_id": "hireai",
+      "path": "core/evaluator.ts",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Full-Stack",
+        "module_type": "Core Subsystem"
+      },
+      "embedding": null
+    },
+    {
+      "id": "hireai:core/evaluator.ts:evaluate_candidate",
+      "type": "FUNCTION",
+      "name": "evaluate_candidate",
+      "repo_id": "hireai",
+      "path": "core/evaluator.ts",
+      "signature": "async evaluate_candidate(submission: CodePayload)",
+      "docstring": "Executes automated runtime evaluation and test suite benchmarks.",
+      "code_snippet": "// Executes automated runtime evaluation and test suite benchmarks.\nasync evaluate_candidate(submission: CodePayload) {\n    // Implementation pipeline\n}",
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Full-Stack",
+        "is_async": true
+      },
+      "embedding": null
+    },
+    {
+      "id": "hireai:api/interview.ts",
+      "type": "FILE",
+      "name": "interview.ts",
+      "repo_id": "hireai",
+      "path": "api/interview.ts",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Full-Stack",
+        "module_type": "Core Subsystem"
+      },
+      "embedding": null
+    },
+    {
+      "id": "hireai:api/interview.ts:stream_interview_session",
+      "type": "FUNCTION",
+      "name": "stream_interview_session",
+      "repo_id": "hireai",
+      "path": "api/interview.ts",
+      "signature": "async stream_interview_session(sessionId: string)",
+      "docstring": "Manages real-time WebRTC socket streaming and AI interview agent orchestration.",
+      "code_snippet": "// Manages real-time WebRTC socket streaming and AI interview agent orchestration.\nasync stream_interview_session(sessionId: string) {\n    // Implementation pipeline\n}",
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Full-Stack",
+        "is_async": true
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:html",
+      "type": "TECHNOLOGY",
+      "name": "HTML",
+      "repo_id": "hireai",
+      "path": null,
+      "signature": null,
+      "docstring": "HTML runtime environment and core dependency integrated within HireAI.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "613 bytes",
+        "ecosystem": "HTML",
+        "target_project": "HireAI"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:python",
+      "type": "TECHNOLOGY",
+      "name": "Python",
+      "repo_id": "hireai",
+      "path": null,
+      "signature": null,
+      "docstring": "Python runtime environment and core dependency integrated within HireAI.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "110,802 bytes",
+        "ecosystem": "Python",
+        "target_project": "HireAI"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:typescript",
+      "type": "TECHNOLOGY",
+      "name": "TypeScript",
+      "repo_id": "hireai",
+      "path": null,
+      "signature": null,
+      "docstring": "TypeScript runtime environment and core dependency integrated within HireAI.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "1,766,279 bytes",
+        "ecosystem": "TypeScript",
+        "target_project": "HireAI"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:css",
+      "type": "TECHNOLOGY",
+      "name": "CSS",
+      "repo_id": "hireai",
+      "path": null,
+      "signature": null,
+      "docstring": "CSS runtime environment and core dependency integrated within HireAI.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "24,096 bytes",
+        "ecosystem": "CSS",
+        "target_project": "HireAI"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:javascript",
+      "type": "TECHNOLOGY",
+      "name": "JavaScript",
+      "repo_id": "hireai",
+      "path": null,
+      "signature": null,
+      "docstring": "JavaScript runtime environment and core dependency integrated within HireAI.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "80,710 bytes",
+        "ecosystem": "JavaScript",
+        "target_project": "HireAI"
+      },
+      "embedding": null
+    },
+    {
+      "id": "hireai:Backend/Flask/app.py",
+      "type": "FILE",
+      "name": "app.py",
+      "repo_id": "hireai",
+      "path": "Backend/Flask/app.py",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Python",
+        "loc": 26
+      },
+      "embedding": null
+    },
+    {
+      "id": "hireai:Backend/Flask/app.py:health_check",
+      "type": "FUNCTION",
+      "name": "health_check",
+      "repo_id": "hireai",
+      "path": "Backend/Flask/app.py",
+      "signature": "def health_check()",
+      "docstring": "",
+      "code_snippet": "def health_check():\n    return {\n        'status': 'healthy',\n        'service': 'Candidate Search API',\n        'version': '1.0'\n    }",
+      "start_line": 17,
+      "end_line": 22,
+      "properties": {
+        "is_async": false,
+        "args": []
+      },
+      "embedding": null
+    },
+    {
+      "id": "hireai:Backend/routes/index.js",
+      "type": "FILE",
+      "name": "index.js",
+      "repo_id": "hireai",
+      "path": "Backend/routes/index.js",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "JavaScript",
+        "loc": 8
+      },
+      "embedding": null
+    },
+    {
+      "id": "hireai:Backendd/interview/app.py",
+      "type": "FILE",
+      "name": "app.py",
+      "repo_id": "hireai",
+      "path": "Backendd/interview/app.py",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Python",
+        "loc": 46
+      },
+      "embedding": null
+    },
+    {
+      "id": "hireai:Backendd/interview/app.py:health_check",
+      "type": "FUNCTION",
+      "name": "health_check",
+      "repo_id": "hireai",
+      "path": "Backendd/interview/app.py",
+      "signature": "def health_check()",
+      "docstring": "",
+      "code_snippet": "def health_check():\n    return jsonify({\"status\": \"healthy\", \"service\": \"interview\"})",
+      "start_line": 20,
+      "end_line": 21,
+      "properties": {
+        "is_async": false,
+        "args": []
+      },
+      "embedding": null
+    },
+    {
+      "id": "hireai:Backendd/interview/app.py:upload_video",
+      "type": "FUNCTION",
+      "name": "upload_video",
+      "repo_id": "hireai",
+      "path": "Backendd/interview/app.py",
+      "signature": "def upload_video()",
+      "docstring": "",
+      "code_snippet": "def upload_video():\n    if 'video' not in request.files:\n        return jsonify({\"error\": \"No video file provided\"}), 400\n    \n    video_file = request.files['video']\n    if video_file.filename == '':\n        return jsonify({\"error\": \"No selected file\"}), 400\n    \n    # TODO: Implement video upload logic\n    return jsonify({\"message\": \"Video upload endpoint ready\"}), 200",
+      "start_line": 24,
+      "end_line": 33,
+      "properties": {
+        "is_async": false,
+        "args": []
+      },
+      "embedding": null
+    },
+    {
+      "id": "hireai:Backendd/interview/app.py:transcribe_video",
+      "type": "FUNCTION",
+      "name": "transcribe_video",
+      "repo_id": "hireai",
+      "path": "Backendd/interview/app.py",
+      "signature": "def transcribe_video()",
+      "docstring": "",
+      "code_snippet": "def transcribe_video():\n    # TODO: Implement transcription logic\n    return jsonify({\"message\": \"Transcription endpoint ready\"}), 200",
+      "start_line": 36,
+      "end_line": 38,
+      "properties": {
+        "is_async": false,
+        "args": []
+      },
+      "embedding": null
+    },
+    {
+      "id": "hireai:Backendd/interview/app.py:evaluate_response",
+      "type": "FUNCTION",
+      "name": "evaluate_response",
+      "repo_id": "hireai",
+      "path": "Backendd/interview/app.py",
+      "signature": "def evaluate_response()",
+      "docstring": "",
+      "code_snippet": "def evaluate_response():\n    # TODO: Implement response evaluation logic\n    return jsonify({\"message\": \"Evaluation endpoint ready\"}), 200",
+      "start_line": 41,
+      "end_line": 43,
+      "properties": {
+        "is_async": false,
+        "args": []
+      },
+      "embedding": null
+    },
+    {
+      "id": "hireai:Backendd/interview/app.py:jsonify",
+      "type": "FUNCTION",
+      "name": "jsonify",
+      "repo_id": "hireai",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "hireai:Backendd/server/index.js",
+      "type": "FILE",
+      "name": "index.js",
+      "repo_id": "hireai",
+      "path": "Backendd/server/index.js",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "JavaScript",
+        "loc": 38
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:ejs",
+      "type": "TECHNOLOGY",
+      "name": "EJS",
+      "repo_id": "hireai",
+      "path": null,
+      "signature": null,
+      "docstring": "EJS runtime environment and core dependency integrated within HireAI.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "2,844 bytes",
+        "ecosystem": "EJS",
+        "target_project": "HireAI"
+      },
+      "embedding": null
+    }
+  ],
+  "edges": [
+    {
+      "source_id": "hireai",
+      "target_id": "hireai:core/evaluator.ts",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "hireai",
+      "target_id": "hireai:api/interview.ts",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "hireai",
+      "target_id": "hireai:Backend/Flask/app.py",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "hireai",
+      "target_id": "hireai:Backend/routes/index.js",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "hireai",
+      "target_id": "hireai:Backendd/interview/app.py",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "hireai",
+      "target_id": "hireai:Backendd/server/index.js",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "hireai",
+      "target_id": "tech:typescript",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "hireai",
+      "target_id": "tech:python",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "hireai",
+      "target_id": "tech:javascript",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "hireai",
+      "target_id": "tech:css",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "hireai",
+      "target_id": "tech:ejs",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "hireai",
+      "target_id": "tech:html",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "hireai:core/evaluator.ts",
+      "target_id": "hireai:core/evaluator.ts:evaluate_candidate",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "hireai:api/interview.ts",
+      "target_id": "hireai:api/interview.ts:stream_interview_session",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "hireai:Backend/Flask/app.py",
+      "target_id": "hireai:Backend/Flask/app.py:health_check",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "hireai:Backend/Flask/app.py",
+      "target_id": "tech:embeddings.candidate_embeddings",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "embeddings.candidate_embeddings"
+      }
+    },
+    {
+      "source_id": "hireai:Backend/Flask/app.py",
+      "target_id": "tech:flask_cors",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "flask_cors"
+      }
+    },
+    {
+      "source_id": "hireai:Backend/Flask/app.py",
+      "target_id": "tech:os",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "os"
+      }
+    },
+    {
+      "source_id": "hireai:Backend/Flask/app.py",
+      "target_id": "tech:flask",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "flask"
+      }
+    },
+    {
+      "source_id": "hireai:Backend/Flask/app.py",
+      "target_id": "tech:logging",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "logging"
+      }
+    },
+    {
+      "source_id": "hireai:Backendd/interview/app.py",
+      "target_id": "hireai:Backendd/interview/app.py:health_check",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "hireai:Backendd/interview/app.py",
+      "target_id": "hireai:Backendd/interview/app.py:upload_video",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "hireai:Backendd/interview/app.py",
+      "target_id": "hireai:Backendd/interview/app.py:transcribe_video",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "hireai:Backendd/interview/app.py",
+      "target_id": "hireai:Backendd/interview/app.py:evaluate_response",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "hireai:Backendd/interview/app.py",
+      "target_id": "tech:os",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "os"
+      }
+    },
+    {
+      "source_id": "hireai:Backendd/interview/app.py",
+      "target_id": "tech:flask",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "flask"
+      }
+    },
+    {
+      "source_id": "hireai:Backendd/interview/app.py",
+      "target_id": "tech:flask_cors",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "flask_cors"
+      }
+    },
+    {
+      "source_id": "hireai:Backendd/interview/app.py",
+      "target_id": "tech:dotenv",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "dotenv"
+      }
+    },
+    {
+      "source_id": "hireai:Backendd/interview/app.py:health_check",
+      "target_id": "hireai:Backendd/interview/app.py:jsonify",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "jsonify"
+      }
+    },
+    {
+      "source_id": "hireai:Backendd/interview/app.py:upload_video",
+      "target_id": "hireai:Backendd/interview/app.py:jsonify",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "jsonify"
+      }
+    },
+    {
+      "source_id": "hireai:Backendd/interview/app.py:transcribe_video",
+      "target_id": "hireai:Backendd/interview/app.py:jsonify",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "jsonify"
+      }
+    },
+    {
+      "source_id": "hireai:Backendd/interview/app.py:evaluate_response",
+      "target_id": "hireai:Backendd/interview/app.py:jsonify",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "jsonify"
+      }
+    }
+  ]
+}

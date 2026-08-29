@@ -1,0 +1,82 @@
+{
+  "repo_id": "tc-tasks",
+  "nodes_count": 3,
+  "edges_count": 2,
+  "nodes": [
+    {
+      "id": "tech:typescript",
+      "type": "TECHNOLOGY",
+      "name": "TypeScript",
+      "repo_id": "tc-tasks",
+      "path": null,
+      "signature": null,
+      "docstring": "TypeScript runtime environment and core dependency integrated within TC_Tasks.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "23,905 bytes",
+        "ecosystem": "TypeScript",
+        "target_project": "TC_Tasks"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:javascript",
+      "type": "TECHNOLOGY",
+      "name": "JavaScript",
+      "repo_id": "tc-tasks",
+      "path": null,
+      "signature": null,
+      "docstring": "JavaScript runtime environment and core dependency integrated within TC_Tasks.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "3,845 bytes",
+        "ecosystem": "JavaScript",
+        "target_project": "TC_Tasks"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tc-tasks",
+      "type": "PROJECT",
+      "name": "TC_Tasks",
+      "repo_id": "tc-tasks",
+      "path": null,
+      "signature": null,
+      "docstring": "TypeScript Architecture engineered by MIHIRrPATIL. Features modular codebase structure utilizing TypeScript, JavaScript.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "architect": "MIHIRrPATIL",
+        "domain_scope": "TypeScript Architecture",
+        "primary_language": "TypeScript",
+        "languages": [
+          "TypeScript",
+          "JavaScript"
+        ],
+        "graph_indexing": "AST Dependency Graph + BM25"
+      },
+      "embedding": null
+    }
+  ],
+  "edges": [
+    {
+      "source_id": "tc-tasks",
+      "target_id": "tech:typescript",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "tc-tasks",
+      "target_id": "tech:javascript",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    }
+  ]
+}

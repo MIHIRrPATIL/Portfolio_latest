@@ -1,0 +1,893 @@
+{
+  "repo_id": "cdac-asr",
+  "nodes_count": 31,
+  "edges_count": 50,
+  "nodes": [
+    {
+      "id": "tech:python",
+      "type": "TECHNOLOGY",
+      "name": "Python",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": "Python runtime environment and core dependency integrated within CDAC_ASR.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "339,458 bytes",
+        "ecosystem": "Python",
+        "target_project": "CDAC_ASR"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:typescript",
+      "type": "TECHNOLOGY",
+      "name": "TypeScript",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": "TypeScript runtime environment and core dependency integrated within CDAC_ASR.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "193,403 bytes",
+        "ecosystem": "TypeScript",
+        "target_project": "CDAC_ASR"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:css",
+      "type": "TECHNOLOGY",
+      "name": "CSS",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": "CSS runtime environment and core dependency integrated within CDAC_ASR.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "5,024 bytes",
+        "ecosystem": "CSS",
+        "target_project": "CDAC_ASR"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:javascript",
+      "type": "TECHNOLOGY",
+      "name": "JavaScript",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": "JavaScript runtime environment and core dependency integrated within CDAC_ASR.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "559 bytes",
+        "ecosystem": "JavaScript",
+        "target_project": "CDAC_ASR"
+      },
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr",
+      "type": "PROJECT",
+      "name": "CDAC_ASR",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": "ASR & Speech Processing Pipeline engineered by MIHIRrPATIL. Features modular codebase structure utilizing Python, TypeScript, TeX, CSS, Shell, Dockerfile, JavaScript.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "architect": "MIHIRrPATIL",
+        "domain_scope": "ASR & Speech Processing Pipeline",
+        "primary_language": "Python",
+        "languages": [
+          "Python",
+          "TypeScript",
+          "TeX",
+          "CSS",
+          "Shell",
+          "Dockerfile",
+          "JavaScript"
+        ],
+        "graph_indexing": "AST Dependency Graph + BM25"
+      },
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/api/main.py",
+      "type": "FILE",
+      "name": "main.py",
+      "repo_id": "cdac-asr",
+      "path": "product/backend/api/main.py",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Python",
+        "loc": 150
+      },
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/api/main.py:read_root",
+      "type": "FUNCTION",
+      "name": "read_root",
+      "repo_id": "cdac-asr",
+      "path": "product/backend/api/main.py",
+      "signature": "def read_root()",
+      "docstring": "",
+      "code_snippet": "def read_root():\n    return {\n        \"status\": \"online\",\n        \"service\": \"CDAC ASR Pronunciation Coach API\",\n        \"model\": \"MihirRPatil/nptel-asr-phoneme-v3\"\n    }",
+      "start_line": 31,
+      "end_line": 36,
+      "properties": {
+        "is_async": false,
+        "args": []
+      },
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/api/main.py:startup_event",
+      "type": "FUNCTION",
+      "name": "startup_event",
+      "repo_id": "cdac-asr",
+      "path": "product/backend/api/main.py",
+      "signature": "async def startup_event()",
+      "docstring": "",
+      "code_snippet": "async def startup_event():\n    global engine\n    # Initialize connection to Prisma using centralized helper\n    from database import try_connect_db\n    await try_connect_db()\n        \n    # Safe fallback if environment variable isn't set\n    model_dir = os.getenv(\"ASR_MODEL_DIR\", \"MihirRPatil/nptel-asr-phoneme-v3\")\n    logger.info(f\"Loading ASR Engine with model from {model_dir}\")\n    try:\n        engine = ASREngine(model_dir=model_dir)\n        logger.info(\"ASR Engine successfully initialized.\")\n    except Exception as e:\n        logger.error(f\"Failed to load ASR engine: {e}\")",
+      "start_line": 41,
+      "end_line": 54,
+      "properties": {
+        "is_async": true,
+        "args": []
+      },
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/api/main.py:shutdown_event",
+      "type": "FUNCTION",
+      "name": "shutdown_event",
+      "repo_id": "cdac-asr",
+      "path": "product/backend/api/main.py",
+      "signature": "async def shutdown_event()",
+      "docstring": "",
+      "code_snippet": "async def shutdown_event():\n    from database import db as prisma_db\n    if prisma_db.is_connected():\n        await prisma_db.disconnect()",
+      "start_line": 57,
+      "end_line": 60,
+      "properties": {
+        "is_async": true,
+        "args": []
+      },
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/api/main.py:generate_actionable_feedback",
+      "type": "FUNCTION",
+      "name": "generate_actionable_feedback",
+      "repo_id": "cdac-asr",
+      "path": "product/backend/api/main.py",
+      "signature": "def generate_actionable_feedback(results)",
+      "docstring": "",
+      "code_snippet": "def generate_actionable_feedback(results: dict) -> list:\n    feedback = []\n    \n    # 1. Phoneme errors analysis\n    error_stats = results.get(\"error_stats\", {})\n    subs = error_stats.get(\"sub\", 0)\n    ins = error_stats.get(\"ins\", 0)\n    dels = error_stats.get(\"del\", 0)\n    \n    # Overall statement\n    total_errors = subs + ins + dels\n    if total_errors == 0:\n        feedback.append(\"Excellent pronunciation! All phonemes aligned perfectly.\")\n    else:\n        feedback.append(f\"Pronunciation analysis detected {total_errors} variant sound{'s' if total_errors > 1 else ''}: {subs} substitution{'s' if subs != 1 else ''}, {dels} omission{'s' if dels != 1 else ''}, and {ins} extra sound{'s' if ins != 1 else ''}.\")\n\n    # 2. Specific segment level recommendations from alignment pairs\n    aligned_pairs = results.get(\"aligned_pairs\", [])\n    \n    # Find up to 3 specific error instances to guide the user\n    error_count = 0\n    for idx, (spoken, expected) in enumerate(aligned_pairs):\n        if error_count >= 3:\n            break\n            \n        if spoken == \"-\": # Deletion\n            feedback.append(f\"\u2022 You omitted the expected sound '{expected}' at position {idx+1}. Try to fully articulate it.\")\n            error_count += 1\n        elif expected == \"-\": # Insertion\n            feedback.append(f\"\u2022 You added an extra sound '{spoken}' at position {idx+1}. Practice transitioning without this extra sound.\")\n            error_count += 1\n        elif spoken != expected: # Substitution\n            feedback.append(f\"\u2022 You pronounced '{expected}' as '{spoken}' at position {idx+1}. Try adjusting your tongue shape to match the target sound.\")\n            error_count += 1\n\n    # 3. Prosody and Pitch recommendations\n    pitch_data = results.get(\"pitch\", {})\n    pitch_similarity = pitch_data.get(\"similarity\", 1.0) if isinstance(pitch_data, dict) else float(pitch_data)\n    if pitch_similarity < 0.60:\n        feedback.append(\"\u2022 Pitch Curve: Your intonation curve differs significantly from the reference. Focus on native-like sentence stress and rising/falling tones.\")\n    elif pitch_similarity < 0.80:\n        feedback.append(\"\u2022 Intonation: Good effort! Try matching the pitch rises and falls on the stressed vowel syllables to sound more natural.\")\n        \n    duration_data = results.get(\"duration\", {})\n    duration_accuracy = duration_data.get(\"accuracy\", 1.0) if isinstance(duration_data, dict) else float(duration_data)\n    if duration_accuracy < 0.65:\n        feedback.appen",
+      "start_line": 62,
+      "end_line": 110,
+      "properties": {
+        "is_async": false,
+        "args": [
+          "results"
+        ]
+      },
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/api/main.py:transcode_to_wav",
+      "type": "FUNCTION",
+      "name": "transcode_to_wav",
+      "repo_id": "cdac-asr",
+      "path": "product/backend/api/main.py",
+      "signature": "def transcode_to_wav(input_path)",
+      "docstring": "Transcodes any audio file to 16kHz mono WAV using ffmpeg.\nReturns the path to the temporary output WAV file.",
+      "code_snippet": "def transcode_to_wav(input_path: str) -> str:\n    \"\"\"\n    Transcodes any audio file to 16kHz mono WAV using ffmpeg.\n    Returns the path to the temporary output WAV file.\n    \"\"\"\n    import subprocess\n    temp_out = tempfile.NamedTemporaryFile(delete=False, suffix=\".wav\")\n    temp_out_path = temp_out.name\n    temp_out.close()\n    \n    try:\n        # Run ffmpeg to convert input to 16kHz mono PCM 16-bit WAV\n        cmd = [\n            \"ffmpeg\",\n            \"-y\",\n            \"-i\", input_path,\n            \"-vn\",\n            \"-acodec\", \"pcm_s16le\",\n            \"-ac\", \"1\",\n            \"-ar\", \"16000\",\n            temp_out_path\n        ]\n        result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)\n        if result.returncode != 0:\n            logger.error(f\"ffmpeg transcoding failed. Stderr: {result.stderr}\")\n            return input_path\n            \n        logger.info(f\"Successfully transcoded {input_path} to {temp_out_path}\")\n        return temp_out_path\n    except Exception as e:\n        logger.error(f\"Error during ffmpeg transcoding: {e}\")\n        return input_path",
+      "start_line": 112,
+      "end_line": 143,
+      "properties": {
+        "is_async": false,
+        "args": [
+          "input_path"
+        ]
+      },
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/api/main.py:analyze_words_pronunciation",
+      "type": "FUNCTION",
+      "name": "analyze_words_pronunciation",
+      "repo_id": "cdac-asr",
+      "path": "product/backend/api/main.py",
+      "signature": "def analyze_words_pronunciation(target_word, aligned_pairs)",
+      "docstring": "Groups the flat aligned_pairs into individual words based on the expected phonemes.",
+      "code_snippet": "def analyze_words_pronunciation(target_word: str, aligned_pairs: list) -> list:\n    \"\"\"\n    Groups the flat aligned_pairs into individual words based on the expected phonemes.\n    \"\"\"\n    if not target_word:\n        return []",
+      "start_line": 145,
+      "end_line": 150,
+      "properties": {
+        "is_async": false,
+        "args": [
+          "target_word",
+          "aligned_pairs"
+        ]
+      },
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/api/main.py:try_connect_db",
+      "type": "FUNCTION",
+      "name": "try_connect_db",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/api/main.py:getenv",
+      "type": "FUNCTION",
+      "name": "getenv",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/api/main.py:info",
+      "type": "FUNCTION",
+      "name": "info",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/api/main.py:ASREngine",
+      "type": "FUNCTION",
+      "name": "ASREngine",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/api/main.py:error",
+      "type": "FUNCTION",
+      "name": "error",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/api/main.py:is_connected",
+      "type": "FUNCTION",
+      "name": "is_connected",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/api/main.py:disconnect",
+      "type": "FUNCTION",
+      "name": "disconnect",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/api/main.py:get",
+      "type": "FUNCTION",
+      "name": "get",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/api/main.py:append",
+      "type": "FUNCTION",
+      "name": "append",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/api/main.py:enumerate",
+      "type": "FUNCTION",
+      "name": "enumerate",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/api/main.py:isinstance",
+      "type": "FUNCTION",
+      "name": "isinstance",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/api/main.py:float",
+      "type": "FUNCTION",
+      "name": "float",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/api/main.py:NamedTemporaryFile",
+      "type": "FUNCTION",
+      "name": "NamedTemporaryFile",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/api/main.py:close",
+      "type": "FUNCTION",
+      "name": "close",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/api/main.py:run",
+      "type": "FUNCTION",
+      "name": "run",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {},
+      "embedding": null
+    },
+    {
+      "id": "cdac-asr:product/backend/app.py",
+      "type": "FILE",
+      "name": "app.py",
+      "repo_id": "cdac-asr",
+      "path": "product/backend/app.py",
+      "signature": null,
+      "docstring": null,
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "language": "Python",
+        "loc": 43
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:tex",
+      "type": "TECHNOLOGY",
+      "name": "TeX",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": "TeX runtime environment and core dependency integrated within CDAC_ASR.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "78,599 bytes",
+        "ecosystem": "TeX",
+        "target_project": "CDAC_ASR"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:shell",
+      "type": "TECHNOLOGY",
+      "name": "Shell",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": "Shell runtime environment and core dependency integrated within CDAC_ASR.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "1,985 bytes",
+        "ecosystem": "Shell",
+        "target_project": "CDAC_ASR"
+      },
+      "embedding": null
+    },
+    {
+      "id": "tech:dockerfile",
+      "type": "TECHNOLOGY",
+      "name": "Dockerfile",
+      "repo_id": "cdac-asr",
+      "path": null,
+      "signature": null,
+      "docstring": "Dockerfile runtime environment and core dependency integrated within CDAC_ASR.",
+      "code_snippet": null,
+      "start_line": null,
+      "end_line": null,
+      "properties": {
+        "category": "Programming Language",
+        "codebase_usage": "1,910 bytes",
+        "ecosystem": "Dockerfile",
+        "target_project": "CDAC_ASR"
+      },
+      "embedding": null
+    }
+  ],
+  "edges": [
+    {
+      "source_id": "cdac-asr",
+      "target_id": "cdac-asr:product/backend/api/main.py",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "cdac-asr",
+      "target_id": "cdac-asr:product/backend/app.py",
+      "relation_type": "CONTAINS_FILE",
+      "properties": {}
+    },
+    {
+      "source_id": "cdac-asr",
+      "target_id": "tech:python",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "cdac-asr",
+      "target_id": "tech:typescript",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "cdac-asr",
+      "target_id": "tech:tex",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "cdac-asr",
+      "target_id": "tech:css",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "cdac-asr",
+      "target_id": "tech:shell",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "cdac-asr",
+      "target_id": "tech:dockerfile",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "cdac-asr",
+      "target_id": "tech:javascript",
+      "relation_type": "USES_TECH",
+      "properties": {}
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py",
+      "target_id": "cdac-asr:product/backend/api/main.py:read_root",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py",
+      "target_id": "cdac-asr:product/backend/api/main.py:startup_event",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py",
+      "target_id": "cdac-asr:product/backend/api/main.py:shutdown_event",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py",
+      "target_id": "cdac-asr:product/backend/api/main.py:generate_actionable_feedback",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py",
+      "target_id": "cdac-asr:product/backend/api/main.py:transcode_to_wav",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py",
+      "target_id": "cdac-asr:product/backend/api/main.py:analyze_words_pronunciation",
+      "relation_type": "DEFINES",
+      "properties": {}
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py",
+      "target_id": "tech:api.auth_routes",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "api.auth_routes"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py",
+      "target_id": "tech:auth",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "auth"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py",
+      "target_id": "tech:prisma",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "prisma"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py",
+      "target_id": "tech:database",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "database"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py",
+      "target_id": "tech:fastapi.middleware.cors",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "fastapi.middleware.cors"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py",
+      "target_id": "tech:logging",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "logging"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py",
+      "target_id": "tech:os",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "os"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py",
+      "target_id": "tech:backend.core.engine",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "backend.core.engine"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py",
+      "target_id": "tech:api.features_routes",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "api.features_routes"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py",
+      "target_id": "tech:fastapi.responses",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "fastapi.responses"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py",
+      "target_id": "tech:tempfile",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "tempfile"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py",
+      "target_id": "tech:fastapi",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "fastapi"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py",
+      "target_id": "tech:prisma.models",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "prisma.models"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py:startup_event",
+      "target_id": "cdac-asr:product/backend/api/main.py:try_connect_db",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "try_connect_db"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py:startup_event",
+      "target_id": "cdac-asr:product/backend/api/main.py:getenv",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "getenv"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py:startup_event",
+      "target_id": "cdac-asr:product/backend/api/main.py:info",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "info"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py:startup_event",
+      "target_id": "cdac-asr:product/backend/api/main.py:ASREngine",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "ASREngine"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py:startup_event",
+      "target_id": "cdac-asr:product/backend/api/main.py:error",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "error"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py:shutdown_event",
+      "target_id": "cdac-asr:product/backend/api/main.py:is_connected",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "is_connected"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py:shutdown_event",
+      "target_id": "cdac-asr:product/backend/api/main.py:disconnect",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "disconnect"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py:generate_actionable_feedback",
+      "target_id": "cdac-asr:product/backend/api/main.py:get",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "get"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py:generate_actionable_feedback",
+      "target_id": "cdac-asr:product/backend/api/main.py:append",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "append"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py:generate_actionable_feedback",
+      "target_id": "cdac-asr:product/backend/api/main.py:enumerate",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "enumerate"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py:generate_actionable_feedback",
+      "target_id": "cdac-asr:product/backend/api/main.py:isinstance",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "isinstance"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py:generate_actionable_feedback",
+      "target_id": "cdac-asr:product/backend/api/main.py:float",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "float"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py:transcode_to_wav",
+      "target_id": "cdac-asr:product/backend/api/main.py:NamedTemporaryFile",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "NamedTemporaryFile"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py:transcode_to_wav",
+      "target_id": "cdac-asr:product/backend/api/main.py:close",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "close"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py:transcode_to_wav",
+      "target_id": "cdac-asr:product/backend/api/main.py:run",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "run"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py:transcode_to_wav",
+      "target_id": "cdac-asr:product/backend/api/main.py:info",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "info"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/api/main.py:transcode_to_wav",
+      "target_id": "cdac-asr:product/backend/api/main.py:error",
+      "relation_type": "CALLS",
+      "properties": {
+        "callee_name": "error"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/app.py",
+      "target_id": "tech:api.main",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "api.main"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/app.py",
+      "target_id": "tech:os",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "os"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/app.py",
+      "target_id": "tech:uvicorn",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "uvicorn"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/app.py",
+      "target_id": "tech:sys",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "sys"
+      }
+    },
+    {
+      "source_id": "cdac-asr:product/backend/app.py",
+      "target_id": "tech:backend.api.main",
+      "relation_type": "IMPORTS",
+      "properties": {
+        "module": "backend.api.main"
+      }
+    }
+  ]
+}

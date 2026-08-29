@@ -1,0 +1,99 @@
+{
+  "repo_name": "SATVIEW-FRONTEND",
+  "owner": "MIHIRrPATIL",
+  "full_name": "MIHIRrPATIL/SATVIEW-FRONTEND",
+  "indexed_at": "2026-08-28T18:31:52.473999+00:00",
+  "readme": {
+    "present": true,
+    "content": "<div align=\"center\">\n<img width=\"1200\" height=\"475\" alt=\"GHBanner\" src=\"https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6\" />\n</div>\n\n# Run and deploy your AI Studio app\n\nThis contains everything you need to run your app locally.\n\nView your app in AI Studio: https://ai.studio/apps/37a84f43-c834-422d-b102-db7b4fdc87c9\n\n## Run Locally\n\n**Prerequisites:**  Node.js\n\n\n1. Install dependencies:\n   `npm install`\n2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key\n3. Run the app:\n   `npm run dev`\n"
+  },
+  "recent_activity": {
+    "commit_count": 2,
+    "commits": [
+      {
+        "sha": "a8f6f0e",
+        "author": "Mihir Patil",
+        "date": "2026-04-21T18:16:32Z",
+        "message": "feat: Initialize SATVIEW Bitcoin Intelligence app\n\nSets up the core project structure for the SATVIEW application. This includes:\n- Basic React app setup with Vite.\n- Tailwind CSS integration for styling.\n- Environment variable handling for API keys.\n- Placeholder UI components for different views (Intelligence, Network, Analytics, etc.).\n- README and metadata updates to reflect the application's purpose.",
+        "files_changed": [
+          ".env.example",
+          ".gitignore",
+          "README.md",
+          "index.html",
+          "metadata.json",
+          "package-lock.json",
+          "package.json",
+          "src/App.tsx",
+          "src/components/AnalyticsView.tsx",
+          "src/components/IntelligenceView.tsx",
+          "src/components/LogsView.tsx",
+          "src/components/NetworkView.tsx",
+          "src/components/RecentEvents.tsx",
+          "src/components/SecurityView.tsx",
+          "src/components/Sidebar.tsx",
+          "src/components/SummaryNarrative.tsx",
+          "src/components/TopBar.tsx",
+          "src/index.css",
+          "src/lib/intelligenceEngine.ts",
+          "src/lib/utils.ts",
+          "src/main.tsx",
+          "src/types.ts",
+          "tsconfig.json",
+          "vite.config.ts"
+        ]
+      },
+      {
+        "sha": "4feec8b",
+        "author": "Mihir Patil",
+        "date": "2026-04-21T18:16:02Z",
+        "message": "Initial commit",
+        "files_changed": [
+          "README.md"
+        ]
+      }
+    ]
+  },
+  "architecture_manifests": {
+    "file_count": 1,
+    "files": {
+      "package.json": "{\n  \"name\": \"react-example\",\n  \"private\": true,\n  \"version\": \"0.0.0\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"vite --port=3000 --host=0.0.0.0\",\n    \"build\": \"vite build\",\n    \"preview\": \"vite preview\",\n    \"clean\": \"rm -rf dist\",\n    \"lint\": \"tsc --noEmit\"\n  },\n  \"dependencies\": {\n    \"@google/genai\": \"^1.29.0\",\n    \"@tailwindcss/vite\": \"^4.1.14\",\n    \"@vitejs/plugin-react\": \"^5.0.4\",\n    \"clsx\": \"^2.1.1\",\n    \"dotenv\": \"^17.2.3\",\n    \"express\": \"^4.21.2\",\n    \"lucide-react\": \"^0.546.0\",\n    \"motion\": \"^12.23.24\",\n    \"react\": \"^19.0.0\",\n    \"react-dom\": \"^19.0.0\",\n    \"recharts\": \"^3.8.1\",\n    \"tailwind-merge\": \"^3.5.0\",\n    \"vite\": \"^6.2.0\"\n  },\n  \"devDependencies\": {\n    \"@types/express\": \"^4.17.21\",\n    \"@types/node\": \"^22.14.0\",\n    \"autoprefixer\": \"^10.4.21\",\n    \"tailwindcss\": \"^4.1.14\",\n    \"tsx\": \"^4.21.0\",\n    \"typescript\": \"~5.8.2\",\n    \"vite\": \"^6.2.0\"\n  }\n}\n"
+    }
+  },
+  "tree_structure_summary": {
+    "total_files": 27,
+    "sample_tree": [
+      ".env.example",
+      ".gitignore",
+      "README.md",
+      "index.html",
+      "metadata.json",
+      "package-lock.json",
+      "package.json",
+      "src",
+      "src/App.tsx",
+      "src/components",
+      "src/components/AnalyticsView.tsx",
+      "src/components/IntelligenceView.tsx",
+      "src/components/LogsView.tsx",
+      "src/components/NetworkView.tsx",
+      "src/components/RecentEvents.tsx",
+      "src/components/SecurityView.tsx",
+      "src/components/Sidebar.tsx",
+      "src/components/SummaryNarrative.tsx",
+      "src/components/TopBar.tsx",
+      "src/index.css",
+      "src/lib",
+      "src/lib/intelligenceEngine.ts",
+      "src/lib/utils.ts",
+      "src/main.tsx",
+      "src/types.ts",
+      "tsconfig.json",
+      "vite.config.ts"
+    ]
+  },
+  "languages": {
+    "TypeScript": 70844,
+    "CSS": 1541,
+    "HTML": 311
+  }
+}

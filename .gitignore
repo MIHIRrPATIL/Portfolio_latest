@@ -25,7 +25,13 @@ wheels/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
+# Preserve pre-compiled Knowledge Graph & Index Caches for Production Hosting
 data/
+!server/data/
+!server/data/graph_store/
+!server/data/graph_store/*.json
+!server/data/index_cache/
+!server/data/index_cache/*.json
 *.egg
 MANIFEST
 
