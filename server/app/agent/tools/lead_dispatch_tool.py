@@ -1,33 +1,43 @@
 import time
 from typing import Dict, Any
 from app.agent.tools.base import BaseTool
+from app.db.session import SessionLocal
+from app.db.crud import create_visitor_lead
 
 class LeadDispatchTool(BaseTool):
     """
     Lead & Collaboration Dispatcher Tool.
     Captures visitor contact info, project scope, and collaboration proposals
-    into a structured queue ready for the future Admin Notification flow.
+    into PostgreSQL database table `visitor_leads` for the Admin Inbox.
     """
     name = "dispatch_lead"
     description = "Captures visitor contact info and project scope for Mihir's collaboration sync."
 
     async def execute(self, message: str, visitor_name: str = "Visitor", email: str = "", project_scope: str = "", **kwargs) -> Dict[str, Any]:
         payload = {
-            "timestamp": time.time(),
             "visitor_name": visitor_name or "Visitor",
             "email": email or "Not specified",
-            "project_scope": project_scope or "General Engineering Inquiries",
+            "project_scope": project_scope or "General Engineering Collaboration",
             "message": message,
-            "status": "queued_for_admin"
+            "status": "pending"
         }
 
-        print(f"📬 [LEAD DISPATCH QUEUE] Captured inquiry from {payload['visitor_name']} ({payload['email']}): {message}")
+        lead_id = None
+        try:
+            with SessionLocal() as db:
+                created = create_visitor_lead(db, payload)
+                lead_id = created.id
+        except Exception as e:
+            print(f"⚠️ Error persisting lead to DB: {str(e)}")
+
+        print(f"📬 [LEAD DISPATCH QUEUE #{lead_id}] Captured inquiry from {payload['visitor_name']} ({payload['email']}): {message}")
 
         return {
             "success": True,
             "status": "queued",
+            "lead_id": lead_id,
             "lead_payload": payload,
-            "message": "Inquiry recorded into dispatch queue. Mihir will review and sync back directly."
+            "message": "Inquiry recorded directly into Mihir's Admin Inbox. Mihir will review and sync back directly."
         }
 
 lead_dispatch_tool = LeadDispatchTool()

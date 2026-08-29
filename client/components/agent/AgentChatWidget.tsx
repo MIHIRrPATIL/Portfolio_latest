@@ -24,6 +24,7 @@ import {
   Globe,
   Mail
 } from "lucide-react";
+import { API_V1 } from "@/lib/api-config";
 import { cn } from "@/lib/utils";
 
 interface ChatBadge {
@@ -531,7 +532,7 @@ export default function AgentChatWidget() {
         content: m.content
       }));
 
-      const res = await fetch("http://localhost:8000/api/v1/agent/stream", {
+      const res = await fetch(`${API_V1}/agent/stream`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

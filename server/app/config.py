@@ -3,9 +3,9 @@ from pydantic_settings import BaseSettings
 from typing import List
 
 class Settings(BaseSettings):
-    HOST: str = "127.0.0.1"
-    PORT: int = 9005
-    CORS_ORIGINS: str = "http://localhost:3005"
+    HOST: str = "0.0.0.0"
+    PORT: int = 8000
+    CORS_ORIGINS: str = "*"
     
     GITHUB_PERSONAL_ACCESS_TOKEN: str = ""
     GITHUB_WEBHOOK_SECRET: str = ""

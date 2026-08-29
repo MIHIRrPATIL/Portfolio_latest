@@ -10,10 +10,12 @@ interface MenuOverlayProps {
 
 export default function MenuOverlay({ isOpen, close }: MenuOverlayProps) {
   const menuLinks = [
-    { title: 'home.', href: '#hero' },
-    { title: 'about.', href: '#about' },
-    { title: 'works.', href: '#works' },
-    { title: 'connect.', href: '#connect' },
+    { title: 'home.', href: '/#hero' },
+    { title: 'about.', href: '/#about' },
+    { title: 'works.', href: '/#works' },
+    { title: 'thoughts.', href: '/blogs' },
+    { title: 'graph.', href: '/graph' },
+    { title: 'connect.', href: '/#connect' },
   ]
 
   const socials = [

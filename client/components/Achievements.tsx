@@ -1,7 +1,8 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Trophy, Award, Zap } from "lucide-react";
+import { API_V1 } from "@/lib/api-config";
 
 interface AchievementItem {
   id: number;
@@ -191,6 +192,38 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ item, isActive, onMouseEn
 
 export default function AchievementsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [items, setItems] = useState<AchievementItem[]>(achievementItems);
+
+  useEffect(() => {
+    fetch(`${API_V1}/public/achievements`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch achievements");
+        return res.json();
+      })
+      .then((data) => {
+        if (Array.isArray(data) && data.length > 0) {
+          const mapped: AchievementItem[] = data.map((d: any, idx: number) => {
+            const fallbackImgs = [
+              "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1200&auto=format&fit=crop",
+              "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=1200&auto=format&fit=crop",
+              "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop",
+              "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1200&auto=format&fit=crop",
+              "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop",
+            ];
+            return {
+              id: d.id || idx + 1,
+              title: d.title,
+              category: d.category ? d.category.toUpperCase() : "ACHIEVEMENT",
+              location: d.date || "2026",
+              description: d.description,
+              imageUrl: d.imageUrl || fallbackImgs[idx % fallbackImgs.length],
+            };
+          });
+          setItems(mapped);
+        }
+      })
+      .catch((e) => console.log("Using fallback achievements:", e));
+  }, []);
 
   return (
     <section id="achievements" className="w-full bg-black text-white px-6 md:px-16 lg:px-24 py-20 md:py-32 border-t border-white/10 overflow-hidden">
@@ -201,7 +234,7 @@ export default function AchievementsSection() {
           <div className="flex items-center gap-4 mb-4">
             <span className="text-red-300 animate-spin text-4xl md:text-5xl">✱</span>
             <span className="font-mono text-xs uppercase tracking-[0.3em] text-red-300">
-              Track Record // Hackathons
+              Track Record // Hackathons & Milestones
             </span>
           </div>
 
@@ -211,18 +244,18 @@ export default function AchievementsSection() {
           </h2>
 
           <p className="text-white/70 text-base md:text-lg font-sans leading-relaxed max-w-xl mb-8">
-            Competing in over two dozen hackathons has been my ultimate testing ground. From high-pressure 48-hour sprints to national AI competitions, here are key milestones built under pressure.
+            From speech AI acoustic modeling at CDAC to high-pressure hackathon sprints, here are key engineering victories and research milestones built under pressure.
           </p>
 
           <div className="flex items-center gap-6 font-mono text-xs uppercase tracking-[0.2em] text-white/50 border-t border-white/10 pt-6">
             <div className="flex items-center gap-2">
               <Award className="w-4 h-4 text-red-300" />
-              <span>24+ Hackathons</span>
+              <span>{items.length}+ Milestones</span>
             </div>
             <div className="w-3 h-px bg-white/20" />
             <div className="flex items-center gap-2">
               <Zap className="w-4 h-4 text-red-300" />
-              <span>12 Podium Wins</span>
+              <span>Verified Proofs</span>
             </div>
           </div>
         </div>
@@ -230,7 +263,7 @@ export default function AchievementsSection() {
         {/* Right Side: Interactive Image Accordion */}
         <div className="lg:col-span-7 flex justify-center lg:justify-end">
           <div className="flex flex-row items-center justify-start md:justify-center gap-3 md:gap-4 overflow-x-auto pb-4 pt-2 no-scrollbar w-full">
-            {achievementItems.map((item, index) => (
+            {items.map((item, index) => (
               <AccordionItem
                 key={item.id}
                 item={item}

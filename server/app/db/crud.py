@@ -1,7 +1,14 @@
 from sqlalchemy.orm import Session
 from datetime import datetime, timezone
 from typing import List, Dict, Any, Optional
-from app.db.models import RepositoryGradeModel, RepositoryIndexModel, ProjectCaseStudyModel
+from app.db.models import (
+    RepositoryGradeModel,
+    RepositoryIndexModel,
+    ProjectCaseStudyModel,
+    VisitorLeadModel,
+    AchievementModel,
+    BlogModel
+)
 
 def upsert_repository_grade(db: Session, grade_data: Dict[str, Any]) -> RepositoryGradeModel:
     repo_name = grade_data.get("repo_name")
@@ -99,3 +106,137 @@ def get_all_case_studies(db: Session) -> List[ProjectCaseStudyModel]:
 
 def get_case_study_by_id(db: Session, project_id: str) -> Optional[ProjectCaseStudyModel]:
     return db.query(ProjectCaseStudyModel).filter(ProjectCaseStudyModel.id == project_id).first()
+
+# ==========================================
+# Visitor Leads CRUD
+# ==========================================
+def create_visitor_lead(db: Session, lead_data: Dict[str, Any]) -> VisitorLeadModel:
+    lead = VisitorLeadModel(
+        visitor_name=lead_data.get("visitor_name", "Visitor"),
+        email=lead_data.get("email", "Not specified"),
+        message=lead_data.get("message", ""),
+        project_scope=lead_data.get("project_scope", "General Collaboration"),
+        status=lead_data.get("status", "pending"),
+        notes=lead_data.get("notes", "")
+    )
+    db.add(lead)
+    db.commit()
+    db.refresh(lead)
+    return lead
+
+def get_all_visitor_leads(db: Session, status: Optional[str] = None) -> List[VisitorLeadModel]:
+    q = db.query(VisitorLeadModel)
+    if status and status != "all":
+        q = q.filter(VisitorLeadModel.status == status)
+    return q.order_by(VisitorLeadModel.created_at.desc()).all()
+
+def update_visitor_lead_status(db: Session, lead_id: int, status: str, notes: Optional[str] = None) -> Optional[VisitorLeadModel]:
+    lead = db.query(VisitorLeadModel).filter(VisitorLeadModel.id == lead_id).first()
+    if not lead:
+        return None
+    lead.status = status
+    if notes is not None:
+        lead.notes = notes
+    lead.updated_at = datetime.now(timezone.utc)
+    db.commit()
+    db.refresh(lead)
+    return lead
+
+def delete_visitor_lead(db: Session, lead_id: int) -> bool:
+    lead = db.query(VisitorLeadModel).filter(VisitorLeadModel.id == lead_id).first()
+    if not lead:
+        return False
+    db.delete(lead)
+    db.commit()
+    return True
+
+# ==========================================
+# Achievements & Milestones CRUD
+# ==========================================
+def upsert_achievement(db: Session, ach_data: Dict[str, Any]) -> AchievementModel:
+    import re
+    raw_title = ach_data.get("title", "Achievement")
+    slug = ach_data.get("id") or re.sub(r"[^a-zA-Z0-9_-]+", "-", raw_title.lower()).strip("-")
+    
+    existing = db.query(AchievementModel).filter(AchievementModel.id == slug).first()
+    if not existing:
+        existing = AchievementModel(id=slug)
+        db.add(existing)
+
+    existing.title = raw_title
+    existing.category = ach_data.get("category", "Milestone")
+    existing.date = ach_data.get("date", "2026")
+    existing.description = ach_data.get("description", "")
+    existing.proof_url = ach_data.get("proof_url", "")
+    existing.icon = ach_data.get("icon", "trophy")
+    existing.tags = ach_data.get("tags", [])
+    existing.is_featured = ach_data.get("is_featured", True)
+    existing.updated_at = datetime.now(timezone.utc)
+
+    db.commit()
+    db.refresh(existing)
+    return existing
+
+def get_all_achievements(db: Session) -> List[AchievementModel]:
+    return db.query(AchievementModel).order_by(AchievementModel.created_at.desc()).all()
+
+def get_public_achievements(db: Session) -> List[AchievementModel]:
+    return db.query(AchievementModel).filter(AchievementModel.is_featured == True).order_by(AchievementModel.created_at.desc()).all()
+
+def delete_achievement(db: Session, ach_id: str) -> bool:
+    item = db.query(AchievementModel).filter(AchievementModel.id == ach_id).first()
+    if not item:
+        return False
+    db.delete(item)
+    db.commit()
+    return True
+
+# ==========================================
+# Blogs & Thoughts CRUD
+# ==========================================
+def upsert_blog(db: Session, blog_data: Dict[str, Any]) -> BlogModel:
+    import re
+    raw_title = blog_data.get("title", "Blog Post")
+    slug = blog_data.get("id") or re.sub(r"[^a-zA-Z0-9_-]+", "-", raw_title.lower()).strip("-")
+
+    existing = db.query(BlogModel).filter(BlogModel.id == slug).first()
+    if not existing:
+        existing = BlogModel(id=slug)
+        db.add(existing)
+
+    existing.title = raw_title
+    existing.summary = blog_data.get("summary", "")
+    existing.content = blog_data.get("content", "")
+    existing.cover_image = blog_data.get("cover_image", "")
+    existing.external_url = blog_data.get("external_url", "")
+    existing.tags = blog_data.get("tags", [])
+    existing.read_time = blog_data.get("read_time", "3 min read")
+    existing.is_published = blog_data.get("is_published", True)
+    existing.updated_at = datetime.now(timezone.utc)
+
+    db.commit()
+    db.refresh(existing)
+    return existing
+
+def get_all_blogs(db: Session) -> List[BlogModel]:
+    return db.query(BlogModel).order_by(BlogModel.published_at.desc()).all()
+
+def get_published_blogs(db: Session) -> List[BlogModel]:
+    return db.query(BlogModel).filter(BlogModel.is_published == True).order_by(BlogModel.published_at.desc()).all()
+
+def get_blog_by_id_or_slug(db: Session, slug_or_id: str) -> Optional[BlogModel]:
+    return db.query(BlogModel).filter(BlogModel.id == slug_or_id).first()
+
+def increment_blog_views(db: Session, slug_or_id: str):
+    blog = db.query(BlogModel).filter(BlogModel.id == slug_or_id).first()
+    if blog:
+        blog.views = (blog.views or 0) + 1
+        db.commit()
+
+def delete_blog(db: Session, blog_id: str) -> bool:
+    item = db.query(BlogModel).filter(BlogModel.id == blog_id).first()
+    if not item:
+        return False
+    db.delete(item)
+    db.commit()
+    return True

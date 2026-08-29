@@ -100,12 +100,14 @@ function mapAiProjectToClientProject(item: any): Project {
   };
 }
 
+import { API_V1 } from '@/lib/api-config';
+
 let memoryProjectsCache: Project[] | null = null;
 const memorySingleProjectsCache: Record<string, Project> = {};
 
 export async function fetchFeaturedProjects(): Promise<Project[]> {
   try {
-    const res = await fetch('http://localhost:8000/api/v1/ai/projects/featured', { cache: 'no-store' });
+    const res = await fetch(`${API_V1}/ai/projects/featured`, { cache: 'no-store' });
     if (res.ok) {
       const data = await res.json();
       if (Array.isArray(data) && data.length > 0) {
@@ -124,7 +126,7 @@ export async function fetchAllProjects(): Promise<Project[]> {
   }
 
   try {
-    const res = await fetch('http://localhost:8000/api/v1/ai/projects/all', { cache: 'no-store' });
+    const res = await fetch(`${API_V1}/ai/projects/all`, { cache: 'no-store' });
     if (res.ok) {
       const data = await res.json();
       if (Array.isArray(data) && data.length > 0) {
@@ -143,7 +145,7 @@ export async function fetchAllProjects(): Promise<Project[]> {
     console.warn("FastAPI server offline for all projects.");
   }
 
-  return memoryProjectsCache || [];
+  return [];
 }
 
 export async function fetchProjectById(id: string): Promise<Project> {
@@ -160,7 +162,7 @@ export async function fetchProjectById(id: string): Promise<Project> {
   }
 
   try {
-    const res = await fetch(`http://localhost:8000/api/v1/ai/projects/${id}`, { cache: 'no-store' });
+    const res = await fetch(`${API_V1}/ai/projects/${id}`, { cache: 'no-store' });
     if (res.ok) {
       const data = await res.json();
       if (data && data.id) {
@@ -211,7 +213,7 @@ export interface PortfolioStats {
 
 export async function fetchPortfolioStats(): Promise<PortfolioStats> {
   try {
-    const res = await fetch('http://localhost:8000/api/v1/ai/stats', { cache: 'no-store' });
+    const res = await fetch(`${API_V1}/ai/stats`, { cache: 'no-store' });
     if (res.ok) {
       const data = await res.json();
       return {

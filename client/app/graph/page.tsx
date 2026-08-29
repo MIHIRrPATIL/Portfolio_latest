@@ -9,6 +9,8 @@ import NeuralGraphCanvas, { GraphNodePayload, GraphEdgePayload } from "@/compone
 import GraphInspectorDrawer from "@/components/graph/GraphInspectorDrawer";
 import GraphControlBar from "@/components/graph/GraphControlBar";
 
+import { API_V1 } from "@/lib/api-config";
+
 export default function NeuralGraphPage() {
   const [nodes, setNodes] = useState<GraphNodePayload[]>([]);
   const [edges, setEdges] = useState<GraphEdgePayload[]>([]);
@@ -25,8 +27,8 @@ export default function NeuralGraphPage() {
     setIsLoading(true);
     try {
       const url = projectFilter
-        ? `http://localhost:8000/api/v1/graph/all?project=${encodeURIComponent(projectFilter)}`
-        : "http://localhost:8000/api/v1/graph/all";
+        ? `${API_V1}/graph/all?project=${encodeURIComponent(projectFilter)}`
+        : `${API_V1}/graph/all`;
 
       const res = await fetch(url, { cache: "no-store" });
       if (res.ok) {
