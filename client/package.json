@@ -47,6 +47,9 @@
     "typescript": "^5"
   },
   "overrides": {
-    "three": "$three"
+    "three": "$three",
+    "lightswind": {
+      "lucide-react": "$lucide-react"
+    }
   }
 }
