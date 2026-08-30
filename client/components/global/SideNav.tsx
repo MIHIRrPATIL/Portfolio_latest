@@ -13,6 +13,7 @@ export default function SideNav() {
   
   const pathname = usePathname()
   const isHomePage = pathname === '/'
+  const isGraphPage = pathname?.startsWith('/graph')
   const isDesktop = useMediaQuery({ minWidth: 768 })
   const { scrollY } = useScroll()
 
@@ -56,6 +57,11 @@ export default function SideNav() {
       setIsHeroActive(true)
     }
   })
+
+  // Do not render floating corner menu on /graph for mobile screens so HUD controls remain unobstructed
+  if (hasMounted && isGraphPage && !isDesktop) {
+    return null
+  }
 
   const sections = [
     { name: 'Home', id: 'hero' },

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ExternalLink, GitBranch, Terminal, Code, Check, Copy } from "lucide-react";
@@ -13,6 +13,17 @@ interface GraphInspectorDrawerProps {
 
 export default function GraphInspectorDrawer({ node, onClose }: GraphInspectorDrawerProps) {
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (node) {
+      document.body.classList.add("modal-open");
+      window.dispatchEvent(new CustomEvent("modal-visibility-change", { detail: { open: true } }));
+    }
+    return () => {
+      document.body.classList.remove("modal-open");
+      window.dispatchEvent(new CustomEvent("modal-visibility-change", { detail: { open: false } }));
+    };
+  }, [node]);
 
   if (!node) return null;
 
@@ -50,7 +61,7 @@ export default function GraphInspectorDrawer({ node, onClose }: GraphInspectorDr
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: 440 }}
         transition={{ type: "spring", damping: 28, stiffness: 220 }}
-        className="fixed top-0 right-0 w-full sm:w-[480px] h-full bg-[#080808]/95 backdrop-blur-2xl border-l border-white/10 p-4 sm:p-6 md:p-8 pt-16 sm:pt-24 z-50 flex flex-col justify-between shadow-2xl overflow-y-auto font-mono selection:bg-red-300 selection:text-black"
+        className="fixed top-0 right-0 w-full sm:w-[480px] h-full bg-[#080808]/95 backdrop-blur-2xl border-l border-white/10 p-4 sm:p-6 md:p-8 pt-5 sm:pt-8 z-50 flex flex-col justify-between shadow-2xl overflow-y-auto font-mono selection:bg-red-300 selection:text-black"
       >
         {/* Top Header - Offset from global floating menu */}
         <div>

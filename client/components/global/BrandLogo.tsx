@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils'
 export default function BrandLogo({ className }: { className?: string }) {
   const pathname = usePathname()
   const isHome = pathname === '/'
+  const isGraphPage = pathname?.startsWith('/graph')
 
   const handleLogoClick = (e: React.MouseEvent) => {
     if (isHome) {
@@ -20,6 +21,11 @@ export default function BrandLogo({ className }: { className?: string }) {
       }
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
+  }
+
+  // Hide logo on /graph on mobile screens to preserve HUD back-button space
+  if (isGraphPage) {
+    return null
   }
 
   return (
