@@ -168,14 +168,14 @@ export default function ProjectGrid() {
       </div>
 
       {/* Category Filter Pills with Smooth Shared Layout Pill */}
-      <div className="flex flex-wrap items-center gap-2 overflow-x-auto pb-1">
+      <div className="flex items-center gap-2 overflow-x-auto pb-2 pt-1 no-scrollbar w-full flex-nowrap sm:flex-wrap">
         {CATEGORIES.map((cat) => {
           const isActive = activeCategory === cat.id;
           return (
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              className={`relative px-4 py-2 rounded-full font-mono text-xs transition-colors whitespace-nowrap cursor-pointer ${
+              className={`relative px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-mono text-[11px] sm:text-xs transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
                 isActive ? "text-black font-bold" : "text-neutral-400 hover:text-white border border-neutral-800/80 bg-neutral-950/60"
               }`}
             >

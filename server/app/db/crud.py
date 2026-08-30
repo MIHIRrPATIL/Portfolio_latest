@@ -1,3 +1,4 @@
+import os
 from sqlalchemy.orm import Session
 from datetime import datetime, timezone
 from typing import List, Dict, Any, Optional
@@ -7,7 +8,8 @@ from app.db.models import (
     ProjectCaseStudyModel,
     VisitorLeadModel,
     AchievementModel,
-    BlogModel
+    BlogModel,
+    ResumeSettingModel
 )
 
 def upsert_repository_grade(db: Session, grade_data: Dict[str, Any]) -> RepositoryGradeModel:
@@ -240,3 +242,74 @@ def delete_blog(db: Session, blog_id: str) -> bool:
     db.delete(item)
     db.commit()
     return True
+
+# ==========================================
+# Resume / CV Settings CRUD
+# ==========================================
+def get_resume_settings(db: Session) -> ResumeSettingModel:
+    """Returns the active resume configuration row (creates singleton default if none exists)."""
+    setting = db.query(ResumeSettingModel).filter(ResumeSettingModel.id == 1).first()
+    if not setting:
+        setting = ResumeSettingModel(
+            id=1,
+            filename="Mihir_Patil_Resume.pdf",
+            file_path=None,
+            external_url=None,
+            size_bytes=0,
+            download_count=0,
+            is_active=True
+        )
+        db.add(setting)
+        db.commit()
+        db.refresh(setting)
+    return setting
+
+def upsert_resume_settings(
+    db: Session,
+    filename: str,
+    file_path: Optional[str] = None,
+    external_url: Optional[str] = None,
+    size_bytes: int = 0,
+    file_data: Optional[bytes] = None
+) -> ResumeSettingModel:
+    """Updates the active resume configuration with optional database binary persistence."""
+    setting = get_resume_settings(db)
+    setting.filename = filename or "Mihir_Patil_Resume.pdf"
+    if file_path is not None:
+        setting.file_path = file_path
+    if external_url is not None:
+        setting.external_url = external_url
+    if size_bytes > 0:
+        setting.size_bytes = size_bytes
+    if file_data is not None:
+        setting.file_data = file_data
+    setting.is_active = True
+    setting.updated_at = datetime.now(timezone.utc)
+
+    db.commit()
+    db.refresh(setting)
+    return setting
+
+def increment_resume_download_count(db: Session):
+    """Increments the total public download telemetry counter."""
+    setting = get_resume_settings(db)
+    setting.download_count = (setting.download_count or 0) + 1
+    db.commit()
+
+def delete_resume_settings(db: Session) -> ResumeSettingModel:
+    """Resets the resume file settings and clears database binary cache."""
+    setting = get_resume_settings(db)
+    if setting.file_path and os.path.exists(setting.file_path):
+        try:
+            os.remove(setting.file_path)
+        except Exception:
+            pass
+    setting.file_path = None
+    setting.file_data = None
+    setting.external_url = None
+    setting.size_bytes = 0
+    setting.updated_at = datetime.now(timezone.utc)
+    db.commit()
+    db.refresh(setting)
+    return setting
+

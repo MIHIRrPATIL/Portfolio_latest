@@ -530,6 +530,65 @@ export default function NeuralGraph3D({
     cameraRotation.current.radius = Math.max(300, Math.min(2500, cameraRotation.current.radius + zoomDelta));
   };
 
+  // Touch Handlers for Mobile & Touchscreens
+  const touchPinchDistRef = useRef<number | null>(null);
+  const touchHasMovedRef = useRef(false);
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    touchHasMovedRef.current = false;
+    if (e.touches.length === 1) {
+      isDraggingRef.current = true;
+      previousMousePosition.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    } else if (e.touches.length === 2) {
+      isDraggingRef.current = false;
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      touchPinchDistRef.current = Math.sqrt(dx * dx + dy * dy);
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
+    touchHasMovedRef.current = true;
+    if (e.touches.length === 1 && isDraggingRef.current) {
+      const deltaX = e.touches[0].clientX - previousMousePosition.current.x;
+      const deltaY = e.touches[0].clientY - previousMousePosition.current.y;
+
+      cameraRotation.current.theta -= deltaX * 0.007;
+      cameraRotation.current.phi = Math.max(
+        -Math.PI / 2.2,
+        Math.min(Math.PI / 2.2, cameraRotation.current.phi + deltaY * 0.007)
+      );
+
+      previousMousePosition.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    } else if (e.touches.length === 2 && touchPinchDistRef.current !== null) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const currentDist = Math.sqrt(dx * dx + dy * dy);
+      const diff = touchPinchDistRef.current - currentDist;
+
+      cameraRotation.current.radius = Math.max(
+        300,
+        Math.min(2500, cameraRotation.current.radius + diff * 3)
+      );
+      touchPinchDistRef.current = currentDist;
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    isDraggingRef.current = false;
+    touchPinchDistRef.current = null;
+
+    // Handle Tap to Select if user didn't drag
+    if (!touchHasMovedRef.current && e.changedTouches.length === 1) {
+      const touch = e.changedTouches[0];
+      const hit = getIntersectedNode(touch.clientX, touch.clientY);
+      onSelectNode(hit);
+      if (hit) {
+        targetLookAt.current.set(hit.x, hit.y, hit.z);
+      }
+    }
+  };
+
   return (
     <div
       ref={mountRef}
@@ -538,9 +597,12 @@ export default function NeuralGraph3D({
       onMouseUp={handleMouseUp}
       onClick={handleClick}
       onWheel={handleWheel}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
       onContextMenu={(e) => e.preventDefault()}
       data-cursor="no-target"
-      className="relative w-full h-full bg-[#040406] overflow-hidden select-none cursor-grab active:cursor-grabbing"
+      className="relative w-full h-full bg-[#040406] overflow-hidden select-none cursor-grab active:cursor-grabbing touch-none"
     />
   );
 }

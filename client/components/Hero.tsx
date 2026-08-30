@@ -127,7 +127,7 @@ function HeroContent({ loaderDone }: { loaderDone: boolean }) {
   const [isHovered, setIsHovered] = useState(false)
   const cubeRef = useRef<{ remeasure: () => void }>(null)
 
-  // Re-measure CubeFlip height when encrypted text renders
+  // Re-measure CubeFlip height when encrypted text renders or window resizes
   useEffect(() => {
     if (loaderDone && cubeRef.current) {
       setTimeout(() => cubeRef.current?.remeasure(), 100)
@@ -136,9 +136,10 @@ function HeroContent({ loaderDone }: { loaderDone: boolean }) {
 
   return (
     <div
-      className="relative z-10 flex flex-col items-start w-full cursor-target"
+      className="relative z-10 flex flex-col items-start w-full cursor-target select-none"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={() => setIsHovered((prev) => !prev)}
     >
       {/* Name with 3D Cube Flip */}
       <div className="w-full">
@@ -146,19 +147,19 @@ function HeroContent({ loaderDone }: { loaderDone: boolean }) {
           ref={cubeRef}
           isHovered={isHovered}
           backContent={
-            <div className="flex items-center h-full w-fit">
-              <div className="border-l-2 border-white/60 pl-6 md:pl-10 py-6">
-                <p className="font-mono text-[4vw] md:text-[2.2vw] max-w-2xl lg:text-[1.8vw] leading-relaxed font-bold text-white lowercase">
+            <div className="flex items-center h-full w-full max-w-2xl">
+              <div className="border-l-2 border-red-300/80 pl-4 sm:pl-6 md:pl-10 py-3 sm:py-6">
+                <p className="font-mono text-xs sm:text-base md:text-[2.2vw] lg:text-[1.8vw] leading-relaxed font-bold text-white lowercase">
                   i ship code faster than amazon ships packages.
                 </p>
-                <p className="font-mono text-[3vw] md:text-[1.6vw] lg:text-[1.2vw] leading-relaxed text-red-300 lowercase mt-3">
+                <p className="font-mono text-[11px] sm:text-xs md:text-[1.5vw] lg:text-[1.1vw] leading-relaxed text-red-300 lowercase mt-1.5 sm:mt-3">
                   software developer · ml tinkerer · full-time bug bounty hunter
                 </p>
               </div>
             </div>
           }
         >
-          <h1 className="text-[14vw] font-black leading-[0.9] tracking-tighter md:text-[10vw] text-left text-white">
+          <h1 className="text-[15vw] sm:text-[13vw] md:text-[10vw] font-black leading-[0.88] tracking-tighter text-left text-white">
             {loaderDone ? (
               <>
                 <EncryptedText
@@ -191,7 +192,7 @@ function HeroContent({ loaderDone }: { loaderDone: boolean }) {
         initial={{ opacity: 0, y: 20 }}
         animate={loaderDone ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.6 }}
-        className="mt-6 md:mt-8 flex items-center gap-2"
+        className="mt-4 sm:mt-6 md:mt-8 flex items-center gap-2"
       >
         <span className="font-mono text-[10px] md:text-xs uppercase tracking-[0.3em] opacity-40">
           //
@@ -199,7 +200,7 @@ function HeroContent({ loaderDone }: { loaderDone: boolean }) {
         <FlipWords
           words={ROLES}
           duration={2500}
-          className="font-mono text-sm md:text-base uppercase tracking-[0.2em] text-white/70 px-0"
+          className="font-mono text-xs sm:text-sm md:text-base uppercase tracking-[0.15em] sm:tracking-[0.2em] text-white/70 px-0"
         />
       </motion.div>
     </div>

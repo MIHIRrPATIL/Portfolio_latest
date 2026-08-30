@@ -1,16 +1,21 @@
-from fastapi import APIRouter, HTTPException, Query
+import os
+from fastapi import APIRouter, HTTPException, Query, BackgroundTasks, Response
+from fastapi.responses import FileResponse, RedirectResponse
 from typing import Dict, Any, List, Optional
 from pydantic import BaseModel, Field, EmailStr
+from app.services.email_service import email_service
 from app.db.session import SessionLocal
 from app.db.crud import (
     get_public_achievements,
     get_published_blogs,
     get_blog_by_id_or_slug,
     increment_blog_views,
-    create_visitor_lead
+    create_visitor_lead,
+    get_resume_settings,
+    increment_resume_download_count
 )
 
-router = APIRouter(prefix="/public", tags=["Public Content (Blogs & Achievements)"])
+router = APIRouter(prefix="/public", tags=["Public Content (Blogs & Achievements & Resume)"])
 
 # ==========================================
 # Public Achievements
@@ -89,8 +94,8 @@ class PublicInquiryRequest(BaseModel):
     project_scope: Optional[str] = "General Collaboration"
 
 @router.post("/inquire")
-async def submit_public_inquiry(req: PublicInquiryRequest):
-    """Allows visitors to dispatch contact requests directly into the Admin Inbox."""
+async def submit_public_inquiry(req: PublicInquiryRequest, background_tasks: BackgroundTasks):
+    """Allows visitors to dispatch contact requests directly into the Admin Inbox and email notification queue."""
     with SessionLocal() as db:
         lead = create_visitor_lead(db, {
             "visitor_name": req.name or "Visitor",
@@ -99,8 +104,83 @@ async def submit_public_inquiry(req: PublicInquiryRequest):
             "project_scope": req.project_scope or "General Collaboration",
             "status": "pending"
         })
+
+        # Queue non-blocking email notification in background
+        background_tasks.add_task(
+            email_service.send_lead_notification,
+            visitor_name=req.name or "Visitor",
+            email=req.email,
+            project_scope=req.project_scope or "General Collaboration",
+            message=req.message,
+            lead_id=lead.id
+        )
+
         return {
             "success": True,
             "lead_id": lead.id,
             "message": "Thank you! Your collaboration inquiry has been securely delivered to Mihir's inbox."
         }
+
+# ==========================================
+# Public Resume / CV Downloader
+# ==========================================
+@router.get("/resume")
+async def download_public_resume():
+    """
+    Public Resume Downloader.
+    Streams active PDF document directly from PostgreSQL binary storage, local disk, or redirects to external link.
+    """
+    with SessionLocal() as db:
+        setting = get_resume_settings(db)
+        safe_filename = setting.filename or "Mihir_Patil_Resume.pdf"
+
+        # 1. If PDF bytes are stored in PostgreSQL, stream directly from DB! (100% persistent across container restarts)
+        if setting.file_data:
+            increment_resume_download_count(db)
+            return Response(
+                content=setting.file_data,
+                media_type="application/pdf",
+                headers={
+                    "Content-Disposition": f'attachment; filename="{safe_filename}"',
+                    "Content-Length": str(len(setting.file_data))
+                }
+            )
+
+        # 2. If file exists on local storage, stream it as attachment
+        if setting.file_path and os.path.exists(setting.file_path):
+            increment_resume_download_count(db)
+            return FileResponse(
+                path=setting.file_path,
+                media_type="application/pdf",
+                filename=safe_filename,
+                headers={"Content-Disposition": f'attachment; filename="{safe_filename}"'}
+            )
+
+        # 3. If external cloud URL is configured, redirect
+        if setting.external_url:
+            increment_resume_download_count(db)
+            return RedirectResponse(url=setting.external_url, status_code=307)
+
+        # 4. Fallback: if no uploaded resume, generate informative 404
+        raise HTTPException(
+            status_code=404,
+            detail="Resume document is currently being updated. Please check back shortly or connect directly."
+        )
+
+@router.get("/resume/metadata")
+async def get_public_resume_metadata():
+    """Returns availability and metadata of Mihir's CV."""
+    with SessionLocal() as db:
+        setting = get_resume_settings(db)
+        has_file = bool(setting.file_data or (setting.file_path and os.path.exists(setting.file_path)))
+        has_external = bool(setting.external_url)
+
+        return {
+            "available": has_file or has_external,
+            "filename": setting.filename,
+            "size_bytes": len(setting.file_data) if setting.file_data else (setting.size_bytes if has_file else 0),
+            "has_direct_file": has_file,
+            "external_url": setting.external_url if not has_file else None,
+            "updated_at": setting.updated_at.isoformat() if setting.updated_at else None
+        }
+

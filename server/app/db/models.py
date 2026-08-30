@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, Boolean, JSON, DateTime
+from sqlalchemy import Column, Integer, String, Text, Boolean, JSON, DateTime, LargeBinary
 from sqlalchemy.orm import declarative_base
 from datetime import datetime, timezone
 
@@ -106,4 +106,18 @@ class BlogModel(Base):
     views = Column(Integer, default=0)
     published_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), index=True)
     created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))
+
+class ResumeSettingModel(Base):
+    """Stores active resume PDF metadata, database binary storage, local file path, and download statistics."""
+    __tablename__ = "resume_settings"
+
+    id = Column(Integer, primary_key=True, index=True)
+    filename = Column(String(255), default="Mihir_Patil_Resume.pdf")
+    file_path = Column(String(1024), nullable=True)
+    file_data = Column(LargeBinary, nullable=True)  # Direct PostgreSQL/SQLite Byte Storage (100% persistent across container restarts)
+    external_url = Column(String(1024), nullable=True)
+    size_bytes = Column(Integer, default=0)
+    download_count = Column(Integer, default=0)
+    is_active = Column(Boolean, default=True)
     updated_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc))

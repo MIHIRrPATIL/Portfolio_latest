@@ -43,8 +43,10 @@ class MasterAgentState(BaseModel):
     target_repo_ids: List[str] = Field(default_factory=list)
     target_functions: List[str] = Field(default_factory=list)
 
-    # GraphRAG Retrieved Knowledge
+    # GraphRAG & Multi-Source Retrieved Knowledge
     graph_context: List[Dict[str, Any]] = Field(default_factory=list)
+    relevant_projects: List[Dict[str, Any]] = Field(default_factory=list)
+    relevant_achievements: List[Dict[str, Any]] = Field(default_factory=list)
     case_study_context: Optional[Dict[str, Any]] = None
 
     # Autonomous Tool Calls

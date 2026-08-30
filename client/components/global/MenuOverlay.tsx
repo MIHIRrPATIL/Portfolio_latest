@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
+import { API_V1 } from '@/lib/api-config'
 
 interface MenuOverlayProps {
   isOpen: boolean
@@ -15,6 +16,7 @@ export default function MenuOverlay({ isOpen, close }: MenuOverlayProps) {
     { title: 'works.', href: '/#works' },
     { title: 'thoughts.', href: '/blogs' },
     { title: 'graph.', href: '/graph' },
+    { title: 'resume.', href: `${API_V1}/public/resume`, target: '_blank' },
     { title: 'connect.', href: '/#connect' },
   ]
 
@@ -47,15 +49,17 @@ export default function MenuOverlay({ isOpen, close }: MenuOverlayProps) {
           </button>
 
           {/* Content */}
-          <div className="relative flex flex-col h-full p-8 md:p-16">
+          <div className="relative flex flex-col h-full p-6 sm:p-10 md:p-16 overflow-y-auto">
             {/* Links */}
-            <div className="flex-1 flex flex-col justify-center gap-4 md:gap-6">
+            <div className="flex-1 flex flex-col justify-center gap-2.5 sm:gap-4 md:gap-6 py-6">
               {menuLinks.map((link, i) => (
                 <motion.a
                   key={link.title}
                   href={link.href}
+                  target={link.target}
+                  rel={link.target === "_blank" ? "noopener noreferrer" : undefined}
                   onClick={close}
-                  className="cursor-target block w-fit font-black uppercase text-[#333] hover:text-white transition-colors duration-300 select-none leading-none text-4xl sm:text-6xl md:text-8xl lg:text-[7rem]"
+                  className="cursor-target block w-fit font-black uppercase text-[#444] hover:text-white transition-colors duration-300 select-none leading-none text-3xl sm:text-5xl md:text-7xl lg:text-[6.5rem]"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.2 + i * 0.1 }}
@@ -66,8 +70,8 @@ export default function MenuOverlay({ isOpen, close }: MenuOverlayProps) {
             </div>
 
             {/* Bottom row */}
-            <div className="flex flex-col md:flex-row items-start md:items-end justify-between flex-wrap gap-8 mt-auto border-t border-white/5 pt-8">
-              <div className="flex gap-6">
+            <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between flex-wrap gap-4 sm:gap-8 mt-auto border-t border-white/5 pt-6 sm:pt-8">
+              <div className="flex gap-4 sm:gap-6">
                 {socials.map((social) => (
                   <motion.a
                     key={social.name}
@@ -75,7 +79,7 @@ export default function MenuOverlay({ isOpen, close }: MenuOverlayProps) {
                     whileHover={{ y: -4 }}
                     className="cursor-target block text-[#555] hover:text-white transition-colors duration-300"
                   >
-                    <svg viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 md:w-7 md:h-7">
+                    <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7">
                       <title>{social.name}</title>
                       <path d={social.path} />
                     </svg>
@@ -86,10 +90,10 @@ export default function MenuOverlay({ isOpen, close }: MenuOverlayProps) {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 onClick={close}
-                className="cursor-target flex items-center gap-4 bg-white text-black border-none rounded-2xl px-6 py-3 md:px-10 md:py-4 text-sm md:text-base font-bold uppercase tracking-wider cursor-pointer hover:bg-red-300 transition-colors duration-300 shadow-lg"
+                className="cursor-target flex items-center gap-3 sm:gap-4 bg-white text-black border-none rounded-2xl px-5 py-2.5 sm:px-8 sm:py-3.5 md:px-10 md:py-4 text-xs sm:text-sm md:text-base font-bold uppercase tracking-wider cursor-pointer hover:bg-red-300 transition-colors duration-300 shadow-lg"
               >
                 Let's Talk
-                <svg stroke="currentColor" fill="none" strokeWidth="2.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 md:w-5 md:h-5">
+                <svg stroke="currentColor" fill="none" strokeWidth="2.5" viewBox="0 0 24 24" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5">
                   <line x1="5" y1="12" x2="19" y2="12" />
                   <polyline points="12 5 19 12 12 19" />
                 </svg>

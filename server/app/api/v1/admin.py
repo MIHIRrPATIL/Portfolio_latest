@@ -1,5 +1,6 @@
 import os
-from fastapi import APIRouter, Header, HTTPException, Depends, Query, Body
+import shutil
+from fastapi import APIRouter, Header, HTTPException, Depends, Query, Body, File, UploadFile, Form
 from typing import Dict, Any, List, Optional
 from pydantic import BaseModel, Field
 from app.db.session import SessionLocal
@@ -12,7 +13,10 @@ from app.db.crud import (
     delete_achievement,
     upsert_blog,
     get_all_blogs,
-    delete_blog
+    delete_blog,
+    get_resume_settings,
+    upsert_resume_settings,
+    delete_resume_settings
 )
 
 router = APIRouter(prefix="/admin", tags=["Admin Portal & Content Manager"])
@@ -218,3 +222,111 @@ async def delete_admin_blog(blog_id: str):
         if not success:
             raise HTTPException(status_code=404, detail=f"Blog '{blog_id}' not found.")
         return {"success": True, "deleted_id": blog_id}
+
+# ==========================================
+# Resume / CV Management Endpoints
+# ==========================================
+UPLOADS_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), "data", "uploads")
+os.makedirs(UPLOADS_DIR, exist_ok=True)
+
+@router.get("/resume", dependencies=[Depends(verify_admin_auth)])
+async def get_admin_resume_info():
+    """Returns active resume metadata, download telemetry, and status."""
+    with SessionLocal() as db:
+        res = get_resume_settings(db)
+        has_file = bool(res.file_data or (res.file_path and os.path.exists(res.file_path)))
+        return {
+            "filename": res.filename,
+            "has_file": has_file,
+            "external_url": res.external_url,
+            "size_bytes": res.size_bytes if has_file else 0,
+            "download_count": res.download_count,
+            "is_active": res.is_active,
+            "updated_at": res.updated_at.isoformat() if res.updated_at else None
+        }
+
+@router.post("/resume/upload", dependencies=[Depends(verify_admin_auth)])
+async def upload_admin_resume(
+    file: Optional[UploadFile] = File(None),
+    external_url: Optional[str] = Form(None)
+):
+    """
+    Upload a new Resume PDF or update the external resume cloud link.
+    Stores raw PDF bytes in PostgreSQL for 100% restart persistence and caches on disk.
+    """
+    with SessionLocal() as db:
+        target_filename = "Mihir_Patil_Resume.pdf"
+        file_path = None
+        file_bytes = None
+        size_bytes = 0
+
+        if file:
+            if not file.filename.lower().endswith(".pdf"):
+                raise HTTPException(status_code=400, detail="Only PDF (.pdf) documents are accepted.")
+
+            target_filename = file.filename
+            file_bytes = await file.read()
+            size_bytes = len(file_bytes)
+
+            if size_bytes > 15 * 1024 * 1024:
+                raise HTTPException(status_code=400, detail="PDF size exceeds maximum 15MB limit.")
+
+            dest_path = os.path.join(UPLOADS_DIR, "resume.pdf")
+            try:
+                with open(dest_path, "wb") as buffer:
+                    buffer.write(file_bytes)
+                file_path = dest_path
+            except Exception:
+                pass
+
+        saved = upsert_resume_settings(
+            db,
+            filename=target_filename,
+            file_path=file_path,
+            external_url=external_url.strip() if external_url else None,
+            size_bytes=size_bytes,
+            file_data=file_bytes
+        )
+
+        has_file = bool(saved.file_data or (saved.file_path and os.path.exists(saved.file_path)))
+        return {
+            "success": True,
+            "message": "Resume updated and permanently persisted to database successfully.",
+            "filename": saved.filename,
+            "has_file": has_file,
+            "size_bytes": saved.size_bytes,
+            "external_url": saved.external_url,
+            "updated_at": saved.updated_at.isoformat() if saved.updated_at else None
+        }
+
+@router.delete("/resume", dependencies=[Depends(verify_admin_auth)])
+async def reset_admin_resume():
+    """Deletes uploaded resume file and resets settings."""
+    with SessionLocal() as db:
+        res = delete_resume_settings(db)
+        return {"success": True, "message": "Resume reset to default state."}
+
+# ==========================================
+# Email Notification Test Endpoint
+# ==========================================
+@router.post("/email/test", dependencies=[Depends(verify_admin_auth)])
+async def send_test_notification_email():
+    """Sends a sample inquiry notification to verify SMTP / Email settings."""
+    from app.services.email_service import email_service
+    from app.config import settings
+    
+    await email_service.send_lead_notification(
+        visitor_name="Portfolio Admin Test",
+        email=settings.NOTIFICATION_EMAIL or "test@example.com",
+        project_scope="Autonomous Systems & Distributed AI",
+        message="This is a test notification verifying that your SMTP email alert system is operational!",
+        lead_id=999
+    )
+    return {
+        "success": True,
+        "message": f"Test email triggered to {settings.NOTIFICATION_EMAIL}. Check your inbox.",
+        "recipient": settings.NOTIFICATION_EMAIL,
+        "smtp_host": settings.SMTP_HOST,
+        "smtp_user": settings.SMTP_USER
+    }
+

@@ -59,16 +59,16 @@ const achievementItems: AchievementItem[] = [
 interface AccordionItemProps {
   item: AchievementItem;
   isActive: boolean;
-  onMouseEnter: () => void;
+  onSelect: () => void;
 }
 
-const AccordionItem: React.FC<AccordionItemProps> = ({ item, isActive, onMouseEnter }) => {
+const AccordionItem: React.FC<AccordionItemProps> = ({ item, isActive, onSelect }) => {
   return (
     <motion.div
       layout
       initial={false}
       animate={{
-        width: isActive ? "380px" : "80px",
+        width: isActive ? "clamp(260px, 68vw, 380px)" : "clamp(50px, 14vw, 80px)",
       }}
       transition={{
         type: "spring",
@@ -76,15 +76,16 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ item, isActive, onMouseEn
         damping: 24,
       }}
       className={`
-        relative h-120 md:h-135 rounded-3xl overflow-hidden cursor-pointer
-        border shrink-0 select-none
+        relative h-100 sm:h-115 md:h-135 rounded-2xl sm:rounded-3xl overflow-hidden cursor-pointer
+        border shrink-0 select-none snap-center
         ${
           isActive
             ? "border-red-300/40 shadow-[0_0_60px_rgba(252,165,165,0.2)] bg-[#161618]"
             : "border-white/10 bg-[#0e0e10] hover:border-white/25"
         }
       `}
-      onMouseEnter={onMouseEnter}
+      onMouseEnter={onSelect}
+      onClick={onSelect}
     >
       {/* Background Image with Zoom & Grayscale Animation */}
       <img
@@ -128,7 +129,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ item, isActive, onMouseEn
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="absolute inset-0 p-6 md:p-8 flex flex-col justify-between z-10"
+            className="absolute inset-0 p-5 sm:p-6 md:p-8 flex flex-col justify-between z-10"
           >
             {/* Top Badge */}
             <motion.div 
@@ -137,19 +138,19 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ item, isActive, onMouseEn
               transition={{ duration: 0.35, delay: 0.1 }}
               className="flex justify-between items-center"
             >
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] px-3.5 py-1.5 rounded-xl bg-black/80 backdrop-blur-md border border-red-300/35 text-red-300 flex items-center gap-1.5 shadow-md">
-                <Trophy className="w-3.5 h-3.5 text-red-300" />
+              <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.2em] px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-xl bg-black/80 backdrop-blur-md border border-red-300/35 text-red-300 flex items-center gap-1.5 shadow-md">
+                <Trophy className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-red-300" />
                 {item.category}
               </span>
             </motion.div>
 
             {/* Bottom Narrative Block */}
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               <motion.span 
                 initial={{ y: 10, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.35, delay: 0.15 }}
-                className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/50 block"
+                className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.2em] text-white/50 block"
               >
                 {item.location}
               </motion.span>
@@ -158,7 +159,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ item, isActive, onMouseEn
                 initial={{ y: 12, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.35, delay: 0.2 }}
-                className="text-2xl md:text-3xl font-black text-white uppercase tracking-wide leading-tight"
+                className="text-xl sm:text-2xl md:text-3xl font-black text-white uppercase tracking-wide leading-tight"
               >
                 {item.title}
               </motion.h3>
@@ -167,7 +168,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ item, isActive, onMouseEn
                 initial={{ y: 14, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.35, delay: 0.25 }}
-                className="text-white/80 text-xs md:text-sm font-sans leading-relaxed"
+                className="text-white/80 text-xs sm:text-sm font-sans leading-relaxed line-clamp-3 sm:line-clamp-none"
               >
                 {item.description}
               </motion.p>
@@ -180,7 +181,8 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ item, isActive, onMouseEn
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute text-white/70 font-mono text-xs uppercase tracking-[0.25em] whitespace-nowrap transition-all duration-300 ease-in-out w-auto text-left bottom-28 left-1/2 -translate-x-1/2 rotate-90 pointer-events-none"
+            transition={{ duration: 0.2 }}
+            className="absolute bottom-6 left-1/2 -translate-x-1/2 -rotate-90 origin-center whitespace-nowrap font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] text-white/40 font-bold"
           >
             {item.title}
           </motion.span>
@@ -226,49 +228,49 @@ export default function AchievementsSection() {
   }, []);
 
   return (
-    <section id="achievements" className="w-full bg-black text-white px-6 md:px-16 lg:px-24 py-20 md:py-32 border-t border-white/10 overflow-hidden">
-      <div className="max-w-450 mx-auto grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+    <section id="achievements" className="w-full bg-black text-white px-5 sm:px-8 md:px-16 lg:px-24 py-16 sm:py-24 md:py-32 border-t border-white/10 overflow-hidden">
+      <div className="max-w-450 mx-auto grid lg:grid-cols-12 gap-10 sm:gap-12 lg:gap-16 items-center">
         
         {/* Left Side: Header & Context */}
         <div className="lg:col-span-5 flex flex-col justify-center">
-          <div className="flex items-center gap-4 mb-4">
-            <span className="text-red-300 animate-spin text-4xl md:text-5xl">✱</span>
-            <span className="font-mono text-xs uppercase tracking-[0.3em] text-red-300">
+          <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+            <span className="text-red-300 animate-spin text-3xl sm:text-4xl md:text-5xl">✱</span>
+            <span className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.25em] sm:tracking-[0.3em] text-red-300">
               Track Record // Hackathons & Milestones
             </span>
           </div>
 
-          <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black font-sans text-white uppercase tracking-tight leading-none mb-6">
+          <h2 className="text-3xl sm:text-5xl lg:text-7xl font-black font-sans text-white uppercase tracking-tight leading-tight sm:leading-none mb-4 sm:mb-6">
             Victories & <br />
             <span className="text-red-300">Achievements.</span>
           </h2>
 
-          <p className="text-white/70 text-base md:text-lg font-sans leading-relaxed max-w-xl mb-8">
+          <p className="text-white/70 text-sm sm:text-base md:text-lg font-sans leading-relaxed max-w-xl mb-6 sm:mb-8">
             From speech AI acoustic modeling at CDAC to high-pressure hackathon sprints, here are key engineering victories and research milestones built under pressure.
           </p>
 
-          <div className="flex items-center gap-6 font-mono text-xs uppercase tracking-[0.2em] text-white/50 border-t border-white/10 pt-6">
+          <div className="flex items-center gap-4 sm:gap-6 font-mono text-[11px] sm:text-xs uppercase tracking-[0.15em] sm:tracking-[0.2em] text-white/50 border-t border-white/10 pt-4 sm:pt-6">
             <div className="flex items-center gap-2">
-              <Award className="w-4 h-4 text-red-300" />
+              <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-300" />
               <span>{items.length}+ Milestones</span>
             </div>
             <div className="w-3 h-px bg-white/20" />
             <div className="flex items-center gap-2">
-              <Zap className="w-4 h-4 text-red-300" />
+              <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-red-300" />
               <span>Verified Proofs</span>
             </div>
           </div>
         </div>
 
         {/* Right Side: Interactive Image Accordion */}
-        <div className="lg:col-span-7 flex justify-center lg:justify-end">
-          <div className="flex flex-row items-center justify-start md:justify-center gap-3 md:gap-4 overflow-x-auto pb-4 pt-2 no-scrollbar w-full">
+        <div className="lg:col-span-7 flex justify-center lg:justify-end w-full overflow-hidden">
+          <div className="flex flex-row items-center justify-start md:justify-center gap-2.5 sm:gap-3 md:gap-4 overflow-x-auto pb-4 pt-2 no-scrollbar w-full snap-x snap-mandatory">
             {items.map((item, index) => (
               <AccordionItem
                 key={item.id}
                 item={item}
                 isActive={index === activeIndex}
-                onMouseEnter={() => setActiveIndex(index)}
+                onSelect={() => setActiveIndex(index)}
               />
             ))}
           </div>

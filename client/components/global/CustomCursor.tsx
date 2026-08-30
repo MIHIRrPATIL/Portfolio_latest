@@ -8,6 +8,7 @@ export default function CustomCursor() {
   const [isHovered, setIsHovered] = useState(false)
   const [isMouseDown, setIsMouseDown] = useState(false)
   const [isHidden, setIsHidden] = useState(false)
+  const [isMobileOrTouch, setIsMobileOrTouch] = useState(true)
 
   const cursorX = useMotionValue(-100)
   const cursorY = useMotionValue(-100)
@@ -27,6 +28,18 @@ export default function CustomCursor() {
   const trail4Y = useSpring(cursorY, { damping: 45, stiffness: 120 })
 
   useEffect(() => {
+    const checkMobile = () => {
+      if (typeof window === 'undefined') return
+      const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+      const isCoarse = window.matchMedia('(pointer: coarse)').matches
+      const isSmall = window.innerWidth <= 1024
+      const isMobile = hasTouch || isCoarse || isSmall
+      setIsMobileOrTouch(isMobile)
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+
     const moveCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX)
       cursorY.set(e.clientY)
@@ -59,12 +72,17 @@ export default function CustomCursor() {
     window.addEventListener('mouseover', handleMouseOver)
 
     return () => {
+      window.removeEventListener('resize', checkMobile)
       window.removeEventListener('mousemove', moveCursor)
       window.removeEventListener('mousedown', handleMouseDown)
       window.removeEventListener('mouseup', handleMouseUp)
       window.removeEventListener('mouseover', handleMouseOver)
     }
   }, [cursorX, cursorY])
+
+  if (isMobileOrTouch) {
+    return null
+  }
 
   return (
     <>
@@ -114,13 +132,14 @@ export default function CustomCursor() {
 function CustomCursorStyles() {
   return (
     <style jsx global>{`
-      * {
-        cursor: none !important;
-      }
-      /* Allow native pointer to show when data-cursor="hide" is active on the element or its parent */
-      [data-cursor="hide"], 
-      [data-cursor="hide"] * {
-        cursor: pointer !important;
+      @media (hover: hover) and (pointer: fine) and (min-width: 1024px) {
+        * {
+          cursor: none !important;
+        }
+        [data-cursor="hide"], 
+        [data-cursor="hide"] * {
+          cursor: pointer !important;
+        }
       }
     `}</style>
   )

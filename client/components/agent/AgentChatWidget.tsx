@@ -22,7 +22,8 @@ import {
   ExternalLink,
   FolderGit2,
   Globe,
-  Mail
+  Mail,
+  Download
 } from "lucide-react";
 import { API_V1 } from "@/lib/api-config";
 import { cn } from "@/lib/utils";
@@ -209,7 +210,7 @@ function parseInlineFormatted(text: string): React.ReactNode[] {
   return tokens;
 }
 
-// Rich formatted AI Response Renderer with micro-animations
+// Rich formatted AI Response Renderer with micro-animations & Table Parser
 function FormattedAiResponse({ content, isStreaming }: { content: string; isStreaming?: boolean }) {
   if (!content) return null;
 
@@ -246,83 +247,178 @@ function FormattedAiResponse({ content, isStreaming }: { content: string; isStre
         }
 
         const lines = part.split("\n");
+        const renderedElements: React.ReactNode[] = [];
+        let i = 0;
+
+        while (i < lines.length) {
+          const line = lines[i];
+          const trimmed = line.trim();
+
+          // Check for Markdown Table Start (| header | header |)
+          if (
+            trimmed.startsWith("|") &&
+            trimmed.endsWith("|") &&
+            i + 1 < lines.length &&
+            lines[i + 1].trim().startsWith("|") &&
+            lines[i + 1].includes("---")
+          ) {
+            const headerCells = trimmed
+              .slice(1, -1)
+              .split("|")
+              .map((c) => c.trim());
+            const rows: string[][] = [];
+            i += 2; // skip header and delimiter
+
+            while (i < lines.length && lines[i].trim().startsWith("|") && lines[i].trim().endsWith("|")) {
+              const rowCells = lines[i]
+                .trim()
+                .slice(1, -1)
+                .split("|")
+                .map((c) => c.trim());
+              if (rowCells.length > 0) {
+                rows.push(rowCells);
+              }
+              i++;
+            }
+
+            renderedElements.push(
+              <motion.div
+                key={`table-${i}`}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+                className="my-3 w-full rounded-2xl border border-white/15 bg-black/50 backdrop-blur-sm overflow-hidden shadow-md"
+              >
+                <div className="overflow-x-auto no-scrollbar">
+                  <table className="w-full text-left text-[11px] sm:text-xs font-mono border-collapse">
+                    <thead>
+                      <tr className="border-b border-white/10 bg-white/[0.04]">
+                        {headerCells.map((header, hIdx) => (
+                          <th
+                            key={hIdx}
+                            className="px-3 py-2.5 font-bold uppercase tracking-wider text-red-300 text-[10px] sm:text-[11px] whitespace-nowrap"
+                          >
+                            {header}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/[0.06]">
+                      {rows.map((row, rIdx) => (
+                        <tr key={rIdx} className="hover:bg-white/[0.02] transition-colors">
+                          {row.map((cell, cIdx) => {
+                            const isTypeCell = ["FUNCTION", "PROJECT", "MODULE", "TECH STACK", "TECHNOLOGY", "EXPERIENCE", "FILE"].includes(
+                              cell.toUpperCase()
+                            );
+                            return (
+                              <td key={cIdx} className="px-3 py-2 text-neutral-200 align-top leading-relaxed font-sans text-xs">
+                                {isTypeCell ? (
+                                  <span className="inline-flex px-2 py-0.5 rounded-md font-mono text-[9px] font-bold uppercase tracking-wider bg-red-500/10 text-red-300 border border-red-500/30">
+                                    {cell}
+                                  </span>
+                                ) : (
+                                  parseInlineFormatted(cell)
+                                )}
+                              </td>
+                            );
+                          })}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </motion.div>
+            );
+            continue;
+          }
+
+          if (!trimmed) {
+            i++;
+            continue;
+          }
+
+          if (trimmed.startsWith("### ") || trimmed.startsWith("## ") || trimmed.startsWith("# ")) {
+            const headerText = trimmed.replace(/^#+\s*/, "").replace(/^\*\*/, "").replace(/\*\*$/, "");
+            renderedElements.push(
+              <motion.div
+                key={`h-${i}`}
+                initial={{ opacity: 0, x: -6 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.25 }}
+                className="pt-3 pb-1 border-b border-white/10 flex items-center gap-2"
+              >
+                <span className="font-mono text-xs text-red-300 font-bold">//</span>
+                <h4 className="text-xs sm:text-sm font-bold font-mono uppercase tracking-wider text-white">
+                  {headerText}
+                </h4>
+              </motion.div>
+            );
+            i++;
+            continue;
+          }
+
+          if (trimmed.startsWith("* ") || trimmed.startsWith("- ") || trimmed.startsWith("• ")) {
+            const itemText = trimmed.replace(/^[*•-]\s*/, "");
+            renderedElements.push(
+              <motion.div
+                key={`li-${i}`}
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
+                className="flex items-start gap-2.5 my-1 pl-1"
+              >
+                <span className="text-red-300 font-mono text-sm leading-none mt-1 select-none">
+                  •
+                </span>
+                <div className="flex-1 text-neutral-100 text-xs sm:text-sm font-sans leading-relaxed">
+                  {parseInlineFormatted(itemText)}
+                </div>
+              </motion.div>
+            );
+            i++;
+            continue;
+          }
+
+          if (/^\d+\.\s/.test(trimmed)) {
+            const num = trimmed.match(/^(\d+)\.\s/)?.[1] || "1";
+            const itemText = trimmed.replace(/^\d+\.\s*/, "");
+            renderedElements.push(
+              <motion.div
+                key={`num-${i}`}
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
+                className="flex items-start gap-2.5 my-1 pl-1"
+              >
+                <span className="font-mono text-xs text-red-300 font-semibold leading-none mt-1 select-none">
+                  {num}.
+                </span>
+                <div className="flex-1 text-neutral-100 text-xs sm:text-sm font-sans leading-relaxed">
+                  {parseInlineFormatted(itemText)}
+                </div>
+              </motion.div>
+            );
+            i++;
+            continue;
+          }
+
+          renderedElements.push(
+            <p
+              key={`p-${i}`}
+              className="text-neutral-100 text-xs sm:text-sm font-sans leading-relaxed font-normal"
+            >
+              {parseInlineFormatted(line)}
+              {isStreaming && i === lines.length - 1 && (
+                <span className="inline-block w-2 h-3.5 ml-1 bg-red-400 animate-pulse align-middle" />
+              )}
+            </p>
+          );
+          i++;
+        }
+
         return (
           <div key={pIdx} className="space-y-2">
-            {lines.map((line, lIdx) => {
-              const trimmed = line.trim();
-              if (!trimmed) return null;
-
-              if (trimmed.startsWith("### ") || trimmed.startsWith("## ") || trimmed.startsWith("# ")) {
-                const headerText = trimmed.replace(/^#+\s*/, "").replace(/^\*\*/, "").replace(/\*\*$/, "");
-                return (
-                  <motion.div
-                    key={lIdx}
-                    initial={{ opacity: 0, x: -6 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.25 }}
-                    className="pt-3 pb-1 border-b border-white/10 flex items-center gap-2"
-                  >
-                    <span className="font-mono text-xs text-red-300 font-bold">//</span>
-                    <h4 className="text-xs sm:text-sm font-bold font-mono uppercase tracking-wider text-white">
-                      {headerText}
-                    </h4>
-                  </motion.div>
-                );
-              }
-
-              if (trimmed.startsWith("* ") || trimmed.startsWith("- ") || trimmed.startsWith("• ")) {
-                const itemText = trimmed.replace(/^[*•-]\s*/, "");
-                return (
-                  <motion.div
-                    key={lIdx}
-                    initial={{ opacity: 0, y: 4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex items-start gap-2.5 my-1 pl-1"
-                  >
-                    <span className="text-red-300 font-mono text-sm leading-none mt-1 select-none">
-                      •
-                    </span>
-                    <div className="flex-1 text-neutral-100 text-xs sm:text-sm font-sans leading-relaxed">
-                      {parseInlineFormatted(itemText)}
-                    </div>
-                  </motion.div>
-                );
-              }
-
-              if (/^\d+\.\s/.test(trimmed)) {
-                const num = trimmed.match(/^(\d+)\.\s/)?.[1] || "1";
-                const itemText = trimmed.replace(/^\d+\.\s*/, "");
-                return (
-                  <motion.div
-                    key={lIdx}
-                    initial={{ opacity: 0, y: 4 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="flex items-start gap-2.5 my-1 pl-1"
-                  >
-                    <span className="font-mono text-xs text-red-300 font-semibold leading-none mt-1 select-none">
-                      {num}.
-                    </span>
-                    <div className="flex-1 text-neutral-100 text-xs sm:text-sm font-sans leading-relaxed">
-                      {parseInlineFormatted(itemText)}
-                    </div>
-                  </motion.div>
-                );
-              }
-
-              return (
-                <p
-                  key={lIdx}
-                  className="text-neutral-100 text-xs sm:text-sm font-sans leading-relaxed font-normal"
-                >
-                  {parseInlineFormatted(line)}
-                  {isStreaming && lIdx === lines.length - 1 && (
-                    <span className="inline-block w-1.5 h-3.5 ml-1 bg-red-300 animate-pulse align-middle" />
-                  )}
-                </p>
-              );
-            })}
+            {renderedElements}
           </div>
         );
       })}
@@ -674,14 +770,14 @@ export default function AgentChatWidget() {
 
   return (
     <>
-      {/* Floating Bottom-Right Trigger Pill with Clean Minimalist Cyberpunk Design */}
-      <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3">
+      {/* Floating Trigger Pill */}
+      <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40">
         <motion.button
           onClick={() => setIsOpen(true)}
           whileHover={{ scale: 1.04, y: -2 }}
           whileTap={{ scale: 0.96 }}
           transition={{ type: "spring", stiffness: 400, damping: 25 }}
-          className="group flex items-center gap-3 px-4 py-2.5 sm:px-5 sm:py-3 rounded-full bg-[#0a0a0f] hover:bg-[#12121c] border border-white/15 hover:border-red-300/50 text-white font-mono text-xs shadow-[0_10px_30px_rgba(0,0,0,0.8)] hover:shadow-[0_12px_40px_rgba(252,165,165,0.2)] transition-all cursor-pointer"
+          className="group flex items-center gap-2 sm:gap-3 px-3.5 py-2 sm:px-5 sm:py-3 rounded-full bg-[#0a0a0f] hover:bg-[#12121c] border border-white/15 hover:border-red-300/50 text-white font-mono text-[11px] sm:text-xs shadow-[0_10px_30px_rgba(0,0,0,0.8)] hover:shadow-[0_12px_40px_rgba(252,165,165,0.2)] transition-all cursor-pointer"
         >
           <div className="p-1 rounded-full bg-white/[0.06] text-red-300 group-hover:text-white transition-colors">
             <Terminal className="w-3.5 h-3.5" />
@@ -689,11 +785,16 @@ export default function AgentChatWidget() {
 
           <span className="font-bold tracking-wider uppercase text-neutral-200 group-hover:text-white transition-colors">
             {pageContext.type === "PROJECT_DOSSIER" ? (
-              <span className="hidden sm:inline">ASK ABOUT THIS PROJECT</span>
+              <>
+                <span className="hidden sm:inline">ASK ABOUT THIS PROJECT</span>
+                <span className="sm:hidden">PROJECT AI</span>
+              </>
             ) : (
-              <span>AI COPILOT</span>
+              <>
+                <span className="hidden sm:inline">AI COPILOT</span>
+                <span className="sm:hidden">COPILOT</span>
+              </>
             )}
-            <span className="sm:hidden">AI</span>
           </span>
 
           <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded text-[10px] bg-white/[0.06] border border-white/10 text-neutral-300 font-mono">
@@ -922,6 +1023,29 @@ export default function AgentChatWidget() {
                               );
                             }
 
+                            // 2.5 Resume / CV Downloader Badge
+                            if (b.type === "resume_download" || (b.url && b.url.includes("resume"))) {
+                              return (
+                                <motion.a
+                                  key={i}
+                                  custom={i}
+                                  variants={badgeVariants}
+                                  initial="hidden"
+                                  animate="visible"
+                                  whileHover={{ scale: 1.03, y: -1 }}
+                                  whileTap={{ scale: 0.97 }}
+                                  href={b.url || `${API_V1}/public/resume`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="group inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-black font-mono text-xs font-bold hover:bg-red-300 hover:text-black transition-colors duration-200 shadow-md cursor-pointer"
+                                >
+                                  <Download className="w-3.5 h-3.5 text-black" />
+                                  <span>{b.label || "DOWNLOAD RESUME (PDF)"}</span>
+                                  <ArrowRight className="w-3.5 h-3.5 text-black group-hover:translate-x-1 transition-transform" />
+                                </motion.a>
+                              );
+                            }
+
                             // 3. Live Demo Deployment Link with Motion
                             if (b.type === "live_demo" || (b.url && b.url.startsWith("http"))) {
                               return (
@@ -967,20 +1091,16 @@ export default function AgentChatWidget() {
                       )}
                     </div>
 
-                    {/* Follow-up Question Suggestions with Staggered Entrance */}
-                    {msg.suggestedFollowups && msg.suggestedFollowups.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5 mt-1.5 max-w-[90%]">
-                        {msg.suggestedFollowups.map((f, i) => (
+                    {/* Suggested Followups */}
+                    {msg.suggestedFollowups && msg.suggestedFollowups.length > 0 && !isStreaming && (
+                      <div className="flex flex-wrap gap-1.5 pt-2 mt-1">
+                        {msg.suggestedFollowups.map((f, fIdx) => (
                           <motion.button
-                            key={i}
-                            custom={i}
-                            variants={promptPillVariants}
-                            initial="hidden"
-                            animate="visible"
+                            key={fIdx}
                             whileHover={{ scale: 1.02, y: -1 }}
                             whileTap={{ scale: 0.97 }}
                             onClick={() => handleSendMessage(f)}
-                            className="text-[11px] font-mono text-left px-3.5 py-1.5 rounded-full bg-neutral-900/90 hover:bg-neutral-800 border border-neutral-800 hover:border-red-300/50 text-neutral-300 hover:text-white transition-colors shadow-sm cursor-pointer"
+                            className="text-[10px] sm:text-[11px] font-mono text-left px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-neutral-900/90 hover:bg-neutral-800 border border-neutral-800 hover:border-red-300/50 text-neutral-300 hover:text-white transition-colors shadow-sm cursor-pointer"
                           >
                             {f} →
                           </motion.button>
@@ -992,7 +1112,7 @@ export default function AgentChatWidget() {
                 <div ref={messagesEndRef} />
               </div>
 
-              {/* Floating Scroll Down Pill when user scrolls up */}
+              {/* Floating Scroll Down Pill */}
               <AnimatePresence>
                 {isScrolledUp && (
                   <motion.button
@@ -1006,7 +1126,7 @@ export default function AgentChatWidget() {
                       setIsScrolledUp(false);
                       scrollToBottom(true);
                     }}
-                    className="absolute bottom-24 right-8 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-300 text-black font-mono text-[11px] font-bold shadow-lg hover:bg-white transition-colors cursor-pointer"
+                    className="absolute bottom-20 sm:bottom-24 right-6 sm:right-8 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-300 text-black font-mono text-[10px] sm:text-[11px] font-bold shadow-lg hover:bg-white transition-colors cursor-pointer"
                   >
                     <span>SCROLL DOWN</span>
                     <ArrowDown className="w-3 h-3" />
@@ -1016,11 +1136,11 @@ export default function AgentChatWidget() {
 
               {/* Context-Aware Recommended Starters */}
               {messages.length === 0 && (
-                <div className="my-3 space-y-2 shrink-0">
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-neutral-400 font-semibold block">
+                <div className="my-2 sm:my-3 space-y-1.5 sm:space-y-2 shrink-0">
+                  <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-widest text-neutral-400 font-semibold block">
                     RECOMMENDED INQUIRIES FOR THIS PAGE:
                   </span>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2">
                     {pageContext.starterPrompts.map((prompt, idx) => (
                       <motion.button
                         key={idx}
@@ -1031,7 +1151,7 @@ export default function AgentChatWidget() {
                         whileHover={{ scale: 1.02, y: -1 }}
                         whileTap={{ scale: 0.97 }}
                         onClick={() => handleSendMessage(prompt)}
-                        className="text-left text-xs font-mono px-3.5 py-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.09] border border-white/15 hover:border-red-300/50 text-neutral-200 hover:text-white transition-all duration-200 cursor-pointer"
+                        className="text-left text-[11px] sm:text-xs font-mono px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-lg sm:rounded-xl bg-white/[0.04] hover:bg-white/[0.09] border border-white/15 hover:border-red-300/50 text-neutral-200 hover:text-white transition-all duration-200 cursor-pointer"
                       >
                         {prompt} →
                       </motion.button>
@@ -1046,10 +1166,10 @@ export default function AgentChatWidget() {
                   e.preventDefault();
                   handleSendMessage();
                 }}
-                className="mt-3 pt-3 border-t border-white/10 flex items-center gap-2 shrink-0"
+                className="mt-2 sm:mt-3 pt-2 sm:pt-3 border-t border-white/10 flex items-center gap-2 shrink-0"
               >
                 <div className="relative flex-1">
-                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-xs pointer-events-none">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400 font-mono text-xs pointer-events-none">
                     &gt;
                   </span>
                   <input
@@ -1059,7 +1179,7 @@ export default function AgentChatWidget() {
                     onChange={(e) => setQuery(e.target.value)}
                     placeholder={`Ask about ${pageContext.title}...`}
                     disabled={isStreaming}
-                    className="w-full bg-[#12121a] text-white text-xs font-mono rounded-xl border border-white/15 focus:border-red-300/60 pl-8 pr-4 py-3 outline-none transition-colors placeholder:text-neutral-400 disabled:opacity-50"
+                    className="w-full bg-[#12121a] text-white text-xs font-mono rounded-xl border border-white/15 focus:border-red-300/60 pl-7 sm:pl-8 pr-3 sm:pr-4 py-2.5 sm:py-3 outline-none transition-colors placeholder:text-neutral-400 disabled:opacity-50"
                   />
                 </div>
 
@@ -1068,12 +1188,12 @@ export default function AgentChatWidget() {
                   whileTap={{ scale: 0.94 }}
                   type="submit"
                   disabled={!query.trim() || isStreaming}
-                  className="px-4 py-3 rounded-xl bg-white text-black font-mono text-xs font-bold hover:bg-red-300 transition-colors disabled:opacity-40 disabled:hover:bg-white flex items-center justify-center shrink-0 cursor-pointer"
+                  className="px-3.5 py-2.5 sm:px-4 sm:py-3 rounded-xl bg-white text-black font-mono text-xs font-bold hover:bg-red-300 transition-colors disabled:opacity-40 disabled:hover:bg-white flex items-center justify-center shrink-0 cursor-pointer"
                 >
                   {isStreaming ? (
                     <span className="w-4 h-4 rounded-full border-2 border-black border-t-transparent animate-spin" />
                   ) : (
-                    <Send className="w-4 h-4" />
+                    <Send className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   )}
                 </motion.button>
               </form>

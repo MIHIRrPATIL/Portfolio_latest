@@ -102,11 +102,11 @@ export default function SideNav() {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
             onClick={toggleMenu}
-            className="fixed right-6 top-6 z-100 flex h-14 w-14 items-center justify-center rounded-full bg-foreground text-background shadow-xl md:right-10 md:top-10 transition-transform hover:scale-110 active:scale-95 cursor-target"
+            className="fixed right-4 top-4 z-100 flex h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-foreground text-background shadow-xl sm:right-6 sm:top-6 md:right-10 md:top-10 transition-transform hover:scale-110 active:scale-95 cursor-target"
           >
-            <div className="flex flex-col gap-1.5 items-end">
-              <span className="block h-0.5 w-6 bg-background" />
-              <span className="block h-0.5 w-4 bg-background" />
+            <div className="flex flex-col gap-1 sm:gap-1.5 items-end">
+              <span className="block h-0.5 w-4 sm:w-6 bg-background" />
+              <span className="block h-0.5 w-2.5 sm:w-4 bg-background" />
             </div>
           </motion.button>
         )}

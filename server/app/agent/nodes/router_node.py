@@ -1,24 +1,13 @@
 import re
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Set
 from app.agent.nodes.base import BaseNode
 from app.agent.state import MasterAgentState, AgentIntent
-
-PROJECT_ALIASES: Dict[str, List[str]] = {
-    "cdac-asr": ["cdac-asr", "cdac_asr", "cdac asr", "cdac", "cdac speech"],
-    "vaultagent": ["vaultagent", "vault agent", "vault_agent"],
-    "reflectos": ["reflectos", "reflect os", "reflect_os", "cloud os", "web desktop"],
-    "hireai": ["hireai", "hire ai", "hire_ai", "mock interview system"],
-    "ipd": ["ipd", "federated learning", "incremental learning", "fedavg"],
-    "greekslab": ["greekslab", "greeks lab", "greeks_lab", "black scholes", "options pricing"],
-    "niti-ai": ["niti-ai", "niti ai", "niti_ai", "nitiai", "legal intelligence"],
-    "synapse": ["synapse engine", "synapse", "neural search engine"],
-    "hi-pace-wealth": ["hi-pace-wealth", "hipace wealth", "hi-pace", "hipace"]
-}
+from app.graph.graph_store import graph_store
 
 class IntentRouterNode(BaseNode):
     """
-    Classifies user intent and extracts target repository and code entities from the query,
-    dynamically incorporating client active route and page context with strict word-boundary matching.
+    Classifies user intent and dynamically extracts target repository and code entities
+    by querying the active Knowledge Graph and client page context.
     """
     name = "intent_router"
 
@@ -34,14 +23,23 @@ class IntentRouterNode(BaseNode):
             if slug:
                 active_repo_from_route = slug
 
-        # 1. Entity Extraction with Strict Word Boundary Matching
-        found_repos = set()
-        for repo_id, aliases in PROJECT_ALIASES.items():
-            for alias in aliases:
-                pattern = rf"\b{re.escape(alias.lower())}\b"
-                if re.search(pattern, q_lower):
-                    found_repos.add(repo_id)
-                    break
+        # 1. Dynamic Entity Extraction from Knowledge Graph
+        found_repos: Set[str] = set()
+
+        for node_id, data in graph_store.graph.nodes(data=True):
+            node_data = data.get("data", {})
+            if node_data.get("type") == "PROJECT":
+                proj_name = node_data.get("name") or node_id
+                proj_slug = node_id.lower().replace("_", "-").strip()
+                name_clean = proj_name.lower().replace("_", " ").strip()
+
+                if proj_slug in q_lower or name_clean in q_lower:
+                    found_repos.add(proj_slug)
+
+        if active_repo_from_route:
+            found_repos.add(active_repo_from_route.lower().replace("_", "-").strip())
+
+        state.target_repo_ids = list(found_repos)
 
         # Contextual inheritance: If query refers to "this", "the project", "here", or asks general architectural questions while on a project page
         context_triggers = ["this", "here", "it", "the project", "architecture", "tech stack", "languages", "metrics", "demo", "repo", "how does it work", "capabilities", "features", "deployment", "github"]

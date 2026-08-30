@@ -19,9 +19,18 @@ interface SplineWrapperProps {
 
 export default function SplineWrapper({ scene, className }: SplineWrapperProps) {
   const [isInView, setIsInView] = useState(false)
+  const [isMobile, setIsMobile] = useState(true)
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    const checkMobile = () => {
+      if (typeof window === 'undefined') return
+      setIsMobile(window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches)
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -35,8 +44,15 @@ export default function SplineWrapper({ scene, className }: SplineWrapperProps) 
       observer.observe(containerRef.current)
     }
 
-    return () => observer.disconnect()
+    return () => {
+      window.removeEventListener('resize', checkMobile)
+      observer.disconnect()
+    }
   }, [])
+
+  if (isMobile) {
+    return null
+  }
 
   return (
     <div ref={containerRef} className={className}>

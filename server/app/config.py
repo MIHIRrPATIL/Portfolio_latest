@@ -19,6 +19,27 @@ class Settings(BaseSettings):
     OPENROUTER_API_KEY: str = ""
     OPENROUTER_MODEL: str = "openrouter/free"
     DATABASE_URL: str = "sqlite:///./portfolio.db"
+    
+    # Email Notification Settings
+    NOTIFICATION_EMAIL: str = "mihirpatil2505@gmail.com"
+    SMTP_HOST: str = "smtp.gmail.com"
+    SMTP_PORT: int = 587
+    SMTP_USER: str = ""
+    SMTP_PASSWORD: str = ""
+    SMTP_FROM_EMAIL: str = "Mihir Patil <mihirpatil2505@gmail.com>"
+    PORTFOLIO_URL: str = "https://mihirpatil-portfolio-new.vercel.app/admin"
+
+    @property
+    def clean_smtp_password(self) -> str:
+        return (self.SMTP_PASSWORD or "").replace(" ", "").strip()
+
+    @property
+    def effective_smtp_from(self) -> str:
+        if self.SMTP_FROM_EMAIL and "<" in self.SMTP_FROM_EMAIL:
+            return self.SMTP_FROM_EMAIL
+        sender_email = self.SMTP_USER or self.NOTIFICATION_EMAIL
+        sender_name = self.SMTP_FROM_EMAIL or "Mihir Patil Portfolio"
+        return f"{sender_name} <{sender_email}>"
 
     @property
     def effective_github_token(self) -> str:

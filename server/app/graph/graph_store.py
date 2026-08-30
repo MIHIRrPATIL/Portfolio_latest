@@ -23,6 +23,12 @@ class KnowledgeGraphStore:
         # BM25 Search Index
         self._bm25_index: Optional[BM25Okapi] = None
         self._indexed_nodes: List[GraphNode] = []
+        
+        # Auto-load cached subgraphs on startup
+        try:
+            self.load_all_graphs()
+        except Exception as e:
+            print(f"Notice loading initial graphs: {str(e)}")
 
     def add_node(self, node: GraphNode):
         self.graph.add_node(node.id, data=node.model_dump())

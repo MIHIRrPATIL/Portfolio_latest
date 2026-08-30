@@ -103,20 +103,50 @@ class ToolExecutionNode(BaseNode):
                     result=res
                 ))
 
-        # 5. Collaboration & Lead Dispatch
-        if state.intent == AgentIntent.COLLABORATION:
-            has_contact_info = bool(re.search(r"[\w.-]+@[\w.-]+\.\w+|@[\w_]+|\b\d{10}\b", state.user_query))
-            if has_contact_info:
-                state.tool_calls.append(ToolCallPayload(
-                    tool_name=lead_dispatch_tool.name,
-                    arguments={"message": state.user_query}
-                ))
-                res = await lead_dispatch_tool.execute(message=state.user_query)
-                state.tool_results.append(ToolResultPayload(
-                    tool_name=lead_dispatch_tool.name,
-                    result=res
-                ))
+        # 5. Autonomous Collaboration & Lead Dispatch
+        email_match = re.search(r"[\w.+-]+@[\w.-]+\.[a-zA-Z]{2,}", state.user_query)
+        has_contact_intent = (
+            state.intent == AgentIntent.COLLABORATION
+            or any(w in q_lower for w in ["hire", "collaborate", "reach out", "work together", "contract", "freelance", "contact me", "email me", "discuss a project", "proposal"])
+        )
+
+        if email_match or (has_contact_intent and bool(re.search(r"[\w.-]+@[\w.-]+\.\w+|@[\w_]+|\b\d{10}\b", state.user_query))):
+            extracted_email = email_match.group(0) if email_match else ""
             
+            # Extract visitor name if provided (e.g., "my name is John", "I'm Sarah")
+            name_match = re.search(r"(?:my name is|i am|i'm|this is)\s+([A-Z][a-zA-Z\s]{1,25})", state.user_query, flags=re.IGNORECASE)
+            extracted_name = name_match.group(1).strip().title() if name_match else "Visitor"
+
+            # Determine project scope from context
+            scope = "Engineering Collaboration"
+            if any(w in q_lower for w in ["ai", "llm", "rag", "speech", "asr", "federated", "model", "ml", "neural"]):
+                scope = "AI & Distributed Intelligence"
+            elif any(w in q_lower for w in ["full stack", "frontend", "nextjs", "react", "web", "ui"]):
+                scope = "Full-Stack Web Development"
+            elif any(w in q_lower for w in ["distributed", "backend", "go", "python", "rust", "database", "scale"]):
+                scope = "Distributed Systems & Infrastructure"
+
+            state.tool_calls.append(ToolCallPayload(
+                tool_name=lead_dispatch_tool.name,
+                arguments={
+                    "message": state.user_query,
+                    "email": extracted_email,
+                    "visitor_name": extracted_name,
+                    "project_scope": scope
+                }
+            ))
+            res = await lead_dispatch_tool.execute(
+                message=state.user_query,
+                email=extracted_email,
+                visitor_name=extracted_name,
+                project_scope=scope
+            )
+            state.tool_results.append(ToolResultPayload(
+                tool_name=lead_dispatch_tool.name,
+                result=res
+            ))
+
+        if state.intent == AgentIntent.COLLABORATION:
             state.ui_badges.append({
                 "type": "contact_sync",
                 "label": "Schedule Collaboration Sync",

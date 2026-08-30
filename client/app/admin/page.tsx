@@ -21,7 +21,12 @@ import {
   FileText,
   Sparkles,
   ShieldAlert,
-  ArrowRight
+  ArrowRight,
+  Download,
+  Upload,
+  FileUp,
+  FileCheck,
+  AlertCircle
 } from "lucide-react";
 import MarkdownRenderer from "@/components/MarkdownRenderer";
 
@@ -63,6 +68,16 @@ interface Blog {
   published_at?: string;
 }
 
+interface ResumeInfo {
+  filename: string;
+  has_file: boolean;
+  external_url?: string | null;
+  size_bytes: number;
+  download_count: number;
+  is_active: boolean;
+  updated_at?: string | null;
+}
+
 import { API_V1 } from "@/lib/api-config";
 
 const API_BASE = API_V1;
@@ -73,14 +88,25 @@ export default function AdminPortalPage() {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [authError, setAuthError] = useState("");
 
-  const [activeTab, setActiveTab] = useState<"inbox" | "achievements" | "blogs">("inbox");
+  const [activeTab, setActiveTab] = useState<"inbox" | "achievements" | "blogs" | "resume">("inbox");
   const [isLoading, setIsLoading] = useState(false);
 
   // Dashboard Data
   const [leads, setLeads] = useState<Lead[]>([]);
   const [achievements, setAchievements] = useState<Achievement[]>([]);
   const [blogs, setBlogs] = useState<Blog[]>([]);
+  const [resumeInfo, setResumeInfo] = useState<ResumeInfo | null>(null);
   const [leadFilter, setLeadFilter] = useState<string>("all");
+
+  // Resume Manager State
+  const [uploadingResume, setUploadingResume] = useState(false);
+  const [resumeExternalUrl, setResumeExternalUrl] = useState("");
+  const [resumeSuccessMsg, setResumeSuccessMsg] = useState("");
+  const [resumeErrorMsg, setResumeErrorMsg] = useState("");
+
+  // Email Notification Test State
+  const [testingEmail, setTestingEmail] = useState(false);
+  const [testEmailMsg, setTestEmailMsg] = useState("");
 
   // Achievement Modal / Form State
   const [isAchModalOpen, setIsAchModalOpen] = useState(false);
@@ -140,19 +166,138 @@ export default function AdminPortalPage() {
     setIsLoading(true);
     const headers = { "X-Admin-Key": activeToken };
     try {
-      const [rLeads, rAch, rBlogs] = await Promise.all([
+      const [rLeads, rAch, rBlogs, rResume] = await Promise.all([
         fetch(`${API_BASE}/admin/leads`, { headers }),
         fetch(`${API_BASE}/admin/achievements`, { headers }),
         fetch(`${API_BASE}/admin/blogs`, { headers }),
+        fetch(`${API_BASE}/admin/resume`, { headers }),
       ]);
 
       if (rLeads.ok) setLeads(await rLeads.json());
       if (rAch.ok) setAchievements(await rAch.json());
       if (rBlogs.ok) setBlogs(await rBlogs.json());
+      if (rResume.ok) {
+        const resData: ResumeInfo = await rResume.json();
+        setResumeInfo(resData);
+        if (resData.external_url) setResumeExternalUrl(resData.external_url);
+      }
     } catch (e) {
       console.error("Failed to load admin data:", e);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // Resume Handlers
+  const handleUploadResumeFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !token) return;
+
+    if (!file.name.toLowerCase().endsWith(".pdf")) {
+      setResumeErrorMsg("Only PDF (.pdf) files are supported.");
+      return;
+    }
+
+    setUploadingResume(true);
+    setResumeErrorMsg("");
+    setResumeSuccessMsg("");
+
+    const formData = new FormData();
+    formData.append("file", file);
+    if (resumeExternalUrl) {
+      formData.append("external_url", resumeExternalUrl);
+    }
+
+    try {
+      const res = await fetch(`${API_BASE}/admin/resume/upload`, {
+        method: "POST",
+        headers: { "X-Admin-Key": token },
+        body: formData,
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setResumeSuccessMsg(`Successfully uploaded ${data.filename}!`);
+        loadAllAdminData(token);
+      } else {
+        const err = await res.json();
+        setResumeErrorMsg(err.detail || "Failed to upload resume.");
+      }
+    } catch (err) {
+      setResumeErrorMsg("Network error while uploading resume.");
+    } finally {
+      setUploadingResume(false);
+    }
+  };
+
+  const handleSaveResumeExternalUrl = async () => {
+    if (!token) return;
+    setUploadingResume(true);
+    setResumeErrorMsg("");
+    setResumeSuccessMsg("");
+
+    const formData = new FormData();
+    formData.append("external_url", resumeExternalUrl.trim());
+
+    try {
+      const res = await fetch(`${API_BASE}/admin/resume/upload`, {
+        method: "POST",
+        headers: { "X-Admin-Key": token },
+        body: formData,
+      });
+
+      if (res.ok) {
+        setResumeSuccessMsg("Resume link saved successfully!");
+        loadAllAdminData(token);
+      } else {
+        const err = await res.json();
+        setResumeErrorMsg(err.detail || "Failed to save external link.");
+      }
+    } catch (err) {
+      setResumeErrorMsg("Network error while saving link.");
+    } finally {
+      setUploadingResume(false);
+    }
+  };
+
+  const handleDeleteResume = async () => {
+    if (!token || !confirm("Are you sure you want to delete the active resume document?")) return;
+    try {
+      const res = await fetch(`${API_BASE}/admin/resume`, {
+        method: "DELETE",
+        headers: { "X-Admin-Key": token },
+      });
+      if (res.ok) {
+        setResumeSuccessMsg("Resume document reset successfully.");
+        setResumeExternalUrl("");
+        loadAllAdminData(token);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  // Test Email Notification Action
+  const handleTestEmailNotification = async () => {
+    if (!token) return;
+    setTestingEmail(true);
+    setTestEmailMsg("");
+    try {
+      const res = await fetch(`${API_BASE}/admin/email/test`, {
+        method: "POST",
+        headers: { "X-Admin-Key": token },
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setTestEmailMsg(`✅ ${data.message || "Test email dispatched!"}`);
+      } else {
+        setTestEmailMsg(`⚠️ ${data.detail || "Failed to trigger test email."}`);
+      }
+    } catch (err) {
+      setTestEmailMsg("⚠️ Network error while sending test email.");
+    } finally {
+      setTestingEmail(false);
+      setTimeout(() => setTestEmailMsg(""), 7000);
     }
   };
 
@@ -415,7 +560,7 @@ export default function AdminPortalPage() {
 
       <main className="max-w-7xl mx-auto px-6 md:px-12 py-8">
         {/* Metric Cards Banner */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="p-6 rounded-2xl bg-[#0d0d12] border border-white/10 relative overflow-hidden">
             <div className="flex items-center justify-between mb-2">
               <span className="text-xs font-mono uppercase tracking-widest text-white/50">Visitor Leads</span>
@@ -446,10 +591,22 @@ export default function AdminPortalPage() {
               {blogs.filter((b) => b.is_published).length} published live
             </div>
           </div>
+
+          <div className="p-6 rounded-2xl bg-[#0d0d12] border border-white/10 relative overflow-hidden">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-xs font-mono uppercase tracking-widest text-white/50">Resume / CV</span>
+              <FileText className="w-5 h-5 text-red-300" />
+            </div>
+            <div className="text-3xl font-black text-white">{resumeInfo?.download_count ?? 0}</div>
+            <div className="text-xs text-white/40 mt-1 font-mono flex items-center gap-1.5">
+              <span className={`w-2 h-2 rounded-full ${resumeInfo?.has_file || resumeInfo?.external_url ? "bg-emerald-400" : "bg-amber-400"}`} />
+              <span>{resumeInfo?.has_file ? "PDF Active" : resumeInfo?.external_url ? "Cloud URL Active" : "No Resume"}</span>
+            </div>
+          </div>
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex items-center gap-3 border-b border-white/10 pb-4 mb-8">
+        <div className="flex flex-wrap items-center gap-3 border-b border-white/10 pb-4 mb-8">
           <button
             onClick={() => setActiveTab("inbox")}
             className={`px-5 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider font-bold transition-all cursor-pointer flex items-center gap-2 ${
@@ -490,13 +647,37 @@ export default function AdminPortalPage() {
             <BookOpen className="w-3.5 h-3.5" />
             <span>Blogs & Thoughts ({blogs.length})</span>
           </button>
+
+          <button
+            onClick={() => setActiveTab("resume")}
+            className={`px-5 py-2.5 rounded-xl font-mono text-xs uppercase tracking-wider font-bold transition-all cursor-pointer flex items-center gap-2 ${
+              activeTab === "resume"
+                ? "bg-white text-black shadow-lg"
+                : "bg-white/5 text-white/60 hover:text-white"
+            }`}
+          >
+            <FileText className="w-3.5 h-3.5" />
+            <span>Resume / CV Manager</span>
+          </button>
         </div>
 
         {/* TAB 1: INQUIRIES INBOX */}
         {activeTab === "inbox" && (
           <div>
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-2">
+            {testEmailMsg && (
+              <div className="mb-4 p-4 rounded-xl bg-white/5 border border-white/15 text-xs font-mono text-white flex items-center justify-between">
+                <span>{testEmailMsg}</span>
+                <button
+                  onClick={() => setTestEmailMsg("")}
+                  className="text-white/40 hover:text-white text-xs cursor-pointer ml-4"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
+
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+              <div className="flex items-center gap-2 flex-wrap">
                 {["all", "pending", "contacted", "reviewed", "archived"].map((st) => (
                   <button
                     key={st}
@@ -511,7 +692,19 @@ export default function AdminPortalPage() {
                   </button>
                 ))}
               </div>
-              <span className="text-xs font-mono text-white/40">Showing {filteredLeads.length} leads</span>
+
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={handleTestEmailNotification}
+                  disabled={testingEmail}
+                  className="px-3.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-red-300/40 text-xs font-mono text-white/80 hover:text-white transition-all cursor-pointer flex items-center gap-2"
+                  title="Test email alert dispatch to your configured notification email"
+                >
+                  <Mail className={`w-3.5 h-3.5 text-red-300 ${testingEmail ? "animate-pulse" : ""}`} />
+                  <span>{testingEmail ? "Sending Test Email..." : "Send Test Email Alert"}</span>
+                </button>
+                <span className="text-xs font-mono text-white/40">Showing {filteredLeads.length} leads</span>
+              </div>
             </div>
 
             {filteredLeads.length === 0 ? (
@@ -781,6 +974,251 @@ export default function AdminPortalPage() {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {/* TAB 4: RESUME / CV MANAGER */}
+        {activeTab === "resume" && (
+          <div className="space-y-8">
+            {/* Status & Overview Hero Card */}
+            <div className="p-8 rounded-3xl bg-[#0a0a0f] border border-white/15 relative overflow-hidden shadow-2xl">
+              <div className="absolute top-0 right-0 w-80 h-80 bg-red-500/10 rounded-full blur-3xl pointer-events-none" />
+
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+                <div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <span className="font-mono text-xs text-red-300 font-bold uppercase tracking-widest">
+                      // RESUME_TELEMETRY & ASSET_CONTROLLER
+                    </span>
+                    <span
+                      className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-mono text-[10px] font-bold uppercase tracking-wider ${
+                        resumeInfo?.has_file
+                          ? "bg-emerald-500/10 text-emerald-300 border border-emerald-500/30"
+                          : resumeInfo?.external_url
+                          ? "bg-blue-500/10 text-blue-300 border border-blue-500/30"
+                          : "bg-amber-500/10 text-amber-300 border border-amber-500/30"
+                      }`}
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
+                      {resumeInfo?.has_file
+                        ? "Local PDF Active"
+                        : resumeInfo?.external_url
+                        ? "External Cloud URL Active"
+                        : "No Document Uploaded"}
+                    </span>
+                  </div>
+
+                  <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase">
+                    Curriculum Vitae Asset Manager
+                  </h2>
+                  <p className="text-xs sm:text-sm text-white/50 mt-1 max-w-2xl font-sans">
+                    Upload and replace your master Resume PDF or configure an external cloud document. Updates propagate immediately across all public buttons, mobile menus, and the AI Copilot.
+                  </p>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3">
+                  <a
+                    href={`${API_BASE}/public/resume`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`px-5 py-3 rounded-xl font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all cursor-pointer ${
+                      resumeInfo?.has_file || resumeInfo?.external_url
+                        ? "bg-white text-black hover:bg-red-300 shadow-lg"
+                        : "bg-white/10 text-white/40 pointer-events-none"
+                    }`}
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>Download / Preview</span>
+                  </a>
+
+                  {(resumeInfo?.has_file || resumeInfo?.external_url) && (
+                    <button
+                      onClick={handleDeleteResume}
+                      className="px-4 py-3 rounded-xl bg-red-950/20 hover:bg-red-950/50 border border-red-500/30 text-red-300 text-xs font-mono font-bold uppercase tracking-wider transition-colors cursor-pointer flex items-center gap-2"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                      <span>Reset / Delete</span>
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Asset Stats Bar */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 pt-6 border-t border-white/10 font-mono">
+                <div>
+                  <div className="text-[10px] uppercase text-white/40 tracking-wider">Active Filename</div>
+                  <div className="text-sm font-bold text-white mt-0.5 truncate">
+                    {resumeInfo?.filename || "Mihir_Patil_Resume.pdf"}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-[10px] uppercase text-white/40 tracking-wider">File Size</div>
+                  <div className="text-sm font-bold text-white mt-0.5">
+                    {resumeInfo?.size_bytes
+                      ? `${(resumeInfo.size_bytes / (1024 * 1024)).toFixed(2)} MB (${(
+                          resumeInfo.size_bytes / 1024
+                        ).toFixed(0)} KB)`
+                      : "N/A (Cloud Link)"}
+                  </div>
+                </div>
+                <div>
+                  <div className="text-[10px] uppercase text-white/40 tracking-wider">Total Downloads</div>
+                  <div className="text-sm font-bold text-red-300 mt-0.5 flex items-center gap-1.5">
+                    <Download className="w-3.5 h-3.5" />
+                    <span>{resumeInfo?.download_count ?? 0} downloads</span>
+                  </div>
+                </div>
+                <div>
+                  <div className="text-[10px] uppercase text-white/40 tracking-wider">Last Modified</div>
+                  <div className="text-sm font-bold text-white mt-0.5">
+                    {resumeInfo?.updated_at
+                      ? new Date(resumeInfo.updated_at).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })
+                      : "Never updated"}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Notification Messages */}
+            {resumeSuccessMsg && (
+              <motion.div
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-4 rounded-2xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 font-mono text-xs flex items-center justify-between"
+              >
+                <div className="flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                  <span>{resumeSuccessMsg}</span>
+                </div>
+                <button
+                  onClick={() => setResumeSuccessMsg("")}
+                  className="text-emerald-400/60 hover:text-emerald-300 text-xs"
+                >
+                  [DISMISS]
+                </button>
+              </motion.div>
+            )}
+
+            {resumeErrorMsg && (
+              <motion.div
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-4 rounded-2xl bg-red-950/40 border border-red-500/30 text-red-300 font-mono text-xs flex items-center justify-between"
+              >
+                <div className="flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
+                  <span>{resumeErrorMsg}</span>
+                </div>
+                <button
+                  onClick={() => setResumeErrorMsg("")}
+                  className="text-red-400/60 hover:text-red-300 text-xs"
+                >
+                  [DISMISS]
+                </button>
+              </motion.div>
+            )}
+
+            {/* Two-Column Upload & Configuration Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* Option 1: Direct PDF Upload */}
+              <div className="p-8 rounded-3xl bg-[#09090e] border border-white/10 flex flex-col justify-between space-y-6">
+                <div>
+                  <div className="flex items-center gap-2 text-red-300 font-mono text-xs font-bold uppercase tracking-wider mb-1">
+                    <FileUp className="w-4 h-4" />
+                    <span>Method A: Master PDF Document Upload</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white">Direct PDF Upload & Storage</h3>
+                  <p className="text-xs text-white/50 mt-1 leading-relaxed">
+                    Upload your compiled LaTeX PDF. It will be stored securely on the server and delivered directly as an instant attachment download.
+                  </p>
+                </div>
+
+                <div className="border-2 border-dashed border-white/15 hover:border-red-300/50 rounded-2xl p-8 text-center transition-colors bg-white/[0.01] hover:bg-white/[0.03] relative group">
+                  <input
+                    type="file"
+                    accept=".pdf,application/pdf"
+                    onChange={handleUploadResumeFile}
+                    disabled={uploadingResume}
+                    className="absolute inset-0 opacity-0 cursor-pointer w-full h-full z-10 disabled:cursor-not-allowed"
+                  />
+                  <div className="flex flex-col items-center justify-center space-y-3">
+                    <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:scale-105 group-hover:border-red-300 transition-all text-red-300">
+                      {uploadingResume ? (
+                        <RefreshCw className="w-6 h-6 animate-spin" />
+                      ) : (
+                        <Upload className="w-6 h-6" />
+                      )}
+                    </div>
+                    <div>
+                      <div className="text-sm font-bold text-white font-mono">
+                        {uploadingResume ? "Uploading & Validating PDF..." : "Drop new Resume PDF here"}
+                      </div>
+                      <div className="text-xs text-white/40 mt-1">or click to browse your computer (.pdf max 15MB)</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="text-[11px] font-mono text-white/40 flex items-center gap-2">
+                  <FileCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Enforces standard RFC PDF headers with automatic attachment stream naming.</span>
+                </div>
+              </div>
+
+              {/* Option 2: External Cloud Document URL */}
+              <div className="p-8 rounded-3xl bg-[#09090e] border border-white/10 flex flex-col justify-between space-y-6">
+                <div>
+                  <div className="flex items-center gap-2 text-red-300 font-mono text-xs font-bold uppercase tracking-wider mb-1">
+                    <ExternalLink className="w-4 h-4" />
+                    <span>Method B: Cloud Link / Drive Fallback</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-white">External Resume URL</h3>
+                  <p className="text-xs text-white/50 mt-1 leading-relaxed">
+                    Optionally provide an external link (Google Drive, Notion, Dropbox, or Overleaf). If no local PDF is uploaded, visitors will be redirected to this URL.
+                  </p>
+                </div>
+
+                <div className="space-y-3">
+                  <label className="text-[10px] uppercase font-mono tracking-widest text-white/50 block font-bold">
+                    Cloud Document URL
+                  </label>
+                  <input
+                    type="url"
+                    placeholder="https://drive.google.com/file/d/... or https://notion.so/..."
+                    value={resumeExternalUrl}
+                    onChange={(e) => setResumeExternalUrl(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl bg-black border border-white/15 text-white placeholder:text-white/30 text-xs font-mono focus:outline-none focus:border-red-300 transition-colors"
+                  />
+                  <button
+                    onClick={handleSaveResumeExternalUrl}
+                    disabled={uploadingResume || !resumeExternalUrl.trim()}
+                    className="w-full py-3 rounded-xl bg-white/10 hover:bg-white text-white hover:text-black font-mono font-bold text-xs uppercase tracking-wider transition-all disabled:opacity-40 cursor-pointer flex items-center justify-center gap-2"
+                  >
+                    {uploadingResume ? (
+                      <>
+                        <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                        <span>Saving Link...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Check className="w-3.5 h-3.5" />
+                        <span>Save Cloud Resume Link</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                <div className="text-[11px] font-mono text-white/40 flex items-center gap-2">
+                  <Sparkles className="w-3.5 h-3.5 text-red-300" />
+                  <span>Telemetry accurately tracks redirection clicks as verified downloads.</span>
+                </div>
+              </div>
             </div>
           </div>
         )}

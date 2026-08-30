@@ -1,6 +1,6 @@
 import os
 from contextlib import contextmanager
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.pool import QueuePool, NullPool
 from app.config import settings
@@ -40,9 +40,18 @@ else:
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 def init_db():
-    """Initializes database tables if they do not exist."""
+    """Initializes database tables and ensures schema columns exist."""
     try:
         Base.metadata.create_all(bind=engine)
+        with engine.connect() as conn:
+            try:
+                if is_sqlite:
+                    conn.execute(text("ALTER TABLE resume_settings ADD COLUMN file_data BLOB;"))
+                else:
+                    conn.execute(text("ALTER TABLE resume_settings ADD COLUMN IF NOT EXISTS file_data BYTEA;"))
+                conn.commit()
+            except Exception:
+                pass
         print(f"✅ Database connection pool active on: {db_url.split('@')[-1] if '@' in db_url else db_url}")
     except Exception as e:
         print(f"⚠️ Error initializing database: {str(e)}")

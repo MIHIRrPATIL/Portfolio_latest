@@ -4,7 +4,7 @@ import httpx
 from typing import AsyncGenerator, Dict, Any, List
 from app.config import settings
 from app.agent.nodes.base import BaseNode
-from app.agent.state import MasterAgentState
+from app.agent.state import MasterAgentState, AgentIntent
 
 SYSTEM_PROMPT_TEMPLATE = """You are the AI Persona of Mihir Patil (MIHIRrPATIL) — a Full-Stack AI Engineer, Systems Researcher, and Creative Technologist.
 You speak with technical precision, confidence, and editorial conciseness. Avoid robotic filler words or corporate fluff.
@@ -22,6 +22,12 @@ Episodic Session Context:
 Ground Truth Knowledge Graph Context:
 {graph_context}
 
+Dynamic Knowledge Base Projects & Case Studies (from DB & Graph):
+{relevant_projects}
+
+Verified Career Milestones & Achievements (from DB):
+{relevant_achievements}
+
 Tool Execution Context:
 {tool_context}
 
@@ -29,9 +35,9 @@ User Query:
 {user_query}
 
 Strict Guidelines:
-1. Answer directly and technically using the Ground Truth Knowledge Graph, Active Page Context, Episodic Memory, and Tool Execution Context provided above.
+1. Answer directly and technically using the Ground Truth Knowledge Graph, Dynamic Knowledge Base Projects, Active Page Context, Episodic Memory, and Tool Execution Context provided above.
 2. If asked about previous topics, visitor name, or past messages in the conversation, reference the Shodh Conversational Memory directly.
-3. Base all architectural, technical, algorithm, and implementation details strictly on the Ground Truth Knowledge Graph and real-time read-only GitHub Code Search results.
+3. Base all architectural, technical, algorithm, and implementation details strictly on the Ground Truth Knowledge Graph, PostgreSQL Project Case Studies, and real-time read-only GitHub Code Search results.
 4. If the user refers to "this", "this project", or "here", anchor your answer to the active page and project dossier they are currently viewing.
 5. If on "/graph", assist the user in navigating the 3D or 2D GraphRAG knowledge graph (connecting skills, tools, and repos).
 6. If code snippets, files, or inspected GitHub functions are in the tool context, cite them accurately with Markdown syntax formatting.
@@ -39,6 +45,8 @@ Strict Guidelines:
 8. DO NOT mention internal retrieval scores, confidence ratings, or server benchmark numbers (e.g. "confidence score of 9.18" or "score 90"). Speak naturally about the engineering capabilities, architectures, and outcomes.
 9. If asked about collaborating, contacting, or how you will notify/reach Mihir: Explain that when a visitor shares their email and message directly in this chat, the agent automatically captures and records the lead into the database queue to notify Mihir directly. Visitors can also click the Schedule Collaboration Sync button below to jump straight to the contact terminal. DO NOT falsely claim an inquiry has already been dispatched if no contact details were provided.
 10. Keep explanations crisp, high-signal, and engaging.
+11. Clean Formatting: When summarizing multiple code nodes, functions, or repositories, format them using clean structured bullet lists with bold names, category labels, and concise summaries (e.g. `• **function_name** [FUNCTION] — description`) instead of wide raw ASCII tables so they render cleanly across all device viewports.
+12. Proactive Project Recommendations & Domain Matching: When the visitor mentions a specific domain, technology, startup requirement, or problem area (such as Indian Speech / ASR / Audio models, Federated Learning, Web Operating Systems, Mock Interviews / HR Tech, Legal AI, Options Pricing / Quantitative Finance, Secrets Management / RBAC, or Semantic Search), actively highlight and recommend Mihir's matching project(s) retrieved in the Dynamic Knowledge Base Projects context. Explain specifically how Mihir's architecture and research in that project directly aligns with what they are building!
 """
 
 class ResponseSynthesizerNode(BaseNode):
@@ -51,6 +59,8 @@ class ResponseSynthesizerNode(BaseNode):
 
     def build_prompt(self, state: MasterAgentState) -> str:
         graph_text = json.dumps(state.graph_context, indent=2) if state.graph_context else "No direct graph matches."
+        projects_text = json.dumps(state.relevant_projects, indent=2) if state.relevant_projects else "None."
+        achievements_text = json.dumps(state.relevant_achievements, indent=2) if state.relevant_achievements else "None."
         tool_text = json.dumps([t.model_dump() for t in state.tool_results], indent=2) if state.tool_results else "None."
         page_ctx_text = json.dumps(state.page_context, indent=2) if state.page_context else "Standard View"
         pathname_text = state.pathname or "/"
@@ -68,6 +78,8 @@ class ResponseSynthesizerNode(BaseNode):
             chat_history=history_text,
             episodic_context=episodic_text,
             graph_context=graph_text,
+            relevant_projects=projects_text,
+            relevant_achievements=achievements_text,
             tool_context=tool_text,
             user_query=state.user_query
         )
@@ -108,19 +120,11 @@ class ResponseSynthesizerNode(BaseNode):
         badges = list(state.ui_badges)
         existing_urls = set(b.get("url") for b in badges if b.get("url"))
 
-        special_demos = {
-            "reflectos": "https://reflectos.vercel.app",
-        }
-
-        # Automatically generate dossier redirect badges for any targeted or mentioned projects
-        for repo_id in state.target_repo_ids:
-            slug = repo_id.lower().replace("_", "-").strip()
+        # 1. Dynamically generate dossier redirect badges for all retrieved database projects
+        for p in (state.relevant_projects or []):
+            slug = p.get("slug") or p.get("id", "").lower().replace("_", "-").strip()
+            title = p.get("title") or slug.replace("-", " ").title()
             dossier_url = f"/projects/{slug}"
-            
-            # Format clean title
-            words = slug.replace("-", " ").split()
-            acronyms = {"ai", "ui", "api", "db", "ml", "nlp", "llm", "ast", "cli", "sdk", "os", "asr", "sih", "ipd"}
-            title = " ".join(w.upper() if w in acronyms else w.capitalize() for w in words)
 
             if dossier_url not in existing_urls:
                 badges.append({
@@ -131,14 +135,43 @@ class ResponseSynthesizerNode(BaseNode):
                 })
                 existing_urls.add(dossier_url)
 
-            if slug in special_demos and special_demos[slug] not in existing_urls:
-                demo_url = special_demos[slug]
+            if p.get("live_url") and p["live_url"] not in existing_urls:
                 badges.append({
                     "type": "live_demo",
                     "label": f"Live Demo: {title}",
-                    "url": demo_url
+                    "url": p["live_url"]
                 })
-                existing_urls.add(demo_url)
+                existing_urls.add(p["live_url"])
+
+        # 2. Dynamically discover any remaining graph context projects
+        for ctx in (state.graph_context or []):
+            parent = ctx.get("parent_project") or ctx.get("repo_id")
+            if parent and parent not in ["global", "root"]:
+                slug = parent.lower().replace("_", "-").strip()
+                dossier_url = f"/projects/{slug}"
+                if dossier_url not in existing_urls:
+                    words = slug.replace("-", " ").split()
+                    acronyms = {"ai", "ui", "api", "db", "ml", "nlp", "llm", "ast", "cli", "sdk", "os", "asr", "sih", "ipd"}
+                    title = " ".join(w.upper() if w in acronyms else w.capitalize() for w in words)
+                    badges.append({
+                        "type": "project_dossier",
+                        "label": f"Explore {title} Dossier",
+                        "url": dossier_url,
+                        "project_id": slug
+                    })
+                    existing_urls.add(dossier_url)
+
+        # Check if user query references resume or CV
+        q_lower = state.user_query.lower()
+        if any(w in q_lower for w in ["resume", "cv", "curriculum vitae", "download resume", "share resume"]):
+            resume_url = "/api/v1/public/resume"
+            if resume_url not in existing_urls:
+                badges.append({
+                    "type": "resume_download",
+                    "label": "DOWNLOAD RESUME (PDF)",
+                    "url": resume_url
+                })
+                existing_urls.add(resume_url)
 
         return badges
 
@@ -321,7 +354,38 @@ class ResponseSynthesizerNode(BaseNode):
     def _rule_based_response(self, state: MasterAgentState) -> str:
         q_low = state.user_query.lower()
 
-        # 1. Check Inspected GitHub Code Tool Results (Read-Only)
+        # Check Collaboration Intent with Dynamic Knowledge Graph Recommendations
+        if state.intent == AgentIntent.COLLABORATION:
+            lead_tool = next((t for t in state.tool_results if t.tool_name == "dispatch_lead"), None)
+            lead_id_str = f"**lead #{lead_tool.result.get('lead_id')}**" if (lead_tool and lead_tool.result.get("lead_id")) else "your inquiry"
+            lead_confirm = f"Your message has been securely recorded as {lead_id_str} and dispatched directly to Mihir's notification queue."
+
+            # Find matching projects dynamically discovered in knowledge graph / database
+            matched_projects = []
+            for ctx in (state.graph_context or []):
+                parent = ctx.get("parent_project")
+                if parent and parent not in ["global", "root"] and parent not in matched_projects:
+                    matched_projects.append(parent)
+
+            for p in (state.relevant_projects or []):
+                p_title = p.get("title")
+                if p_title and p_title not in matched_projects:
+                    matched_projects.append(p_title)
+
+            if matched_projects:
+                proj_list = ", ".join(f"**{p}**" for p in matched_projects[:2])
+                return (
+                    f"{lead_confirm}\n\n"
+                    f"Based on your requirements, Mihir has direct engineering research and system implementations in {proj_list}. "
+                    f"You can explore the interactive project dossiers below or jump straight into a collaboration sync."
+                )
+
+            return (
+                f"{lead_confirm}\n\n"
+                f"Mihir will review your requirements and get in touch with you directly. You can also explore his project dossiers or schedule a collaboration sync below."
+            )
+
+        # Check Inspected GitHub Code Tool Results (Read-Only)
         gh_tool_res = next((t for t in state.tool_results if t.tool_name == "search_github_repo"), None)
         if gh_tool_res and gh_tool_res.result.get("inspected_source_file"):
             sf = gh_tool_res.result["inspected_source_file"]

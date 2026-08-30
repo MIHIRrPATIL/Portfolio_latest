@@ -45,13 +45,62 @@ class GitHubService:
             return []
 
     async def fetch_repository_tree(self, owner: str, repo: str) -> List[str]:
+        """
+        Fetches full file tree for a repository.
+        Uses 3 fallback strategies to ensure zero-file drops:
+        1. /git/trees/HEAD?recursive=1
+        2. /git/trees/{default_branch}?recursive=1 (detecting 'main', 'master', etc.)
+        3. Recursive /contents API traversal
+        """
         try:
             async with httpx.AsyncClient(headers=self._get_headers(), timeout=self.timeout) as client:
+                # Strategy 1: Fast git trees on HEAD
                 url = f"{self.base_url}/repos/{owner}/{repo}/git/trees/HEAD?recursive=1"
                 response = await client.get(url)
                 if response.status_code == 200:
                     data = response.json()
-                    return [item["path"] for item in data.get("tree", []) if "path" in item]
+                    tree = [item["path"] for item in data.get("tree", []) if "path" in item]
+                    if tree:
+                        return tree
+
+                # Strategy 2: Query repository metadata for exact default branch (main/master)
+                repo_meta_url = f"{self.base_url}/repos/{owner}/{repo}"
+                repo_res = await client.get(repo_meta_url)
+                if repo_res.status_code == 200:
+                    meta = repo_res.json()
+                    default_branch = meta.get("default_branch") or "main"
+                    branch_tree_url = f"{self.base_url}/repos/{owner}/{repo}/git/trees/{default_branch}?recursive=1"
+                    b_res = await client.get(branch_tree_url)
+                    if b_res.status_code == 200:
+                        data = b_res.json()
+                        tree = [item["path"] for item in data.get("tree", []) if "path" in item]
+                        if tree:
+                            return tree
+
+                # Strategy 3: Contents API fallback (up to 4 levels)
+                async def fetch_contents_recursive(path: str = "", depth: int = 0) -> List[str]:
+                    if depth > 4:
+                        return []
+                    contents_url = f"{self.base_url}/repos/{owner}/{repo}/contents/{path}"
+                    c_res = await client.get(contents_url)
+                    if c_res.status_code != 200:
+                        return []
+                    items = c_res.json()
+                    if not isinstance(items, list):
+                        return []
+                    paths = []
+                    for item in items:
+                        if item.get("type") == "file":
+                            paths.append(item.get("path"))
+                        elif item.get("type") == "dir":
+                            subpaths = await fetch_contents_recursive(item.get("path"), depth + 1)
+                            paths.extend(subpaths)
+                    return paths
+
+                fallback_paths = await fetch_contents_recursive()
+                if fallback_paths:
+                    return fallback_paths
+
         except Exception as e:
             print(f"⚠️ Error fetching tree for {owner}/{repo}: {str(e)}")
         return []

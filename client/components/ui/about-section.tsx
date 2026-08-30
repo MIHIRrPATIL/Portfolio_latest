@@ -1,9 +1,10 @@
 "use client";
 import { TimelineContent } from "@/components/ui/timeline-animation";
 import { VerticalCutReveal } from "@/components/ui/vertical-cut-reveal";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Download } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { fetchPortfolioStats, PortfolioStats } from "@/data/projects";
+import { API_V1 } from "@/lib/api-config";
 
 export default function AboutSection3() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -51,17 +52,17 @@ export default function AboutSection3() {
     },
   };
   return (
-    <section id="about" className="flex py-20 md:py-48 px-6 md:px-16 lg:px-24 w-full justify-center items-center overflow-x-hidden bg-black" ref={heroRef}>
-      <div className="w-full max-w-screen-2xl mx-auto flex flex-col gap-16 md:gap-48 lg:gap-64">
-        {/* Header - Latest User Style */}
-        <div className="flex flex-row items-center gap-12 p-4 font-mono">
-          <span className="text-red-300 animate-spin text-8xl">✱</span>
+    <section id="about" className="flex py-16 sm:py-24 md:py-40 px-5 sm:px-8 md:px-16 lg:px-24 w-full justify-center items-center overflow-x-hidden bg-black" ref={heroRef}>
+      <div className="w-full max-w-screen-2xl mx-auto flex flex-col gap-12 sm:gap-24 md:gap-40 lg:gap-52">
+        {/* Header - Responsive User Style */}
+        <div className="flex flex-row items-center gap-4 sm:gap-8 md:gap-12 p-2 sm:p-4 font-mono">
+          <span className="text-red-300 animate-spin text-5xl sm:text-7xl md:text-8xl">✱</span>
           <TimelineContent
             as="span"
             animationNum={0}
             timelineRef={heroRef}
             customVariants={revealVariants}
-            className="text-4xl md:text-5xl lg:text-7xl font-black font-sans text-white uppercase tracking-[0.4em] leading-tight"
+            className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl font-black font-sans text-white uppercase tracking-[0.2em] sm:tracking-[0.3em] md:tracking-[0.4em] leading-tight"
           >
             WHO AM I ?
           </TimelineContent>
@@ -73,7 +74,7 @@ export default function AboutSection3() {
             animationNum={4}
             timelineRef={heroRef}
             customVariants={scaleVariants}
-            className="relative group overflow-hidden rounded-3xl"
+            className="relative group overflow-hidden rounded-2xl sm:rounded-3xl"
           >
             <svg
               className="w-full h-auto"
@@ -107,10 +108,10 @@ export default function AboutSection3() {
                 animationNum={6}
                 timelineRef={heroRef}
                 customVariants={revealVariants}
-                className="mb-8"
+                className="mb-4 md:mb-8"
               >
-                <div className="text-4xl md:text-8xl font-black text-white leading-none">{stats.totalRepos}+</div>
-                <div className="text-xs md:text-2xl font-black text-white/50 uppercase tracking-widest mt-2">repos</div>
+                <div className="text-3xl sm:text-5xl md:text-8xl font-black text-white leading-none">{stats.totalRepos}+</div>
+                <div className="text-[10px] sm:text-xs md:text-2xl font-black text-white/50 uppercase tracking-widest mt-1 sm:mt-2">repos</div>
               </TimelineContent>
               <TimelineContent
                 as="div"
@@ -118,41 +119,41 @@ export default function AboutSection3() {
                 timelineRef={heroRef}
                 customVariants={revealVariants}
               >
-                <div className="text-3xl md:text-6xl font-black text-red-300 leading-none">{stats.languagesCount}+</div>
-                <div className="text-xs md:text-xl font-black text-white/50 uppercase tracking-tighter leading-tight mt-2 md:mt-4">languages &<br />Frameworks</div>
+                <div className="text-2xl sm:text-4xl md:text-6xl font-black text-red-300 leading-none">{stats.languagesCount}+</div>
+                <div className="text-[10px] sm:text-xs md:text-xl font-black text-white/50 uppercase tracking-tighter leading-tight mt-1 md:mt-4">languages &<br />Frameworks</div>
               </TimelineContent>
             </div>
           </TimelineContent>
 
           {/* Stats Bar */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 py-12 text-sm font-mono border-b border-white/10 uppercase tracking-[0.2em]">
+          <div className="grid grid-cols-2 gap-6 sm:gap-12 py-8 sm:py-12 text-xs sm:text-sm font-mono border-b border-white/10 uppercase tracking-[0.15em] sm:tracking-[0.2em]">
             <TimelineContent
               as="div"
               animationNum={5}
               timelineRef={heroRef}
               customVariants={revealVariants}
-              className="flex items-center gap-6 text-white"
+              className="flex items-center gap-3 sm:gap-6 text-white"
             >
-              <span className="text-red-300 font-black text-6xl">2+</span>
-              <span className="font-bold text-lg">years of experience</span>
+              <span className="text-red-300 font-black text-3xl sm:text-5xl md:text-6xl">2+</span>
+              <span className="font-bold text-xs sm:text-base md:text-lg leading-tight">years of experience</span>
             </TimelineContent>
             <TimelineContent
               as="div"
               animationNum={5}
               timelineRef={heroRef}
               customVariants={revealVariants}
-              className="flex items-center gap-6 text-white md:justify-end"
+              className="flex items-center gap-3 sm:gap-6 text-white justify-end"
             >
-              <span className="text-red-300 font-black text-6xl">{stats.locDisplay || "900K+"}</span>
-              <span className="font-bold text-lg">LOC</span>
+              <span className="text-red-300 font-black text-3xl sm:text-5xl md:text-6xl">{stats.locDisplay || "900K+"}</span>
+              <span className="font-bold text-xs sm:text-base md:text-lg">LOC</span>
             </TimelineContent>
           </div>
         </div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-16 md:gap-32">
-          <div className="md:col-span-3">
-            <h1 className="text-4xl sm:text-5xl md:text-[8rem] lg:text-[10rem] !leading-[0.75] font-black text-white mb-24 uppercase tracking-tighter break-words overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-12 sm:gap-16 lg:gap-32">
+          <div className="lg:col-span-3">
+            <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-[8.5rem] leading-[1.05] sm:leading-[0.9] lg:leading-[0.8] font-black text-white mb-10 sm:mb-16 lg:mb-24 uppercase tracking-tighter break-words">
               <VerticalCutReveal
                 splitBy="words"
                 staggerDuration={0.1}
@@ -174,14 +175,14 @@ export default function AboutSection3() {
               animationNum={9}
               timelineRef={heroRef}
               customVariants={revealVariants}
-              className="grid md:grid-cols-2 gap-12 md:gap-32 text-white font-medium mt-20"
+              className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12 md:gap-20 text-white font-medium mt-8 sm:mt-16"
             >
               <TimelineContent
                 as="div"
                 animationNum={10}
                 timelineRef={heroRef}
                 customVariants={revealVariants}
-                className="text-2xl md:text-3xl leading-relaxed max-w-2xl"
+                className="text-base sm:text-xl md:text-2xl lg:text-3xl leading-relaxed"
               >
                 <p className="text-left font-sans font-medium text-white/90">
                   I build things that are slightly more complicated than they were yesterday. What started as simple web dev quickly spiraled into competing in 20+ hackathons and diving headfirst into complex full-stack and AI ecosystems.
@@ -192,7 +193,7 @@ export default function AboutSection3() {
                 animationNum={11}
                 timelineRef={heroRef}
                 customVariants={revealVariants}
-                className="text-2xl md:text-3xl leading-relaxed max-w-2xl"
+                className="text-base sm:text-xl md:text-2xl lg:text-3xl leading-relaxed"
               >
                 <p className="text-left font-sans font-medium text-white/90">
                   I love the intricate, messy problems that make other developers close their laptops. Ultimately, I firmly believe there’s no product in existence that a good cup of coffee, deep research, and <span className="text-red-300 font-bold">my specific brand of engineering</span> can't build.
@@ -201,14 +202,14 @@ export default function AboutSection3() {
             </TimelineContent>
           </div>
 
-          <div className="md:col-span-1 flex flex-col justify-start pt-8 md:pt-16">
-            <div className="text-right">
+          <div className="lg:col-span-1 flex flex-col justify-start pt-4 sm:pt-8 lg:pt-16">
+            <div className="text-left lg:text-right">
               <TimelineContent
                 as="div"
                 animationNum={12}
                 timelineRef={heroRef}
                 customVariants={revealVariants}
-                className="text-red-300 text-6xl md:text-8xl font-black mb-4 uppercase tracking-tighter"
+                className="text-red-300 text-4xl sm:text-6xl lg:text-8xl font-black mb-2 sm:mb-4 uppercase tracking-tighter"
               >
                 MIHIR
               </TimelineContent>
@@ -217,7 +218,7 @@ export default function AboutSection3() {
                 animationNum={13}
                 timelineRef={heroRef}
                 customVariants={revealVariants}
-                className="text-white/40 text-xl mb-16 md:mb-32 font-bold uppercase tracking-[0.3em]"
+                className="text-white/40 text-sm sm:text-lg lg:text-xl mb-8 sm:mb-16 lg:mb-24 font-bold uppercase tracking-[0.2em] sm:tracking-[0.3em]"
               >
                 Engineer | Full Stack Dev
               </TimelineContent>
@@ -227,30 +228,44 @@ export default function AboutSection3() {
                 animationNum={14}
                 timelineRef={heroRef}
                 customVariants={revealVariants}
-                className="mb-12"
+                className="mb-8"
               >
-                <p className="text-white font-black text-2xl md:text-4xl uppercase text-right leading-tight max-w-md ml-auto mb-8">
+                <p className="text-white font-black text-xl sm:text-2xl lg:text-3xl uppercase text-left lg:text-right leading-tight max-w-md lg:ml-auto">
                   Ready to build something magnificent
                 </p>
               </TimelineContent>
 
               <TimelineContent
-                as="button"
+                as="div"
                 animationNum={15}
                 timelineRef={heroRef}
                 customVariants={revealVariants}
-                onClick={() => {
-                  const syncElem = document.getElementById('sync') || document.getElementById('connect');
-                  if (syncElem) {
-                    syncElem.scrollIntoView({ behavior: 'smooth' });
-                  }
-                }}
-                className="bg-white text-black hover:bg-red-300 hover:text-black border-none flex items-center w-fit ml-auto gap-8 transition-all duration-500 ease-out px-6 py-4 md:px-20 md:py-10 rounded-2xl cursor-pointer font-black uppercase tracking-tighter text-xl md:text-2xl shadow-[0_40px_80px_rgba(255,255,255,0.15)] group"
+                className="flex flex-col items-stretch lg:items-end gap-3.5 w-full sm:w-80 lg:w-96 sm:ml-auto"
               >
-                LET'S COLLABORATE
-                <div className="flex items-center justify-center">
-                  <ArrowRight className="w-8 h-8 md:w-10 md:h-10 group-hover:translate-x-6 transition-transform" />
-                </div>
+                <button
+                  onClick={() => {
+                    const syncElem = document.getElementById('sync') || document.getElementById('connect');
+                    if (syncElem) {
+                      syncElem.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                  className="bg-white text-black hover:bg-red-300 hover:text-black border-none flex items-center justify-between w-full transition-all duration-300 px-6 py-4 sm:px-8 sm:py-5 rounded-2xl cursor-pointer font-black uppercase tracking-tight text-sm sm:text-base shadow-[0_20px_50px_rgba(255,255,255,0.12)] group"
+                >
+                  <span className="whitespace-nowrap">LET&apos;S COLLABORATE</span>
+                  <div className="flex items-center justify-center ml-2">
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+                  </div>
+                </button>
+
+                <a
+                  href={`${API_V1}/public/resume`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-white/[0.05] hover:bg-white/10 text-white/80 hover:text-white border border-white/15 hover:border-red-300/40 flex items-center justify-between transition-all duration-300 px-6 py-3.5 rounded-xl cursor-pointer font-mono font-bold uppercase tracking-wider text-xs sm:text-sm group backdrop-blur-md"
+                >
+                  <span className="whitespace-nowrap">DOWNLOAD CV / RESUME</span>
+                  <Download className="w-4 h-4 text-red-300 group-hover:translate-y-0.5 transition-transform ml-2 shrink-0" />
+                </a>
               </TimelineContent>
             </div>
           </div>

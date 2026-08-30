@@ -429,8 +429,81 @@ export default function NeuralGraphCanvas({
     setScale(newScale);
   };
 
+  // Touch Event Handlers for Mobile
+  const touchPinchDistRef = useRef<number | null>(null);
+  const touchHasMovedRef = useRef(false);
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    touchHasMovedRef.current = false;
+    if (e.touches.length === 1) {
+      const touch = e.touches[0];
+      const node = getNodeAtPos(touch.clientX, touch.clientY);
+      if (node) {
+        draggedNodeRef.current = node;
+        node.isDragging = true;
+      } else {
+        isPanningRef.current = true;
+        panStartRef.current = {
+          x: touch.clientX - transformRef.current.x,
+          y: touch.clientY - transformRef.current.y
+        };
+      }
+    } else if (e.touches.length === 2) {
+      isPanningRef.current = false;
+      if (draggedNodeRef.current) {
+        draggedNodeRef.current.isDragging = false;
+        draggedNodeRef.current = null;
+      }
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      touchPinchDistRef.current = Math.sqrt(dx * dx + dy * dy);
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    touchHasMovedRef.current = true;
+    if (e.touches.length === 1) {
+      const touch = e.touches[0];
+      if (draggedNodeRef.current) {
+        const { x, y } = screenToWorld(touch.clientX, touch.clientY);
+        draggedNodeRef.current.x = x;
+        draggedNodeRef.current.y = y;
+        draggedNodeRef.current.vx = 0;
+        draggedNodeRef.current.vy = 0;
+      } else if (isPanningRef.current) {
+        transformRef.current.x = touch.clientX - panStartRef.current.x;
+        transformRef.current.y = touch.clientY - panStartRef.current.y;
+      }
+    } else if (e.touches.length === 2 && touchPinchDistRef.current !== null) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const currentDist = Math.sqrt(dx * dx + dy * dy);
+      const ratio = currentDist / touchPinchDistRef.current;
+
+      const newScale = Math.min(Math.max(0.3, transformRef.current.scale * ratio), 3.0);
+      transformRef.current.scale = newScale;
+      setScale(newScale);
+      touchPinchDistRef.current = currentDist;
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    if (draggedNodeRef.current) {
+      draggedNodeRef.current.isDragging = false;
+      draggedNodeRef.current = null;
+    }
+    isPanningRef.current = false;
+    touchPinchDistRef.current = null;
+
+    if (!touchHasMovedRef.current && e.changedTouches.length === 1) {
+      const touch = e.changedTouches[0];
+      const node = getNodeAtPos(touch.clientX, touch.clientY);
+      onSelectNode(node);
+    }
+  };
+
   return (
-    <div className="relative w-full h-full bg-[#050505] overflow-hidden select-none">
+    <div className="relative w-full h-full bg-[#050505] overflow-hidden select-none touch-none">
       {/* Background Cybernetic Grid Lines */}
       <div 
         className="absolute inset-0 opacity-15 pointer-events-none"
@@ -448,6 +521,9 @@ export default function NeuralGraphCanvas({
         onMouseUp={handleMouseUp}
         onClick={handleClick}
         onWheel={handleWheel}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         className="w-full h-full block"
       />
     </div>
