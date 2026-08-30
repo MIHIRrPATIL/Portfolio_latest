@@ -8,6 +8,7 @@ import ScrollProgress from "./ScrollProgress"
 import PageLoader from "./PageLoader"
 import SideNav from "./SideNav"
 import MenuOverlay from "./MenuOverlay"
+import BrandLogo from "./BrandLogo"
 import AgentChatWidget from "../agent/AgentChatWidget"
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
@@ -19,6 +20,16 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener('toggle-menu', handleToggle)
   }, [])
 
+  useEffect(() => {
+    if (isMenuOpen) {
+      document.body.classList.add('modal-open')
+      window.dispatchEvent(new CustomEvent('modal-visibility-change', { detail: { open: true } }))
+    } else {
+      document.body.classList.remove('modal-open')
+      window.dispatchEvent(new CustomEvent('modal-visibility-change', { detail: { open: false } }))
+    }
+  }, [isMenuOpen])
+
   return (
     <div className="relative min-h-screen">
       {/* Animated Global Background Pattern */}
@@ -28,6 +39,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <TargetCursor />
       <CustomCursor />
       <ScrollProgress />
+      <BrandLogo />
       <SideNav />
       <MenuOverlay isOpen={isMenuOpen} close={() => setIsMenuOpen(false)} />
       <AgentChatWidget />

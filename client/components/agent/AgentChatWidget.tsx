@@ -447,15 +447,21 @@ export default function AgentChatWidget() {
     setActiveSessionId(`session_${Math.random().toString(36).substring(2, 9)}`);
   }, []);
 
-  // Lock body scroll when modal is active so background doesn't scroll
+  // Lock body scroll and notify shell when modal is active
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      document.body.classList.add("modal-open");
+      window.dispatchEvent(new CustomEvent("modal-visibility-change", { detail: { open: true } }));
     } else {
       document.body.style.overflow = "";
+      document.body.classList.remove("modal-open");
+      window.dispatchEvent(new CustomEvent("modal-visibility-change", { detail: { open: false } }));
     }
     return () => {
       document.body.style.overflow = "";
+      document.body.classList.remove("modal-open");
+      window.dispatchEvent(new CustomEvent("modal-visibility-change", { detail: { open: false } }));
     };
   }, [isOpen]);
 

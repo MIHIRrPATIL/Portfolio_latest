@@ -8,6 +8,7 @@ interface FolderProps {
   className?: string;
   activeIndex?: number;
   open?: boolean;
+  isMobile?: boolean;
 }
 
 const darkenColor = (hex: string, percent: number): string => {
@@ -35,7 +36,8 @@ const Folder: React.FC<FolderProps> = ({
   hidePapers = false, 
   className = '',
   activeIndex = 0,
-  open = false
+  open = false,
+  isMobile = false
 }) => {
   const maxItems = items.length > 0 ? items.length : 5;
   const papers = items;
@@ -90,6 +92,29 @@ const Folder: React.FC<FolderProps> = ({
     const diff = index - activeIndex;
     const baseRotation = 75; // Upright relative to folder's -75deg rotation
     
+    if (isMobile) {
+      if (index === activeIndex) {
+        // Front active card on mobile: perfectly centered within viewport
+        return `translate(-50%, -105%) rotate(${baseRotation}deg) scale(1.0)`;
+      } else if (index > activeIndex) {
+        // Cards behind the front card (stacked deck on mobile)
+        const offset = index - activeIndex;
+        const translateX = -50 + (offset * 4);
+        const translateY = -105 - (offset * 6);
+        const rotate = baseRotation + (offset * 1.5);
+        const scale = 1.0 - (offset * 0.03);
+        return `translate(${translateX}%, ${translateY}%) rotate(${rotate}deg) scale(${scale})`;
+      } else {
+        // Discarded card on mobile
+        const offset = activeIndex - index;
+        const translateX = -95 - (offset * 6);
+        const translateY = -60 + (offset * 6);
+        const rotate = baseRotation - 15 - (offset * 3);
+        const scale = 0.82;
+        return `translate(${translateX}%, ${translateY}%) rotate(${rotate}deg) scale(${scale})`;
+      }
+    }
+
     if (index === activeIndex) {
       // Front active card
       return `translate(-50%, -125%) rotate(${baseRotation}deg) scale(1.05)`;
@@ -133,7 +158,9 @@ const Folder: React.FC<FolderProps> = ({
           ></span>
           {!hidePapers && papers.map((item, i) => {
             const isActive = i === activeIndex;
-            const sizeClasses = open ? 'w-[230px] h-[330px]' : 'w-[80px] h-[80%]'; // Expanded card size
+            const sizeClasses = open 
+              ? (isMobile ? 'w-[210px] h-[300px]' : 'w-[230px] h-[330px]')
+              : 'w-[80px] h-[80%]'; // Expanded card size
 
             const transformStyle = open
               ? `${getDynamicTransform(i)} translate(${paperOffsets[i]?.x || 0}px, ${paperOffsets[i]?.y || 0}px)`

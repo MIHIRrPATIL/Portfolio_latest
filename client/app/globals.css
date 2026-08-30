@@ -197,4 +197,17 @@ html, body {
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: rgba(252, 165, 165, 0.45);
   }
+
+  /* Auto-hide corner menu and top logos whenever any modal, popover, or dialog is active */
+  body.modal-open .corner-menu-btn,
+  body.modal-open #corner-menu-btn,
+  body.modal-open .brand-logo-btn,
+  body[data-modal-open="true"] .corner-menu-btn,
+  body[data-modal-open="true"] #corner-menu-btn,
+  body[data-modal-open="true"] .brand-logo-btn {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+  }
 }

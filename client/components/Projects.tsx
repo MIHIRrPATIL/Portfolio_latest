@@ -120,7 +120,7 @@ export default function ProjectsSection() {
             </motion.div>
 
             {/* Content Switch via AnimatePresence with Glassy Dividers */}
-            <div className="min-h-[140px] sm:min-h-[220px] lg:min-h-[280px] flex flex-col justify-center border-y border-white/[0.08] py-2.5 sm:py-6 lg:py-8 my-1.5 sm:my-4 max-w-[82%] sm:max-w-md lg:max-w-none">
+            <div className="min-h-[140px] sm:min-h-[220px] lg:min-h-[280px] flex flex-col justify-center border-y border-white/[0.08] py-2.5 sm:py-6 lg:py-8 my-1.5 sm:my-4 max-w-[78%] sm:max-w-md lg:max-w-none">
               <AnimatePresence mode="wait">
                 {isActivated && activeProject ? (
                   <motion.div
@@ -223,8 +223,8 @@ export default function ProjectsSection() {
           className={cn(
             "absolute z-30 cursor-pointer pointer-events-auto filter drop-shadow-2xl transition-all duration-500",
             isActivated
-              ? "bottom-8 -right-[15px] sm:bottom-12 sm:right-[15px] lg:top-1/2 lg:-translate-y-1/2 lg:bottom-auto lg:right-[80px]"
-              : "bottom-6 -right-[90px] sm:bottom-10 sm:-right-[80px] lg:top-1/2 lg:-translate-y-1/2 lg:bottom-auto lg:-right-[120px]"
+              ? "bottom-6 right-2 sm:bottom-12 sm:right-[15px] lg:top-1/2 lg:-translate-y-1/2 lg:bottom-auto lg:right-[80px]"
+              : "bottom-6 -right-16 sm:bottom-10 sm:-right-[80px] lg:top-1/2 lg:-translate-y-1/2 lg:bottom-auto lg:-right-[120px]"
           )}
           // Pop out and rotate into place immediately on render
           initial={{ scale: 0.5, rotate: -20, opacity: 0 }}
@@ -253,9 +253,10 @@ export default function ProjectsSection() {
           >
             <Folder 
               color="#fca5a5" 
-              size={isMobile ? 0.72 : isTablet ? 1.15 : 1.55} 
+              size={isMobile ? 0.62 : isTablet ? 1.05 : 1.55} 
               hidePapers={false} 
               open={isActivated}
+              isMobile={isMobile}
               activeIndex={activeIndex}
               items={projectList.map((project, index) => (
                 <ProjectCard 
