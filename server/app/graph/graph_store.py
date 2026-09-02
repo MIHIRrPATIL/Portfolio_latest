@@ -105,8 +105,10 @@ class KnowledgeGraphStore:
 
     def build_bm25_index(self):
         """
-        Indexes all function, file, technology, and project nodes into a BM25 ranking structure for instant lexical search.
+        Indexes all function, file, technology, and project nodes into a memory-efficient BM25 ranking structure.
+        Uses compact token signatures to keep RAM usage minimal under 512MB environments.
         """
+        import gc
         self._indexed_nodes = []
         corpus = []
 
@@ -115,8 +117,8 @@ class KnowledgeGraphStore:
             if not node_data:
                 continue
 
-            props_str = " ".join(str(v) for v in (node_data.properties or {}).values())
-            doc_text = f"{node_data.name} {node_data.repo_id} {node_data.path or ''} {node_data.docstring or ''} {node_data.signature or ''} {node_data.code_snippet or ''} {props_str}"
+            # Compact representation for fast, lean lexical indexing
+            doc_text = f"{node_data.name} {node_data.repo_id} {node_data.path or ''} {(node_data.docstring or '')[:300]} {(node_data.signature or '')[:150]}"
             tokens = self._tokenize(doc_text)
             if tokens:
                 corpus.append(tokens)
@@ -124,9 +126,11 @@ class KnowledgeGraphStore:
 
         if corpus:
             self._bm25_index = BM25Okapi(corpus)
+            del corpus
+            gc.collect()
 
     def _tokenize(self, text: str) -> List[str]:
-        return [t.lower() for t in text.replace("_", " ").replace("-", " ").replace(".", " ").split() if len(t) > 1]
+        return [t.lower() for t in text.replace("_", " ").replace("-", " ").replace(".", " ").split() if len(t) > 1][:60]
 
     def bm25_search(self, query: str, top_k: int = 3) -> List[Tuple[GraphNode, float]]:
         """

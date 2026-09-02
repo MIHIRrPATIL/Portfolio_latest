@@ -58,7 +58,8 @@ async def get_all_graphs(project: Optional[str] = Query(None, description="Optio
     """
     Returns nodes and edges for the Neural Graph visualizer.
     """
-    graph_store.load_all_graphs()
+    if graph_store.graph.number_of_nodes() == 0:
+        graph_store.load_all_graphs()
 
     nodes = []
     edges = []

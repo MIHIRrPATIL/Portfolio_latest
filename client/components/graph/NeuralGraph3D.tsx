@@ -41,6 +41,21 @@ const TYPE_CONFIG: Record<string, { color: number; glow: number; radius: number 
   EXPERIENCE: { color: 0xf59e0b, glow: 0xfcd34d, radius: 12 }
 };
 
+const disposeObject3D = (obj: THREE.Object3D) => {
+  obj.traverse((child) => {
+    if ((child as any).geometry) {
+      (child as any).geometry.dispose();
+    }
+    if ((child as any).material) {
+      if (Array.isArray((child as any).material)) {
+        (child as any).material.forEach((m: any) => m.dispose());
+      } else {
+        (child as any).material.dispose();
+      }
+    }
+  });
+};
+
 export default function NeuralGraph3D({
   nodes,
   edges,
@@ -119,6 +134,12 @@ export default function NeuralGraph3D({
 
     return () => {
       window.removeEventListener("resize", handleResize);
+      nodes3DRef.current.forEach((n) => {
+        if (n.mesh) disposeObject3D(n.mesh);
+      });
+      edges3DRef.current.forEach((e) => {
+        if (e.line) disposeObject3D(e.line);
+      });
       renderer.dispose();
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
@@ -131,12 +152,18 @@ export default function NeuralGraph3D({
     const scene = sceneRef.current;
     if (!scene) return;
 
-    // Clean previous meshes
+    // Clean previous meshes and free WebGL resources
     nodes3DRef.current.forEach((n) => {
-      if (n.mesh) scene.remove(n.mesh);
+      if (n.mesh) {
+        scene.remove(n.mesh);
+        disposeObject3D(n.mesh);
+      }
     });
     edges3DRef.current.forEach((e) => {
-      if (e.line) scene.remove(e.line);
+      if (e.line) {
+        scene.remove(e.line);
+        disposeObject3D(e.line);
+      }
     });
 
     const filteredNodes = filterType === "ALL" 

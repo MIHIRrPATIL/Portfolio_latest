@@ -26,12 +26,12 @@ elif is_transaction_pooler:
         pool_pre_ping=True
     )
 else:
-    # Transaction-optimized QueuePool for PostgreSQL
+    # Transaction-optimized QueuePool for PostgreSQL (Lean memory profile for 512MB RAM tiers)
     engine = create_engine(
         db_url,
         poolclass=QueuePool,
-        pool_size=10,          # Base pool size
-        max_overflow=20,       # Max temporary connections for burst traffic
+        pool_size=5,           # Base pool size
+        max_overflow=5,        # Max temporary burst connections
         pool_recycle=300,      # Recycle connections every 5 minutes (prevents idle timeouts)
         pool_timeout=15,       # 15s wait timeout before erroring
         pool_pre_ping=True     # Test connection liveness before checking out from pool

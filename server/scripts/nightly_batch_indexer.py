@@ -50,36 +50,38 @@ async def run_nightly_batch_indexing(batch_size: int = 5):
                 print(f"⚠️ [NIGHTLY CRON] Error fetching user repositories: {str(e)}")
                 return
 
-    db = SessionLocal()
-    existing_cases = {c.id: c for c in get_all_case_studies(db)}
-    db.close()
+            db = SessionLocal()
+            try:
+                existing_cases = {c.id: c for c in get_all_case_studies(db)}
+            finally:
+                db.close()
 
-    unindexed = []
-    for r in filtered_repos:
-        name = r.get("name")
-        owner = r.get("owner", {}).get("login", target_user)
-        project_id = name.lower().replace("_", "-")
+            unindexed = []
+            for r in filtered_repos:
+                name = r.get("name")
+                owner = r.get("owner", {}).get("login", target_user)
+                project_id = name.lower().replace("_", "-")
 
-        existing = existing_cases.get(project_id)
-        is_stub = True
-        if existing:
-            is_stub = (
-                "Click to trigger" in (existing.architecture_overview or "") or
-                "Automated portfolio case study" in (existing.description or "") or
-                "repository built by" in (existing.description or "") or
-                len(existing.description or "") < 100 or
-                not existing.architecture_overview or
-                len(existing.architecture_overview) < 100
-            )
+                existing = existing_cases.get(project_id)
+                is_stub = True
+                if existing:
+                    is_stub = (
+                        "Click to trigger" in (existing.architecture_overview or "") or
+                        "Automated portfolio case study" in (existing.description or "") or
+                        "repository built by" in (existing.description or "") or
+                        len(existing.description or "") < 100 or
+                        not existing.architecture_overview or
+                        len(existing.architecture_overview) < 100
+                    )
 
-        if is_stub:
-            unindexed.append({"name": name, "owner": owner, "id": project_id})
+                if is_stub:
+                    unindexed.append({"name": name, "owner": owner, "id": project_id})
 
-    print(f"📊 [NIGHTLY CRON] Progress: {len(filtered_repos) - len(unindexed)}/{len(filtered_repos)} repositories fully indexed. {len(unindexed)} stubs remaining.")
+            print(f"📊 [NIGHTLY CRON] Progress: {len(filtered_repos) - len(unindexed)}/{len(filtered_repos)} repositories fully indexed. {len(unindexed)} stubs remaining.")
 
-    if not unindexed:
-        print("🎉 [NIGHTLY CRON] All projects have been fully indexed with AI! Nothing to do tonight.")
-        return
+            if not unindexed:
+                print("🎉 [NIGHTLY CRON] All projects have been fully indexed with AI! Nothing to do tonight.")
+                return
 
             # Process batch for tonight
             batch = unindexed[:batch_size]
