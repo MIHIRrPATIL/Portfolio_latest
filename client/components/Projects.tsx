@@ -174,7 +174,7 @@ export default function ProjectsSection() {
                   >
                     <div className="flex items-center gap-2 sm:gap-4">
                       <span className="text-3xl sm:text-5xl lg:text-6xl font-black text-white/20 select-none">
-                        {String(projects.length).padStart(2, "0")}
+                        {String(projectList.length || 6).padStart(2, "0")}
                       </span>
                       <div className="flex flex-col font-mono text-[8px] sm:text-[9px] lg:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.25em] text-white/40">
                         <span>Curated</span>

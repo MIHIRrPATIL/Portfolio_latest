@@ -664,6 +664,16 @@ CRITICAL ANTI-HALLUCINATION RULES:
         new_stubs_to_save = []
         seen_repo_ids = set()
 
+        # 1. Include all persisted case studies from database
+        for p in db_data.get("all_projects", []):
+            pid = (p.get("id") or "").lower().replace("_", "-")
+            if pid and pid not in seen_repo_ids:
+                seen_repo_ids.add(pid)
+                p_copy = dict(p)
+                p_copy["id"] = pid
+                results.append(p_copy)
+
+        # 2. Append any newly discovered repositories from GitHub not yet in database
         for r in repos:
             name = r.get("name")
             owner = r.get("owner", {}).get("login", target_user)
@@ -673,8 +683,8 @@ CRITICAL ANTI-HALLUCINATION RULES:
                 continue
             seen_repo_ids.add(repo_id)
 
-            # Use DB record if available
-            db_match = db_projects.get(repo_id) or db_name_map.get(name.lower())
+            # Check if name matched existing DB record
+            db_match = db_name_map.get(name.lower())
             if db_match:
                 results.append(db_match)
                 continue
@@ -711,7 +721,7 @@ CRITICAL ANTI-HALLUCINATION RULES:
             results.append(stub)
             new_stubs_to_save.append(stub)
 
-        # Automatically persist new summary records into PostgreSQL Database!
+        # Automatically persist new summary records into PostgreSQL Database
         if new_stubs_to_save:
             try:
                 from app.db.session import SessionLocal
