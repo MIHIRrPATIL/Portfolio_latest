@@ -20,6 +20,11 @@ class Settings(BaseSettings):
     OPENROUTER_MODEL: str = "openrouter/free"
     DATABASE_URL: str = "sqlite:///./portfolio.db"
     
+    # Supabase Credentials
+    SUPABASE_URL: str = ""
+    SUPABASE_ANON_KEY: str = ""
+    SUPABASE_PUBLISHABLE_KEY: str = ""
+    
     # Email Notification Settings
     NOTIFICATION_EMAIL: str = "mihirpatil2505@gmail.com"
     SMTP_HOST: str = "smtp.gmail.com"
