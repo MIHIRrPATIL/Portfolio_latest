@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from typing import Dict, Any, List, Optional, Tuple
 from app.services.github_service import github_service
 from app.config import settings
+from app.utils.memory import trim_memory
 
 # Key architecture filenames to always prioritize for indexing
 KEY_ARCH_MANIFESTS = {
@@ -56,7 +57,7 @@ class RepositoryIndexer:
     """
     Codebase Indexer Engine.
     Processes a repository to extract README markdown, recent commit diffs,
-    language statistics, and up to 20 core architecture source files into a unified AST Graph artifact.
+    language statistics, and up to 12 core architecture source files into a unified AST Graph artifact.
     """
 
     def __init__(self):
@@ -71,7 +72,7 @@ class RepositoryIndexer:
         """
         Builds a comprehensive LLM-ready and Graph-ready index payload for a single repository.
         """
-        print(f"🔍 Indexing repository: {owner}/{repo_name}...")
+        print(f"[INDEXER] Indexing repository: {owner}/{repo_name}...")
 
         # 1. Fetch README content
         readme_text = await github_service.fetch_readme_content(owner, repo_name)
@@ -79,7 +80,7 @@ class RepositoryIndexer:
         # 2. Fetch recent commits (last 5 commits with changed files)
         recent_commits = (await github_service.fetch_recent_commits(owner, repo_name, limit=5)) or []
 
-        # 3. Fetch full tree & identify up to 20 high-priority architecture files
+        # 3. Fetch full tree & identify high-priority architecture files (capped at 12 for memory safety)
         tree_paths = (await github_service.fetch_repository_tree(owner, repo_name)) or []
         
         candidate_paths: List[Tuple[str, int]] = []
@@ -95,12 +96,14 @@ class RepositoryIndexer:
 
         # Sort candidates by architectural priority descending
         candidate_paths.sort(key=lambda x: x[1], reverse=True)
-        selected_paths = [p[0] for p in candidate_paths[:18]]
+        selected_paths = [p[0] for p in candidate_paths[:12]]
 
-        # Concurrently fetch contents for all selected source files
+        # Throttled concurrent file fetching (max 3 concurrent connections to protect RAM)
+        sem = asyncio.Semaphore(3)
         async def fetch_single_file(path: str) -> Tuple[str, Optional[str]]:
-            content = await github_service.fetch_file_content(owner, repo_name, path, max_lines=300)
-            return path, content
+            async with sem:
+                content = await github_service.fetch_file_content(owner, repo_name, path, max_lines=200)
+                return path, content
 
         fetch_tasks = [fetch_single_file(p) for p in selected_paths]
         fetched_results = await asyncio.gather(*fetch_tasks, return_exceptions=True)
@@ -138,7 +141,7 @@ class RepositoryIndexer:
             "file_tree": file_tree,
             "tree_structure_summary": {
                 "total_files": len(tree_paths),
-                "sample_tree": tree_paths[:30]
+                "sample_tree": tree_paths[:20]
             },
             "languages": languages
         }
@@ -158,19 +161,20 @@ class RepositoryIndexer:
                 "readme": {"content": readme_text}
             })
         except Exception as e:
-            print(f"⚠️ Failed to build code knowledge graph for {repo_name}: {str(e)}")
+            print(f"[INDEXER] Warning building code knowledge graph for {repo_name}: {str(e)}")
 
         # Persist to database
         try:
             from app.db.session import SessionLocal
             from app.db.crud import upsert_repository_index
-            db = SessionLocal()
-            upsert_repository_index(db, indexed_data)
-            db.close()
+            with SessionLocal() as db:
+                upsert_repository_index(db, indexed_data)
         except Exception as e:
-            print(f"⚠️ Failed to save index to DB: {str(e)}")
+            print(f"[INDEXER] Warning saving index to DB: {str(e)}")
 
-        print(f"✅ Successfully indexed {repo_name} ({len(key_files_content)} files parsed) -> {cache_path}")
+        print(f"[INDEXER] Successfully indexed {repo_name} ({len(key_files_content)} files parsed) -> {cache_path}")
+        
+        trim_memory()
         return indexed_data
 
     def get_cached_index(self, repo_name: str) -> Optional[Dict[str, Any]]:
@@ -178,20 +182,19 @@ class RepositoryIndexer:
         try:
             from app.db.session import SessionLocal
             from app.db.crud import get_repository_index
-            db = SessionLocal()
-            db_item = get_repository_index(db, repo_name)
-            db.close()
-            if db_item:
-                return {
-                    "repo_name": db_item.repo_name,
-                    "owner": db_item.owner,
-                    "full_name": db_item.full_name,
-                    "readme": {"present": bool(db_item.readme_content), "content": db_item.readme_content or ""},
-                    "recent_activity": {"commits": db_item.recent_commits or []},
-                    "architecture_manifests": {"files": db_item.architecture_manifests or {}},
-                    "tree_structure_summary": db_item.tree_summary or {},
-                    "languages": db_item.languages or {}
-                }
+            with SessionLocal() as db:
+                db_item = get_repository_index(db, repo_name)
+                if db_item:
+                    return {
+                        "repo_name": db_item.repo_name,
+                        "owner": db_item.owner,
+                        "full_name": db_item.full_name,
+                        "readme": {"present": bool(db_item.readme_content), "content": db_item.readme_content or ""},
+                        "recent_activity": {"commits": db_item.recent_commits or []},
+                        "architecture_manifests": {"files": db_item.architecture_manifests or {}},
+                        "tree_structure_summary": db_item.tree_summary or {},
+                        "languages": db_item.languages or {}
+                    }
         except Exception:
             pass
 

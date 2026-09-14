@@ -4,6 +4,7 @@ import networkx as nx
 from typing import Dict, Any, List, Optional, Tuple
 from rank_bm25 import BM25Okapi
 from app.graph.schema import GraphNode, GraphEdge, NodeType, RelationType, GraphQueryResult
+from app.utils.memory import trim_memory
 
 class KnowledgeGraphStore:
     """
@@ -28,7 +29,7 @@ class KnowledgeGraphStore:
         try:
             self.load_all_graphs()
         except Exception as e:
-            print(f"Notice loading initial graphs: {str(e)}")
+            print(f"[GRAPH STORE] Notice loading initial graphs: {str(e)}")
 
     def add_node(self, node: GraphNode):
         self.graph.add_node(node.id, data=node.model_dump())
@@ -108,7 +109,6 @@ class KnowledgeGraphStore:
         Indexes all function, file, technology, and project nodes into a memory-efficient BM25 ranking structure.
         Uses compact token signatures to keep RAM usage minimal under 512MB environments.
         """
-        import gc
         self._indexed_nodes = []
         corpus = []
 
@@ -118,7 +118,7 @@ class KnowledgeGraphStore:
                 continue
 
             # Compact representation for fast, lean lexical indexing
-            doc_text = f"{node_data.name} {node_data.repo_id} {node_data.path or ''} {(node_data.docstring or '')[:300]} {(node_data.signature or '')[:150]}"
+            doc_text = f"{node_data.name} {node_data.repo_id} {node_data.path or ''} {(node_data.docstring or '')[:200]} {(node_data.signature or '')[:100]}"
             tokens = self._tokenize(doc_text)
             if tokens:
                 corpus.append(tokens)
@@ -127,10 +127,11 @@ class KnowledgeGraphStore:
         if corpus:
             self._bm25_index = BM25Okapi(corpus)
             del corpus
-            gc.collect()
+        
+        trim_memory()
 
     def _tokenize(self, text: str) -> List[str]:
-        return [t.lower() for t in text.replace("_", " ").replace("-", " ").replace(".", " ").split() if len(t) > 1][:60]
+        return [t.lower() for t in text.replace("_", " ").replace("-", " ").replace(".", " ").split() if len(t) > 1][:40]
 
     def bm25_search(self, query: str, top_k: int = 3) -> List[Tuple[GraphNode, float]]:
         """
@@ -229,7 +230,7 @@ class KnowledgeGraphStore:
         with open(path, "w", encoding="utf-8") as f:
             json.dump(payload, f, indent=2)
 
-    def save(self):
+    def save(self, rebuild_index: bool = True):
         """Persists all subgraphs and rebuilds BM25 search index."""
         repos = set()
         for node_id in self.graph.nodes:
@@ -238,7 +239,8 @@ class KnowledgeGraphStore:
                 repos.add(node_data.repo_id)
         for repo_id in repos:
             self.save_project_graph(repo_id)
-        self.build_bm25_index()
+        if rebuild_index:
+            self.build_bm25_index()
 
     def load_all_graphs(self):
         """Loads all cached project graphs from disk."""
@@ -257,8 +259,9 @@ class KnowledgeGraphStore:
                         for e in data.get("edges", []):
                             self.add_edge(GraphEdge(**e))
                 except Exception as e:
-                    print(f"⚠️ Error loading graph {fname}: {str(e)}")
+                    print(f"[GRAPH STORE] Warning loading graph {fname}: {str(e)}")
 
         self.build_bm25_index()
+        trim_memory()
 
 graph_store = KnowledgeGraphStore()

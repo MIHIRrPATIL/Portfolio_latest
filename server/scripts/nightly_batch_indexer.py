@@ -12,34 +12,39 @@ from app.services.github_service import github_service
 from app.config import settings
 from app.db.session import SessionLocal
 from app.db.crud import upsert_project_case_study, get_all_case_studies
+from app.utils.memory import get_process_memory_mb, trim_memory
 
 # Concurrency Mutex to prevent duplicate parallel cron executions
 _INDEXING_LOCK = asyncio.Lock()
 _IS_INDEXING = False
 
-async def run_nightly_batch_indexing(batch_size: int = 5):
+# Maximum safe RAM threshold in MB before throttling/pausing batch
+MAX_SAFE_RAM_MB = 380.0
+
+async def run_nightly_batch_indexing(batch_size: int = 2):
     """
     Nightly Batch AI Case Study Generator.
     Runs at midnight every night:
     - Finds projects that are missing full AI case studies (stubs).
-    - Processes a safe batch (default: 5 repos per night) with delays to prevent rate limits (HTTP 429).
+    - Processes a safe lean batch (default: 2 repos per run) to stay strictly under 512MB RAM.
     - Saves generated AI case studies to PostgreSQL database.
-    - Prevents parallel duplicate execution to protect container memory.
+    - Flushes OS heap pages via malloc_trim and garbage collection after every repository.
     """
     global _IS_INDEXING
     if _IS_INDEXING or _INDEXING_LOCK.locked():
-        print("⚠️ [NIGHTLY CRON] Batch indexing is ALREADY running in background. Skipping duplicate trigger.")
+        print("[NIGHTLY CRON] Batch indexing is ALREADY running in background. Skipping duplicate trigger.")
         return
 
     async with _INDEXING_LOCK:
         _IS_INDEXING = True
         try:
-            print("🌙 [NIGHTLY CRON] Starting Midnight AI Case Study Batch Indexer...")
+            trim_memory()
+            initial_ram = get_process_memory_mb()
+            print(f"[NIGHTLY CRON] Starting AI Case Study Batch Indexer. Initial RAM: {initial_ram} MB")
             target_user = settings.GITHUB_USERNAME
 
             try:
                 repos = await github_service.fetch_user_repositories(target_user)
-                # Filter personal repos + explicit team repos
                 known_team_repos = {"cdac-asr", "cdac_asr", "hireai", "greekslab", "portfolio--main", "ipd", "synapse"}
                 filtered_repos = [
                     r for r in repos
@@ -47,14 +52,11 @@ async def run_nightly_batch_indexing(batch_size: int = 5):
                        r.get("name", "").lower() in known_team_repos
                 ]
             except Exception as e:
-                print(f"⚠️ [NIGHTLY CRON] Error fetching user repositories: {str(e)}")
+                print(f"[NIGHTLY CRON] Error fetching user repositories: {str(e)}")
                 return
 
-            db = SessionLocal()
-            try:
+            with SessionLocal() as db:
                 existing_cases = {c.id: c for c in get_all_case_studies(db)}
-            finally:
-                db.close()
 
             unindexed = []
             for r in filtered_repos:
@@ -77,23 +79,29 @@ async def run_nightly_batch_indexing(batch_size: int = 5):
                 if is_stub:
                     unindexed.append({"name": name, "owner": owner, "id": project_id})
 
-            print(f"📊 [NIGHTLY CRON] Progress: {len(filtered_repos) - len(unindexed)}/{len(filtered_repos)} repositories fully indexed. {len(unindexed)} stubs remaining.")
+            print(f"[NIGHTLY CRON] Progress: {len(filtered_repos) - len(unindexed)}/{len(filtered_repos)} repositories fully indexed. {len(unindexed)} stubs remaining.")
 
             if not unindexed:
-                print("🎉 [NIGHTLY CRON] All projects have been fully indexed with AI! Nothing to do tonight.")
+                print("[NIGHTLY CRON] All projects have been fully indexed with AI. Nothing to do.")
                 return
 
-            # Process batch for tonight
+            # Process safe batch
             batch = unindexed[:batch_size]
-            print(f"⚡ [NIGHTLY CRON] Processing tonight's batch of {len(batch)} repositories...")
+            print(f"[NIGHTLY CRON] Processing batch of {len(batch)} repositories...")
 
             processed_count = 0
             for item in batch:
+                current_ram = get_process_memory_mb()
+                if current_ram > MAX_SAFE_RAM_MB:
+                    print(f"[NIGHTLY CRON] Memory threshold warning ({current_ram} MB > {MAX_SAFE_RAM_MB} MB). Pausing batch to prevent container OOM.")
+                    trim_memory()
+                    break
+
                 name = item["name"]
                 owner = item["owner"]
                 project_id = item["id"]
 
-                print(f"\n🧠 Indexing & Synthesizing AI Case Study for '{owner}/{name}'...")
+                print(f"[NIGHTLY CRON] Indexing & Synthesizing AI Case Study for '{owner}/{name}' (Current RAM: {current_ram} MB)...")
                 try:
                     repo_index = await indexer_service.index_repository(owner, name)
                     case_study = await ai_service.analyze_and_generate_case_study(repo_index)
@@ -101,28 +109,28 @@ async def run_nightly_batch_indexing(batch_size: int = 5):
                     case_study["name"] = name
                     case_study["owner"] = owner
 
-                    db = SessionLocal()
-                    try:
+                    with SessionLocal() as db:
                         upsert_project_case_study(db, case_study)
-                    finally:
-                        db.close()
 
                     processed_count += 1
-                    print(f"✅ Saved AI Case Study for '{name}' -> Title: '{case_study.get('title')}'")
+                    print(f"[NIGHTLY CRON] Saved AI Case Study for '{name}' -> Title: '{case_study.get('title')}'")
 
-                    # Force memory garbage collection between repository runs
+                    # Explicitly release memory
                     del repo_index
                     del case_study
-                    gc.collect()
+                    trim_memory()
 
-                    # Delay 3 seconds between LLM calls to prevent rate limits
-                    await asyncio.sleep(3.0)
+                    # Delay between LLM calls to prevent rate limits and memory pressure
+                    await asyncio.sleep(2.0)
                 except Exception as e:
-                    print(f"⚠️ [NIGHTLY CRON] Error generating case study for '{name}': {str(e)}")
+                    print(f"[NIGHTLY CRON] Error generating case study for '{name}': {str(e)}")
+                    trim_memory()
 
-            print(f"\n🌙 [NIGHTLY CRON] Nightly batch completed! Upgraded {processed_count} projects tonight. {len(unindexed) - processed_count} stubs remaining for upcoming nights.")
+            final_ram = get_process_memory_mb()
+            print(f"[NIGHTLY CRON] Batch completed. Upgraded {processed_count} projects. Final RAM: {final_ram} MB. {len(unindexed) - processed_count} stubs remaining.")
         finally:
             _IS_INDEXING = False
+            trim_memory()
 
 if __name__ == "__main__":
-    asyncio.run(run_nightly_batch_indexing(batch_size=5))
+    asyncio.run(run_nightly_batch_indexing(batch_size=2))

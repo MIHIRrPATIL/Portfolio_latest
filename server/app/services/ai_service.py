@@ -66,7 +66,7 @@ class GeminiAIService:
     async def _call_gemini_api(self, prompt: str) -> Optional[str]:
         """Call Gemini REST API asynchronously with automatic model fallback."""
         if not self.api_key or self.api_key == "your_gemini_api_key_here":
-            print("⚠️ GEMINI_API_KEY not configured. Falling back to rule-based fallback generation.")
+            print("[AI SERVICE] GEMINI_API_KEY not configured. Falling back to rule-based fallback generation.")
             return None
 
         for model in self.fallback_models:
@@ -97,13 +97,13 @@ class GeminiAIService:
                             if parts:
                                 return parts[0].get("text", "")
                     elif res.status_code == 429:
-                        print(f"⚠️ Gemini API [{model}] Quota Exceeded (HTTP 429). Attempting fallback...")
+                        print(f"[AI SERVICE] Gemini API [{model}] Quota Exceeded (HTTP 429). Attempting fallback...")
                     else:
-                        print(f"⚠️ Gemini API [{model}] returned HTTP {res.status_code}")
+                        print(f"[AI SERVICE] Gemini API [{model}] returned HTTP {res.status_code}")
                 except Exception as e:
-                    print(f"⚠️ Exception invoking Gemini API [{model}]: {str(e)}")
+                    print(f"[AI SERVICE] Exception invoking Gemini API [{model}]: {str(e)}")
 
-        print("⚠️ Gemini API quota/availability exhausted. Falling back to Rule-Based Case Study generator.")
+        print("[AI SERVICE] Gemini API quota/availability exhausted. Falling back to Rule-Based Case Study generator.")
         return None
 
     async def _call_openrouter_api(self, prompt: str) -> Optional[str]:
@@ -149,12 +149,12 @@ class GeminiAIService:
                         if choices:
                             text = choices[0].get("message", {}).get("content", "")
                             if text:
-                                print(f"✅ OpenRouter API [{model}] generated case study successfully.")
+                                print(f"[AI SERVICE] OpenRouter API [{model}] generated case study successfully.")
                                 return text
                     else:
-                        print(f"⚠️ OpenRouter API [{model}] returned HTTP {res.status_code}")
+                        print(f"[AI SERVICE] OpenRouter API [{model}] returned HTTP {res.status_code}")
                 except Exception as e:
-                    print(f"⚠️ Exception invoking OpenRouter API [{model}]: {str(e)}")
+                    print(f"[AI SERVICE] Exception invoking OpenRouter API [{model}]: {str(e)}")
 
         return None
 
@@ -508,14 +508,15 @@ CRITICAL ANTI-HALLUCINATION RULES:
         try:
             from app.db.session import SessionLocal
             from app.db.crud import upsert_project_case_study
-            db = SessionLocal()
-            for p in generated_projects:
-                upsert_project_case_study(db, p)
-            db.close()
+            from app.utils.memory import trim_memory
+            with SessionLocal() as db:
+                for p in generated_projects:
+                    upsert_project_case_study(db, p)
+            trim_memory()
         except Exception as e:
-            print(f"⚠️ Failed to save case studies to DB: {str(e)}")
+            print(f"[AI SERVICE] Failed to save case studies to DB: {str(e)}")
 
-        print(f"🎉 Portfolio DB updated with {len(generated_projects)} total projects ({len(featured_projects)} featured) -> {self.db_file}")
+        print(f"[AI SERVICE] Portfolio DB updated with {len(generated_projects)} total projects ({len(featured_projects)} featured) -> {self.db_file}")
         return portfolio_db
 
     async def get_or_generate_single_project(self, repo_name: str, owner: Optional[str] = None) -> Dict[str, Any]:
@@ -541,65 +542,64 @@ CRITICAL ANTI-HALLUCINATION RULES:
         try:
             from app.db.session import SessionLocal
             from app.db.crud import get_case_study_by_id
-            db = SessionLocal()
-            db_case = get_case_study_by_id(db, project_id)
-            if not db_case:
-                db_case = get_case_study_by_id(db, actual_name)
-            if not db_case:
-                db_case = get_case_study_by_id(db, repo_name)
-            db.close()
+            with SessionLocal() as db:
+                db_case = get_case_study_by_id(db, project_id)
+                if not db_case:
+                    db_case = get_case_study_by_id(db, actual_name)
+                if not db_case:
+                    db_case = get_case_study_by_id(db, repo_name)
 
-            if db_case:
-                desc = db_case.description or ""
-                arch = db_case.architecture_overview or ""
-                is_stub = (
-                    "Click to trigger" in arch or
-                    "Automated portfolio case study" in desc or
-                    "repository built by" in desc or
-                    "is an engineering repository created by" in desc or
-                    "is an engineering project built with" in desc or
-                    "platform utilizes an event-driven" in arch or
-                    len(desc) < 120 or
-                    len(arch) < 120
-                )
-                if not is_stub:
-                    title = db_case.title
-                    if not title or "clean human" in title.lower() or title.lower() == "title" or len(title) < 2:
-                        title = self.format_repo_title(db_case.repo_name or project_id)
+                if db_case:
+                    desc = db_case.description or ""
+                    arch = db_case.architecture_overview or ""
+                    is_stub = (
+                        "Click to trigger" in arch or
+                        "Automated portfolio case study" in desc or
+                        "repository built by" in desc or
+                        "is an engineering repository created by" in desc or
+                        "is an engineering project built with" in desc or
+                        "platform utilizes an event-driven" in arch or
+                        len(desc) < 120 or
+                        len(arch) < 120
+                    )
+                    if not is_stub:
+                        title = db_case.title
+                        if not title or "clean human" in title.lower() or title.lower() == "title" or len(title) < 2:
+                            title = self.format_repo_title(db_case.repo_name or project_id)
 
-                    return {
-                        "id": db_case.id,
-                        "name": db_case.repo_name,
-                        "owner": db_case.owner,
-                        "title": title,
-                        "is_featured": db_case.is_featured,
-                        "is_team_project": getattr(db_case, "is_team_project", False),
-                        "category": db_case.category,
-                        "tagline": db_case.tagline,
-                        "tags": db_case.tags or [],
-                        "description": db_case.description,
-                        "architecture_overview": db_case.architecture_overview,
-                        "core_capabilities": db_case.core_capabilities or [],
-                        "performance_metrics": db_case.performance_metrics or [],
-                        "liveUrl": db_case.live_url,
-                        "repoUrl": db_case.repo_url,
-                        "image": db_case.image,
-                        "year": db_case.year
-                    }
-                else:
-                    print(f"⚡ Project '{repo_name}' is currently a lightweight stub in DB. Upgrading to full OpenRouter AI Case Study...")
+                        return {
+                            "id": db_case.id,
+                            "name": db_case.repo_name,
+                            "owner": db_case.owner,
+                            "title": title,
+                            "is_featured": db_case.is_featured,
+                            "is_team_project": getattr(db_case, "is_team_project", False),
+                            "category": db_case.category,
+                            "tagline": db_case.tagline,
+                            "tags": db_case.tags or [],
+                            "description": db_case.description,
+                            "architecture_overview": db_case.architecture_overview,
+                            "core_capabilities": db_case.core_capabilities or [],
+                            "performance_metrics": db_case.performance_metrics or [],
+                            "liveUrl": db_case.live_url,
+                            "repoUrl": db_case.repo_url,
+                            "image": db_case.image,
+                            "year": db_case.year
+                        }
+                    else:
+                        print(f"[AI SERVICE] Project '{repo_name}' is currently a lightweight stub in DB. Upgrading to full AI Case Study...")
         except Exception as e:
-            print(f"⚠️ DB lookup error for {repo_name}: {str(e)}")
+            print(f"[AI SERVICE] DB lookup error for {repo_name}: {str(e)}")
 
         # 2. On-Demand Lazy Indexing for ONLY this repository
         try:
-            print(f"⚡ Lazy indexing single repository: {target_owner}/{actual_name}...")
+            print(f"[AI SERVICE] Lazy indexing single repository: {target_owner}/{actual_name}...")
             repo_index = await indexer_service.index_repository(target_owner, actual_name)
             case_study = await self.analyze_and_generate_case_study(repo_index)
             if not case_study or not isinstance(case_study, dict):
                 case_study = self._rule_based_fallback(repo_index)
         except Exception as e:
-            print(f"⚠️ Lazy indexing error for {target_owner}/{actual_name}: {str(e)}")
+            print(f"[AI SERVICE] Lazy indexing error for {target_owner}/{actual_name}: {str(e)}")
             repo_index = {
                 "repo_name": actual_name,
                 "owner": target_owner,
@@ -617,11 +617,12 @@ CRITICAL ANTI-HALLUCINATION RULES:
         try:
             from app.db.session import SessionLocal
             from app.db.crud import upsert_project_case_study
-            db = SessionLocal()
-            upsert_project_case_study(db, case_study)
-            db.close()
+            from app.utils.memory import trim_memory
+            with SessionLocal() as db:
+                upsert_project_case_study(db, case_study)
+            trim_memory()
         except Exception as e:
-            print(f"⚠️ Failed to persist single case study to DB: {str(e)}")
+            print(f"[AI SERVICE] Failed to persist single case study to DB: {str(e)}")
 
         return case_study
 
@@ -715,13 +716,14 @@ CRITICAL ANTI-HALLUCINATION RULES:
             try:
                 from app.db.session import SessionLocal
                 from app.db.crud import upsert_project_case_study
-                db = SessionLocal()
-                for stub in new_stubs_to_save:
-                    upsert_project_case_study(db, stub)
-                db.close()
-                print(f"💾 Saved {len(new_stubs_to_save)} new project records into PostgreSQL database.")
+                from app.utils.memory import trim_memory
+                with SessionLocal() as db:
+                    for stub in new_stubs_to_save:
+                        upsert_project_case_study(db, stub)
+                trim_memory()
+                print(f"[AI SERVICE] Saved {len(new_stubs_to_save)} new project records into PostgreSQL database.")
             except Exception as e:
-                print(f"⚠️ Warning saving project stubs to DB: {str(e)}")
+                print(f"[AI SERVICE] Warning saving project stubs to DB: {str(e)}")
 
         if results:
             self._summary_cache = results
@@ -734,10 +736,9 @@ CRITICAL ANTI-HALLUCINATION RULES:
         try:
             from app.db.session import SessionLocal
             from app.db.crud import get_all_case_studies, get_featured_case_studies
-            db = SessionLocal()
-            all_db_cases = get_all_case_studies(db)
-            featured_db_cases = get_featured_case_studies(db)
-            db.close()
+            with SessionLocal() as db:
+                all_db_cases = get_all_case_studies(db)
+                featured_db_cases = get_featured_case_studies(db)
 
             if all_db_cases:
                 def model_to_dict(m):
@@ -773,7 +774,7 @@ CRITICAL ANTI-HALLUCINATION RULES:
                     "all_projects": all_list
                 }
         except Exception as e:
-            print(f"⚠️ Failed to read from DB: {str(e)}")
+            print(f"[AI SERVICE] Failed to read from DB: {str(e)}")
 
         if os.path.exists(self.db_file):
             try:
@@ -883,7 +884,7 @@ CRITICAL ANTI-HALLUCINATION RULES:
         if len(sorted_languages) < 10:
             sorted_languages = ["Python", "TypeScript", "JavaScript", "Rust", "Next.js", "React", "Node.js", "FastAPI", "Tauri", "Tailwind CSS", "LangGraph", "Wav2Vec 2.0", "MediaPipe", "Vite", "MongoDB", "HTML5", "CSS3", "EJS"]
 
-        # 2. Concurrently calculate Lines of Code (LOC) across repositories
+        # 2. Concurrently calculate Lines of Code (LOC) across repositories with bounded concurrency
         BYTES_PER_LOC = {
             "python": 35.0,
             "typescript": 31.0,
@@ -898,12 +899,14 @@ CRITICAL ANTI-HALLUCINATION RULES:
         }
         DEFAULT_BYTES_PER_LOC = 32.0
 
+        sem = asyncio.Semaphore(5)
         async def fetch_repo_lang(item: Dict[str, Any]):
-            repo_name = item.get("name") or item.get("id")
-            owner = item.get("owner", target_user)
-            from app.services.github_service import github_service
-            langs = await github_service.fetch_languages(owner, repo_name)
-            return langs
+            async with sem:
+                repo_name = item.get("name") or item.get("id")
+                owner = item.get("owner", target_user)
+                from app.services.github_service import github_service
+                langs = await github_service.fetch_languages(owner, repo_name)
+                return langs
 
         lang_tasks = [fetch_repo_lang(item) for item in summaries]
         lang_results = await asyncio.gather(*lang_tasks, return_exceptions=True)
@@ -947,6 +950,8 @@ CRITICAL ANTI-HALLUCINATION RULES:
 
         self._stats_cache = result
         self._stats_cache_time = time.time()
+        from app.utils.memory import trim_memory
+        trim_memory()
         return result
 
 ai_service = GeminiAIService()

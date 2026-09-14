@@ -29,16 +29,17 @@ def verify_github_signature(payload: bytes, signature_header: str, secret: str) 
 async def _background_reindex_pushed_repo(owner: str, repo_name: str):
     """Asynchronous background task to re-index ONLY the pushed repository."""
     try:
-        print(f"🔔 Webhook push event! Selective re-indexing: {owner}/{repo_name}...")
+        from app.utils.memory import trim_memory
+        print(f"[WEBHOOK] Push event received. Selective re-indexing: {owner}/{repo_name}...")
         repo_index = await indexer_service.index_repository(owner, repo_name)
         case_study = await ai_service.analyze_and_generate_case_study(repo_index)
         
-        db = SessionLocal()
-        upsert_project_case_study(db, case_study)
-        db.close()
-        print(f"✅ Successfully updated DB case study for pushed repo: {repo_name}")
+        with SessionLocal() as db:
+            upsert_project_case_study(db, case_study)
+        print(f"[WEBHOOK] Successfully updated DB case study for pushed repo: {repo_name}")
+        trim_memory()
     except Exception as e:
-        print(f"⚠️ Error re-indexing pushed repo {repo_name}: {str(e)}")
+        print(f"[WEBHOOK] Error re-indexing pushed repo {repo_name}: {str(e)}")
 
 @router.post("/webhook")
 async def handle_github_webhook(

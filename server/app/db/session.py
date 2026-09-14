@@ -52,9 +52,9 @@ def init_db():
                 conn.commit()
             except Exception:
                 pass
-        print(f"✅ Database connection pool active on: {db_url.split('@')[-1] if '@' in db_url else db_url}")
+        print(f"[DB] Database connection pool active on: {db_url.split('@')[-1] if '@' in db_url else db_url}")
     except Exception as e:
-        print(f"⚠️ Error initializing database: {str(e)}")
+        print(f"[DB] Error initializing database: {str(e)}")
 
 @contextmanager
 def get_db_transaction():

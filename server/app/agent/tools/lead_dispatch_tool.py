@@ -28,7 +28,7 @@ class LeadDispatchTool(BaseTool):
                 created = create_visitor_lead(db, payload)
                 lead_id = created.id
         except Exception as e:
-            print(f"⚠️ Error persisting lead to DB: {str(e)}")
+            print(f"[LEAD DB ERROR] Error persisting lead to DB: {str(e)}")
 
         # Dispatch async email notification in background
         try:
@@ -44,9 +44,9 @@ class LeadDispatchTool(BaseTool):
                 )
             )
         except Exception as e:
-            print(f"⚠️ Error initiating background email task: {str(e)}")
+            print(f"[LEAD EMAIL ERROR] Error initiating background email task: {str(e)}")
 
-        print(f"📬 [LEAD DISPATCH QUEUE #{lead_id}] Captured inquiry from {payload['visitor_name']} ({payload['email']}): {message}")
+        print(f"[LEAD DISPATCH QUEUE #{lead_id}] Captured inquiry from {payload['visitor_name']} ({payload['email']}): {message}")
 
         return {
             "success": True,

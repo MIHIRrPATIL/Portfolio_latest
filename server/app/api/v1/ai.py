@@ -81,7 +81,7 @@ async def get_single_project_detail(project_id: str):
     try:
         return await ai_service.get_or_generate_single_project(project_id)
     except Exception as e:
-        print(f"⚠️ Error handling single project detail for '{project_id}': {str(e)}")
+        print(f"[AI SERVICE] Error handling single project detail for '{project_id}': {str(e)}")
         fallback_index = {
             "repo_name": project_id,
             "owner": settings.GITHUB_USERNAME,

@@ -174,10 +174,10 @@ class EmailService:
             server.login(smtp_user, smtp_pass)
             server.sendmail(smtp_user, [recipient], msg.as_string())
             server.quit()
-            print(f"✅ [EMAIL NOTIFICATION] Sent inquiry alert to {recipient}!")
+            print(f"[EMAIL NOTIFICATION] Sent inquiry alert to {recipient}!")
             return True
         except Exception as e:
-            print(f"⚠️ [EMAIL NOTIFICATION ERROR] Failed sending SMTP email to {recipient}: {str(e)}")
+            print(f"[EMAIL NOTIFICATION ERROR] Failed sending SMTP email to {recipient}: {str(e)}")
             return False
 
     async def send_lead_notification(
@@ -193,7 +193,7 @@ class EmailService:
         Guaranteed non-blocking and safe for client request lifecycles.
         """
         lead_ref = f"#{lead_id}" if lead_id else ""
-        subject = f"⚡ New Lead {lead_ref}: {visitor_name or 'Visitor'} ({project_scope or 'Collaboration'})"
+        subject = f"New Lead {lead_ref}: {visitor_name or 'Visitor'} ({project_scope or 'Collaboration'})"
         
         text_body = f"""New Collaboration Inquiry {lead_ref}
 

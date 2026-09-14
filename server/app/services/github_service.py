@@ -37,11 +37,11 @@ class GitHubService:
 
                 response = await client.get(url)
                 if response.status_code != 200:
-                    print(f"⚠️ GitHub API returned HTTP {response.status_code}: {response.text[:200]}")
+                    print(f"[GITHUB] API returned HTTP {response.status_code}: {response.text[:200]}")
                     return []
                 return response.json()
         except Exception as e:
-            print(f"⚠️ GitHub API Network / Timeout Warning in fetch_user_repositories: {str(e)}")
+            print(f"[GITHUB] Network / Timeout Warning in fetch_user_repositories: {str(e)}")
             return []
 
     async def fetch_repository_tree(self, owner: str, repo: str) -> List[str]:
@@ -102,7 +102,7 @@ class GitHubService:
                     return fallback_paths
 
         except Exception as e:
-            print(f"⚠️ Error fetching tree for {owner}/{repo}: {str(e)}")
+            print(f"[GITHUB] Error fetching tree for {owner}/{repo}: {str(e)}")
         return []
 
     async def fetch_readme_content(self, owner: str, repo: str) -> Optional[str]:
@@ -120,7 +120,7 @@ class GitHubService:
                         except Exception:
                             return None
         except Exception as e:
-            print(f"⚠️ Error fetching README for {owner}/{repo}: {str(e)}")
+            print(f"[GITHUB] Error fetching README for {owner}/{repo}: {str(e)}")
         return None
 
     async def fetch_repository_deployment_url(self, owner: str, repo: str) -> Optional[str]:
@@ -144,7 +144,7 @@ class GitHubService:
                                 if s.get("state") == "success" and s.get("environment_url"):
                                     return s.get("environment_url")
         except Exception as e:
-            print(f"⚠️ Error fetching GitHub Deployments for {owner}/{repo}: {str(e)}")
+            print(f"[GITHUB] Error fetching GitHub Deployments for {owner}/{repo}: {str(e)}")
         return None
 
     async def fetch_recent_commits(self, owner: str, repo: str, limit: int = 5) -> List[Dict[str, Any]]:
@@ -186,10 +186,10 @@ class GitHubService:
                     })
                 return results
         except Exception as e:
-            print(f"⚠️ Error fetching commits for {owner}/{repo}: {str(e)}")
+            print(f"[GITHUB] Error fetching commits for {owner}/{repo}: {str(e)}")
         return []
 
-    async def fetch_file_content(self, owner: str, repo: str, file_path: str, max_lines: int = 400) -> Optional[str]:
+    async def fetch_file_content(self, owner: str, repo: str, file_path: str, max_lines: int = 200) -> Optional[str]:
         """Fetch and truncate text content of a single source file."""
         try:
             async with httpx.AsyncClient(headers=self._get_headers(), timeout=self.timeout) as client:
@@ -208,7 +208,7 @@ class GitHubService:
                         except Exception:
                             return None
         except Exception as e:
-            print(f"⚠️ Error fetching file {file_path} for {owner}/{repo}: {str(e)}")
+            print(f"[GITHUB] Error fetching file {file_path} for {owner}/{repo}: {str(e)}")
         return None
 
     async def fetch_languages(self, owner: str, repo: str) -> Dict[str, int]:
@@ -231,8 +231,7 @@ class GitHubService:
         repos = await self.fetch_user_repositories(target_user)
         graded_results = []
 
-        db = SessionLocal()
-        try:
+        with SessionLocal() as db:
             for repo in repos:
                 owner = repo.get("owner", {}).get("login", target_user)
                 repo_name = repo.get("name")
@@ -248,8 +247,6 @@ class GitHubService:
                 
                 upsert_repository_grade(db, graded_info)
                 graded_results.append(graded_info)
-        finally:
-            db.close()
 
         graded_results.sort(key=lambda x: x["score"], reverse=True)
         return graded_results

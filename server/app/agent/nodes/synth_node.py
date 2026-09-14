@@ -201,7 +201,7 @@ class ResponseSynthesizerNode(BaseNode):
                                 state.suggested_followups = self._generate_followups(state)
                                 return state
             except Exception as e:
-                print(f"⚠️ [GEMINI ERROR] {str(e)}, falling back to OpenRouter...")
+                print(f"[GEMINI ERROR] {str(e)}, falling back to OpenRouter...")
 
         # 2. Secondary: OpenRouter API Fallback
         if settings.OPENROUTER_API_KEY:
@@ -229,7 +229,7 @@ class ResponseSynthesizerNode(BaseNode):
                             state.suggested_followups = self._generate_followups(state)
                             return state
             except Exception as e:
-                print(f"⚠️ [OPENROUTER ERROR] {str(e)}, falling back to offline rule generator...")
+                print(f"[OPENROUTER ERROR] {str(e)}, falling back to offline rule generator...")
 
         # 3. Offline Rule-Based Graph & Code Fallback
         raw_text = self._rule_based_response(state)

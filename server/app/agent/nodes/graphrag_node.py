@@ -109,7 +109,7 @@ class GraphRAGNode(BaseNode):
                 state.relevant_achievements = matched_achievements[:3]
 
         except Exception as e:
-            print(f"⚠️ [GRAPHRAG DB RETRIEVAL ERROR] {str(e)}")
+            print(f"[GRAPHRAG DB RETRIEVAL ERROR] {str(e)}")
 
         state.target_repo_ids = list(discovered_repos)
         return state

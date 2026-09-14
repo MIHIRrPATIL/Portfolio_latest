@@ -2,20 +2,34 @@ import time
 from typing import Dict, Any, List, Optional
 from app.agent.nodes.base import BaseNode
 from app.agent.state import MasterAgentState, ChatMessage
+from app.utils.memory import trim_memory
 
 class InMemorySessionStore:
     """
     High-Performance In-Memory Shodh Session Memory.
     Maintains active conversational context, user preferences, and explored entities
-    per session with automatic sliding window retention.
+    per session with automatic sliding window retention and 1-hour TTL expiration.
     """
-    def __init__(self, max_sessions: int = 500, max_turns: int = 16):
+    def __init__(self, max_sessions: int = 50, max_turns: int = 10, ttl_seconds: float = 3600.0):
         self.max_sessions = max_sessions
         self.max_turns = max_turns
+        self.ttl_seconds = ttl_seconds
         self.sessions: Dict[str, Dict[str, Any]] = {}
         self.session_timestamps: Dict[str, float] = {}
 
+    def _cleanup_expired(self, now: float):
+        """Removes sessions older than TTL."""
+        expired = [sid for sid, ts in self.session_timestamps.items() if (now - ts) > self.ttl_seconds]
+        if expired:
+            for sid in expired:
+                self.sessions.pop(sid, None)
+                self.session_timestamps.pop(sid, None)
+            trim_memory()
+
     def get_session(self, session_id: str) -> Dict[str, Any]:
+        now = time.time()
+        self._cleanup_expired(now)
+
         if session_id not in self.sessions:
             if len(self.sessions) >= self.max_sessions:
                 # Evict oldest session
@@ -29,7 +43,7 @@ class InMemorySessionStore:
                 "user_interests": set(),
                 "lead_details": {}
             }
-        self.session_timestamps[session_id] = time.time()
+        self.session_timestamps[session_id] = now
         return self.sessions[session_id]
 
     def record_turn(self, session_id: str, user_text: str, assistant_text: str, repos: List[str] = None):

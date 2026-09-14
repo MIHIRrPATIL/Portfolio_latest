@@ -2,23 +2,26 @@ from fastapi import APIRouter, HTTPException, Query, status
 from typing import Optional, List, Dict, Any
 from app.services.indexer_service import indexer_service
 from app.config import settings
+from app.utils.memory import get_process_memory_mb, trim_memory
 
 router = APIRouter(prefix="/indexer", tags=["Codebase Indexer"])
 
 @router.api_route("/cron", methods=["GET", "POST"])
-async def trigger_nightly_cron(batch_size: int = Query(5, ge=1, le=20)):
+async def trigger_nightly_cron(batch_size: int = Query(2, ge=1, le=10)):
     """
     Cron Trigger Endpoint:
     Can be called by external schedulers (Cron-job.org, GitHub Actions, etc.)
-    to execute the midnight batch indexer without relying on container memory.
+    to execute the midnight batch indexer with strict memory bounds.
     """
     try:
         from scripts.nightly_batch_indexer import run_nightly_batch_indexing
         import asyncio
+        trim_memory()
         asyncio.create_task(run_nightly_batch_indexing(batch_size=batch_size))
         return {
             "status": "triggered",
             "message": f"Nightly batch indexing triggered for next {batch_size} unindexed repositories.",
+            "current_ram_mb": get_process_memory_mb()
         }
     except Exception as e:
         raise HTTPException(
@@ -35,6 +38,7 @@ async def index_all_repositories(username: Optional[str] = Query(None, descripti
     try:
         target_username = username or settings.GITHUB_USERNAME
         results = await indexer_service.index_all_user_repos(target_username)
+        trim_memory()
         return results
     except Exception as e:
         raise HTTPException(
@@ -50,6 +54,7 @@ async def index_single_repository(repo_name: str, owner: Optional[str] = Query(N
     try:
         target_owner = owner or settings.GITHUB_USERNAME
         index_data = await indexer_service.index_repository(target_owner, repo_name)
+        trim_memory()
         return index_data
     except Exception as e:
         raise HTTPException(
