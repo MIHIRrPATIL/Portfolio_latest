@@ -36,6 +36,17 @@ class GitHubService:
                     url = f"{self.base_url}/users/{target_user}/repos?sort=updated&per_page=100"
 
                 response = await client.get(url)
+                if response.status_code == 401 and self.token:
+                    print(f"[GITHUB] Warning: Token unauthorized (401). Falling back to unauthenticated public repo fetch.")
+                    fallback_headers = {
+                        "Accept": "application/vnd.github.v3+json",
+                        "User-Agent": "Portfolio-FastAPI-Server"
+                    }
+                    fallback_url = f"{self.base_url}/users/{target_user}/repos?sort=updated&per_page=100"
+                    fallback_res = await client.get(fallback_url, headers=fallback_headers)
+                    if fallback_res.status_code == 200:
+                        return fallback_res.json()
+
                 if response.status_code != 200:
                     print(f"[GITHUB] API returned HTTP {response.status_code}: {response.text[:200]}")
                     return []
