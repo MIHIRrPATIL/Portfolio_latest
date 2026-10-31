@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     OPENROUTER_API_KEY: str = ""
     OPENROUTER_MODEL: str = "openrouter/free"
     DATABASE_URL: str = "sqlite:///./portfolio.db"
+    ADMIN_SECRET_KEY: str = "meowmeow"
     
     # Supabase Credentials
     SUPABASE_URL: str = ""
@@ -61,6 +62,11 @@ class Settings(BaseSettings):
         if token == "your_github_pat_token_here":
             return ""
         return token
+
+    @property
+    def effective_admin_secret_key(self) -> str:
+        key = self.ADMIN_SECRET_KEY or os.environ.get("ADMIN_SECRET_KEY", "meowmeow")
+        return key.strip()
 
     @property
     def normalized_database_url(self) -> str:

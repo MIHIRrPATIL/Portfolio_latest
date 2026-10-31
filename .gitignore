@@ -101,3 +101,6 @@ Thumbs.db
 
 # TypeScript Build Cache
 *.tsbuildinfo
+
+# Graphify Local Index
+graphify-out/

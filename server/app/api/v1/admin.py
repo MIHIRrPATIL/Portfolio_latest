@@ -3,6 +3,7 @@ import shutil
 from fastapi import APIRouter, Header, HTTPException, Depends, Query, Body, File, UploadFile, Form
 from typing import Dict, Any, List, Optional
 from pydantic import BaseModel, Field
+from app.config import settings
 from app.db.session import SessionLocal
 from app.db.crud import (
     get_all_visitor_leads,
@@ -21,14 +22,16 @@ from app.db.crud import (
 
 router = APIRouter(prefix="/admin", tags=["Admin Portal & Content Manager"])
 
-ADMIN_MASTER_KEY = os.environ.get("ADMIN_SECRET_KEY", "mihir-portfolio-2026")
+def get_admin_master_key() -> str:
+    return settings.effective_admin_secret_key
 
 def verify_admin_auth(x_admin_key: Optional[str] = Header(None, alias="X-Admin-Key")):
     """
     Strict Admin Authentication Dependency.
     Rejects any unauthenticated or visitor access with HTTP 401 Unauthorized.
     """
-    if not x_admin_key or x_admin_key.strip() != ADMIN_MASTER_KEY:
+    master_key = get_admin_master_key()
+    if not x_admin_key or x_admin_key.strip() != master_key:
         raise HTTPException(
             status_code=401,
             detail="Unauthorized: Invalid or missing administrative passkey."
@@ -43,7 +46,8 @@ class AuthVerifyRequest(BaseModel):
 
 @router.post("/auth/verify")
 async def verify_admin_passkey(req: AuthVerifyRequest):
-    if req.passkey.strip() == ADMIN_MASTER_KEY:
+    master_key = get_admin_master_key()
+    if req.passkey.strip() == master_key:
         return {"valid": True, "token": req.passkey.strip(), "message": "Admin session authorized."}
     raise HTTPException(status_code=401, detail="Invalid administrative passkey.")
 
