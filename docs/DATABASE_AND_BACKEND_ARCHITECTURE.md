@@ -63,3 +63,16 @@ flowchart TD
 | `visitor_leads` | Inbound recruiter and collaboration contact messages |
 | `blogs` | Engineering articles and blog post metadata |
 | `resume_settings` | Resume version metadata and file byte storage |
+
+---
+
+## 5. Dynamic Port Binding and Local Environment Sync
+
+### A. Port Conflict Resolution (`run.py`)
+- When the server starts up, it probes the configured `PORT` (or default `8000`).
+- If that port is already bound by another process (e.g., an active background task or external service), the server scans sequential ports until an open port is identified, or binds to an ephemeral OS port (`port=0`).
+- This eliminates `OSError: [Errno 98] Address already in use` failures during local development.
+
+### B. Client Configuration Synchronization
+- Upon binding to an active port, `server/run.py` automatically updates `client/.env.local` with `NEXT_PUBLIC_API_URL=http://localhost:<active_port>`.
+- `client/lib/api-config.ts` falls back to the active port to ensure frontend API requests route to the live FastAPI instance.

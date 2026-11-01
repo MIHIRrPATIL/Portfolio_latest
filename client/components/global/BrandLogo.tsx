@@ -10,6 +10,7 @@ export default function BrandLogo({ className }: { className?: string }) {
   const pathname = usePathname()
   const isHome = pathname === '/'
   const isGraphPage = pathname?.startsWith('/graph')
+  const isAdminPage = pathname?.startsWith('/admin')
 
   const handleLogoClick = (e: React.MouseEvent) => {
     if (isHome) {
@@ -23,8 +24,8 @@ export default function BrandLogo({ className }: { className?: string }) {
     }
   }
 
-  // Hide logo on /graph on mobile screens to preserve HUD back-button space
-  if (isGraphPage) {
+  // Hide logo on /graph and all /admin pages
+  if (isGraphPage || isAdminPage) {
     return null
   }
 

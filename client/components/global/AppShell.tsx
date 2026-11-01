@@ -11,8 +11,12 @@ import MenuOverlay from "./MenuOverlay"
 import BrandLogo from "./BrandLogo"
 import AgentChatWidget from "../agent/AgentChatWidget"
 
+import { usePathname } from 'next/navigation'
+
 export default function AppShell({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const pathname = usePathname()
+  const isAdminPage = pathname?.startsWith('/admin')
 
   useEffect(() => {
     const handleToggle = () => setIsMenuOpen((prev) => !prev)
@@ -21,6 +25,13 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }, [])
 
   useEffect(() => {
+    if (isAdminPage) {
+      document.body.classList.remove('modal-open')
+      document.body.style.overflow = ''
+      setIsMenuOpen(false)
+      return
+    }
+
     if (isMenuOpen) {
       document.body.classList.add('modal-open')
       window.dispatchEvent(new CustomEvent('modal-visibility-change', { detail: { open: true } }))
@@ -28,21 +39,21 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       document.body.classList.remove('modal-open')
       window.dispatchEvent(new CustomEvent('modal-visibility-change', { detail: { open: false } }))
     }
-  }, [isMenuOpen])
+  }, [isMenuOpen, isAdminPage])
 
   return (
     <div className="relative min-h-screen">
       {/* Animated Global Background Pattern */}
       <div className="fixed inset-0 -z-10 h-full w-full bg-black" />
 
-      <PageLoader />
+      {!isAdminPage && <PageLoader />}
       <TargetCursor />
       <CustomCursor />
-      <ScrollProgress />
-      <BrandLogo />
-      <SideNav />
-      <MenuOverlay isOpen={isMenuOpen} close={() => setIsMenuOpen(false)} />
-      <AgentChatWidget />
+      {!isAdminPage && <ScrollProgress />}
+      {!isAdminPage && <BrandLogo />}
+      {!isAdminPage && <SideNav />}
+      {!isAdminPage && <MenuOverlay isOpen={isMenuOpen} close={() => setIsMenuOpen(false)} />}
+      {!isAdminPage && <AgentChatWidget />}
       {children}
     </div>
   )

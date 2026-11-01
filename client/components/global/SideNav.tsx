@@ -14,6 +14,7 @@ export default function SideNav() {
   const pathname = usePathname()
   const isHomePage = pathname === '/'
   const isGraphPage = pathname?.startsWith('/graph')
+  const isAdminPage = pathname?.startsWith('/admin')
   const isDesktop = useMediaQuery({ minWidth: 768 })
   const { scrollY } = useScroll()
 
@@ -58,7 +59,11 @@ export default function SideNav() {
     }
   })
 
-  // Do not render floating corner menu on /graph for mobile screens so HUD controls remain unobstructed
+  // Do not render on admin pages or on /graph for mobile screens
+  if (isAdminPage) {
+    return null
+  }
+
   if (hasMounted && isGraphPage && !isDesktop) {
     return null
   }

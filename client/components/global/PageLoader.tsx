@@ -2,13 +2,22 @@
 
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { usePathname } from 'next/navigation'
 
 export default function PageLoader() {
   const [count, setCount]       = useState(0)
   const [visible, setVisible]   = useState(true)
   const [counting, setCounting] = useState(false)
+  const pathname = usePathname()
+  const isAdmin = pathname?.startsWith('/admin')
 
   useEffect(() => {
+    if (isAdmin) {
+      document.body.style.overflow = ''
+      setVisible(false)
+      return
+    }
+
     // Lock scroll while loader is active
     document.body.style.overflow = 'hidden'
 
@@ -20,10 +29,10 @@ export default function PageLoader() {
       clearTimeout(startDelay)
       document.body.style.overflow = ''
     }
-  }, [])
+  }, [isAdmin])
 
   useEffect(() => {
-    if (!counting) return
+    if (!counting || isAdmin) return
 
     const totalSteps = 100
     const duration = 1200
@@ -34,6 +43,7 @@ export default function PageLoader() {
         if (prev >= 100) {
           clearInterval(timer)
           setVisible(false)
+          document.body.style.overflow = ''
           return 100
         }
         return prev + 1
@@ -41,7 +51,17 @@ export default function PageLoader() {
     }, stepTime)
 
     return () => clearInterval(timer)
-  }, [counting])
+  }, [counting, isAdmin])
+
+  useEffect(() => {
+    if (!visible) {
+      document.body.style.overflow = ''
+    }
+  }, [visible])
+
+  if (isAdmin) {
+    return null
+  }
 
   return (
     <AnimatePresence>

@@ -5,6 +5,6 @@
  */
 
 export const API_BASE_URL: string =
-  process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") || "http://localhost:8000";
+  process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") || "http://localhost:7777";
 
 export const API_V1: string = `${API_BASE_URL}/api/v1`;

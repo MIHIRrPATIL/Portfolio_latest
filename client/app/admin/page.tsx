@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Lock,
@@ -895,28 +896,40 @@ export default function AdminPortalPage() {
         {/* TAB 3: BLOGS & THOUGHTS */}
         {activeTab === "blogs" && (
           <div>
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-bold text-white">Engineering Thoughts & Articles</h2>
-              <button
-                onClick={() => {
-                  setEditingBlog({
-                    title: "",
-                    summary: "",
-                    content: "",
-                    cover_image: "",
-                    external_url: "",
-                    tags: [],
-                    read_time: "3 min read",
-                    is_published: true,
-                  });
-                  setBlogPreviewMode(false);
-                  setIsBlogModalOpen(true);
-                }}
-                className="px-4 py-2 rounded-xl bg-red-300 text-black font-bold text-xs uppercase tracking-wider font-mono flex items-center gap-2 hover:bg-white transition-colors cursor-pointer"
-              >
-                <Plus className="w-4 h-4" />
-                <span>Write Blog / Thought</span>
-              </button>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+              <div>
+                <h2 className="text-lg font-bold text-white">Engineering Thoughts & Articles</h2>
+                <p className="text-xs text-white/50 font-mono mt-0.5">Manage live articles or craft rich Markdown content in Studio</p>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <Link
+                  href="/admin/blogs/editor?id=new"
+                  className="px-4 py-2 rounded-xl bg-gradient-to-r from-red-500/20 to-orange-500/20 border border-red-300/40 text-red-200 font-bold text-xs uppercase tracking-wider font-mono flex items-center gap-2 hover:bg-red-500/30 hover:border-red-300 transition-all cursor-pointer shadow-lg shadow-red-950/20"
+                >
+                  <Sparkles className="w-4 h-4 text-red-300" />
+                  <span>Open Fullscreen Studio</span>
+                </Link>
+                <button
+                  onClick={() => {
+                    setEditingBlog({
+                      title: "",
+                      summary: "",
+                      content: "",
+                      cover_image: "",
+                      external_url: "",
+                      tags: [],
+                      read_time: "3 min read",
+                      is_published: true,
+                    });
+                    setBlogPreviewMode(false);
+                    setIsBlogModalOpen(true);
+                  }}
+                  className="px-4 py-2 rounded-xl bg-red-300 text-black font-bold text-xs uppercase tracking-wider font-mono flex items-center gap-2 hover:bg-white transition-colors cursor-pointer"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Quick Add</span>
+                </button>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -953,7 +966,23 @@ export default function AdminPortalPage() {
 
                   <div className="p-6 pt-0 flex items-center justify-between border-t border-white/5 mt-4 pt-4">
                     <span className="text-[10px] font-mono text-white/40">{b.views || 0} views</span>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5">
+                      <Link
+                        href={`/blogs/${b.id}`}
+                        target="_blank"
+                        className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors cursor-pointer"
+                        title="View Public Article"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </Link>
+                      <Link
+                        href={`/admin/blogs/editor?id=${b.id}`}
+                        className="px-2.5 py-1.5 rounded-lg bg-red-400/10 hover:bg-red-400/20 text-red-300 hover:text-white border border-red-400/20 transition-colors cursor-pointer flex items-center gap-1 text-[11px] font-mono font-bold"
+                        title="Open in Fullscreen Studio"
+                      >
+                        <Sparkles className="w-3 h-3" />
+                        <span>Studio</span>
+                      </Link>
                       <button
                         onClick={() => {
                           setEditingBlog(b);
@@ -961,12 +990,14 @@ export default function AdminPortalPage() {
                           setIsBlogModalOpen(true);
                         }}
                         className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-colors cursor-pointer"
+                        title="Quick Edit Meta"
                       >
                         <Edit3 className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => handleDeleteBlog(b.id)}
                         className="p-2 rounded-lg bg-red-950/20 hover:bg-red-950/50 text-red-400 hover:text-red-300 transition-colors cursor-pointer"
+                        title="Delete Article"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -1357,14 +1388,16 @@ export default function AdminPortalPage() {
       {/* BLOG / THOUGHT MODAL */}
       <AnimatePresence>
         {isBlogModalOpen && editingBlog && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/80 backdrop-blur-md">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-black/80 backdrop-blur-md">
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="w-full max-w-3xl p-6 rounded-3xl bg-[#0c0c11] border border-white/15 shadow-2xl max-h-[90vh] overflow-y-auto font-sans"
+              data-lenis-prevent="true"
+              className="w-full max-w-4xl rounded-3xl bg-[#0c0c11] border border-white/15 shadow-2xl h-[90vh] flex flex-col font-sans overflow-hidden"
             >
-              <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
+              {/* STICKY HEADER */}
+              <div className="shrink-0 flex items-center justify-between p-6 pb-4 border-b border-white/10 bg-[#0c0c11]">
                 <div className="flex items-center gap-3">
                   <h3 className="text-lg font-bold text-white">
                     {editingBlog.id ? "Edit Blog Post" : "Publish Engineering Thought"}
@@ -1373,8 +1406,8 @@ export default function AdminPortalPage() {
                     <button
                       type="button"
                       onClick={() => setBlogPreviewMode(false)}
-                      className={`px-3 py-1 rounded-md transition-colors ${
-                        !blogPreviewMode ? "bg-red-300 text-black font-bold" : "text-white/50"
+                      className={`px-3 py-1 rounded-md transition-colors cursor-pointer ${
+                        !blogPreviewMode ? "bg-red-300 text-black font-bold" : "text-white/50 hover:text-white"
                       }`}
                     >
                       Editor
@@ -1382,8 +1415,8 @@ export default function AdminPortalPage() {
                     <button
                       type="button"
                       onClick={() => setBlogPreviewMode(true)}
-                      className={`px-3 py-1 rounded-md transition-colors ${
-                        blogPreviewMode ? "bg-red-300 text-black font-bold" : "text-white/50"
+                      className={`px-3 py-1 rounded-md transition-colors cursor-pointer ${
+                        blogPreviewMode ? "bg-red-300 text-black font-bold" : "text-white/50 hover:text-white"
                       }`}
                     >
                       Preview
@@ -1392,140 +1425,143 @@ export default function AdminPortalPage() {
                 </div>
                 <button
                   onClick={() => setIsBlogModalOpen(false)}
-                  className="text-white/40 hover:text-white text-xs font-mono"
+                  className="text-white/40 hover:text-white text-xs font-mono cursor-pointer"
                 >
                   [ESC / CLOSE]
                 </button>
               </div>
 
-              {!blogPreviewMode ? (
-                <form onSubmit={handleSaveBlog} className="space-y-4 font-mono text-xs">
-                  <div>
-                    <label className="text-white/60 block mb-1">Post Title *</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="e.g. Architecting GraphRAG Copilots with AST Code Maps"
-                      value={editingBlog.title || ""}
-                      onChange={(e) => setEditingBlog({ ...editingBlog, title: e.target.value })}
-                      className="w-full px-3 py-2.5 rounded-xl bg-black border border-white/15 text-white focus:border-red-300 outline-none text-sm"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-white/60 block mb-1">Executive Summary *</label>
-                    <textarea
-                      rows={2}
-                      required
-                      placeholder="Short teaser or overview for social cards and listings..."
-                      value={editingBlog.summary || ""}
-                      onChange={(e) => setEditingBlog({ ...editingBlog, summary: e.target.value })}
-                      className="w-full px-3 py-2.5 rounded-xl bg-black border border-white/15 text-white focus:border-red-300 outline-none"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
+              {/* SCROLLABLE MODAL CONTENT BODY */}
+              <div className="flex-1 min-h-0 overflow-y-auto custom-scrollbar p-6" data-lenis-prevent="true">
+                {!blogPreviewMode ? (
+                  <form onSubmit={handleSaveBlog} className="space-y-4 font-mono text-xs">
                     <div>
-                      <label className="text-white/60 block mb-1">Cover Image URL</label>
-                      <input
-                        type="url"
-                        placeholder="https://images.unsplash.com/..."
-                        value={editingBlog.cover_image || ""}
-                        onChange={(e) => setEditingBlog({ ...editingBlog, cover_image: e.target.value })}
-                        className="w-full px-3 py-2.5 rounded-xl bg-black border border-white/15 text-white focus:border-red-300 outline-none"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-white/60 block mb-1">External Link (Optional)</label>
-                      <input
-                        type="url"
-                        placeholder="e.g. Medium, Substack or Dev.to URL"
-                        value={editingBlog.external_url || ""}
-                        onChange={(e) => setEditingBlog({ ...editingBlog, external_url: e.target.value })}
-                        className="w-full px-3 py-2.5 rounded-xl bg-black border border-white/15 text-white focus:border-red-300 outline-none"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="text-white/60 block mb-1">Full Markdown Content</label>
-                    <textarea
-                      rows={8}
-                      placeholder="# Your engineering thoughts, code blocks, diagrams..."
-                      value={editingBlog.content || ""}
-                      onChange={(e) => setEditingBlog({ ...editingBlog, content: e.target.value })}
-                      className="w-full px-3 py-2.5 rounded-xl bg-black border border-white/15 text-white focus:border-red-300 outline-none font-mono leading-relaxed"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="text-white/60 block mb-1">Tags (Comma-separated)</label>
+                      <label className="text-white/60 block mb-1">Post Title *</label>
                       <input
                         type="text"
-                        placeholder="AI Agents, GraphRAG, Architecture"
-                        value={Array.isArray(editingBlog.tags) ? editingBlog.tags.join(", ") : editingBlog.tags || ""}
-                        onChange={(e) => setEditingBlog({ ...editingBlog, tags: e.target.value as any })}
-                        className="w-full px-3 py-2.5 rounded-xl bg-black border border-white/15 text-white focus:border-red-300 outline-none"
+                        required
+                        placeholder="e.g. Architecting GraphRAG Copilots with AST Code Maps"
+                        value={editingBlog.title || ""}
+                        onChange={(e) => setEditingBlog({ ...editingBlog, title: e.target.value })}
+                        className="w-full px-3 py-2.5 rounded-xl bg-black border border-white/15 text-white focus:border-red-300 outline-none text-sm"
                       />
                     </div>
+
                     <div>
-                      <label className="text-white/60 block mb-1">Read Time</label>
-                      <input
-                        type="text"
-                        placeholder="e.g. 4 min read"
-                        value={editingBlog.read_time || "3 min read"}
-                        onChange={(e) => setEditingBlog({ ...editingBlog, read_time: e.target.value })}
+                      <label className="text-white/60 block mb-1">Executive Summary *</label>
+                      <textarea
+                        rows={2}
+                        required
+                        placeholder="Short teaser or overview for social cards and listings..."
+                        value={editingBlog.summary || ""}
+                        onChange={(e) => setEditingBlog({ ...editingBlog, summary: e.target.value })}
                         className="w-full px-3 py-2.5 rounded-xl bg-black border border-white/15 text-white focus:border-red-300 outline-none"
                       />
                     </div>
-                  </div>
 
-                  <div className="flex items-center gap-2 pt-2">
-                    <input
-                      type="checkbox"
-                      id="is_published"
-                      checked={editingBlog.is_published ?? true}
-                      onChange={(e) => setEditingBlog({ ...editingBlog, is_published: e.target.checked })}
-                      className="rounded border-white/20"
-                    />
-                    <label htmlFor="is_published" className="text-white/80 cursor-pointer">
-                      Publish immediately to public `/blogs`
-                    </label>
-                  </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-white/60 block mb-1">Cover Image URL</label>
+                        <input
+                          type="url"
+                          placeholder="https://images.unsplash.com/..."
+                          value={editingBlog.cover_image || ""}
+                          onChange={(e) => setEditingBlog({ ...editingBlog, cover_image: e.target.value })}
+                          className="w-full px-3 py-2.5 rounded-xl bg-black border border-white/15 text-white focus:border-red-300 outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-white/60 block mb-1">External Link (Optional)</label>
+                        <input
+                          type="url"
+                          placeholder="e.g. Medium, Substack or Dev.to URL"
+                          value={editingBlog.external_url || ""}
+                          onChange={(e) => setEditingBlog({ ...editingBlog, external_url: e.target.value })}
+                          className="w-full px-3 py-2.5 rounded-xl bg-black border border-white/15 text-white focus:border-red-300 outline-none"
+                        />
+                      </div>
+                    </div>
 
-                  <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
-                    <button
-                      type="button"
-                      onClick={() => setIsBlogModalOpen(false)}
-                      className="px-4 py-2 rounded-xl bg-white/5 text-white/70 hover:text-white"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="px-5 py-2 rounded-xl bg-red-300 text-black font-bold hover:bg-white transition-colors"
-                    >
-                      Save & Publish
-                    </button>
+                    <div>
+                      <label className="text-white/60 block mb-1">Full Markdown Content</label>
+                      <textarea
+                        rows={10}
+                        placeholder="# Your engineering thoughts, code blocks, diagrams..."
+                        value={editingBlog.content || ""}
+                        onChange={(e) => setEditingBlog({ ...editingBlog, content: e.target.value })}
+                        className="w-full px-3 py-2.5 rounded-xl bg-black border border-white/15 text-white focus:border-red-300 outline-none font-mono leading-relaxed"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-white/60 block mb-1">Tags (Comma-separated)</label>
+                        <input
+                          type="text"
+                          placeholder="AI Agents, GraphRAG, Architecture"
+                          value={Array.isArray(editingBlog.tags) ? editingBlog.tags.join(", ") : editingBlog.tags || ""}
+                          onChange={(e) => setEditingBlog({ ...editingBlog, tags: e.target.value as any })}
+                          className="w-full px-3 py-2.5 rounded-xl bg-black border border-white/15 text-white focus:border-red-300 outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-white/60 block mb-1">Read Time</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 4 min read"
+                          value={editingBlog.read_time || "3 min read"}
+                          onChange={(e) => setEditingBlog({ ...editingBlog, read_time: e.target.value })}
+                          className="w-full px-3 py-2.5 rounded-xl bg-black border border-white/15 text-white focus:border-red-300 outline-none"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 pt-2">
+                      <input
+                        type="checkbox"
+                        id="is_published"
+                        checked={editingBlog.is_published ?? true}
+                        onChange={(e) => setEditingBlog({ ...editingBlog, is_published: e.target.checked })}
+                        className="rounded border-white/20"
+                      />
+                      <label htmlFor="is_published" className="text-white/80 cursor-pointer">
+                        Publish immediately to public `/blogs`
+                      </label>
+                    </div>
+
+                    <div className="flex justify-end gap-3 pt-4 border-t border-white/10">
+                      <button
+                        type="button"
+                        onClick={() => setIsBlogModalOpen(false)}
+                        className="px-4 py-2 rounded-xl bg-white/5 text-white/70 hover:text-white cursor-pointer"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="submit"
+                        className="px-5 py-2 rounded-xl bg-red-300 text-black font-bold hover:bg-white transition-colors cursor-pointer"
+                      >
+                        Save & Publish
+                      </button>
+                    </div>
+                  </form>
+                ) : (
+                  <div className="space-y-6">
+                    <h1 className="text-2xl font-bold text-white">{editingBlog.title || "Untitled Post"}</h1>
+                    {editingBlog.summary && <p className="text-sm text-white/60 italic">{editingBlog.summary}</p>}
+                    {editingBlog.cover_image && (
+                      <img
+                        src={editingBlog.cover_image}
+                        alt="Cover"
+                        className="w-full h-56 object-cover rounded-xl border border-white/10"
+                      />
+                    )}
+                    <div className="p-6 rounded-2xl bg-black/60 border border-white/10">
+                      <MarkdownRenderer content={editingBlog.content || "No markdown body provided."} />
+                    </div>
                   </div>
-                </form>
-              ) : (
-                <div className="space-y-6 py-4">
-                  <h1 className="text-2xl font-bold text-white">{editingBlog.title || "Untitled Post"}</h1>
-                  <p className="text-sm text-white/60 italic">{editingBlog.summary}</p>
-                  {editingBlog.cover_image && (
-                    <img
-                      src={editingBlog.cover_image}
-                      alt="Cover"
-                      className="w-full h-48 object-cover rounded-xl border border-white/10"
-                    />
-                  )}
-                  <div className="p-6 rounded-2xl bg-black/60 border border-white/10">
-                    <MarkdownRenderer content={editingBlog.content || "No markdown body provided."} />
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
             </motion.div>
           </div>
         )}
