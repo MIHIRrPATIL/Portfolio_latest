@@ -133,3 +133,10 @@ The landing page features a tactile, interactive 3D showcase component (`WorksWh
    - If database articles are available, they dynamically populate the wheel's items; complementary default engineering dossiers (e.g., VESPER Swarm Architecture, GraphRAG Copilots, Barge-in) fill any remaining slots to keep the 9-slot drum complete.
    - Direct deep-links route readers to `/blogs/:slug`.
 
+4. **Pointer Drag Threshold & Click Navigation**:
+   - The stage container previously called `setPointerCapture(event.pointerId)` unconditionally during `pointerdown`. In browser DOM specs, pointer capture redirects `pointerup` exclusively to the capturing stage ancestor, aborting synthetic `click` dispatch to child elements (`<Link>` / `<a>`).
+   - Resolved by introducing a 6px drag delta threshold:
+     - Pure clicks (distance <= 6px) never activate pointer capture, allowing natural `click` events to fire and execute client-side `router.push(item.href)` without page reloads.
+     - True drag gestures (distance > 6px) activate pointer capture dynamically for fluid 3D drum rotation and set `isDragging = true` to prevent accidental navigation on gesture completion.
+     - The featured dossier title and "Read Architecture Breakdown" link in the left HUD are also interactive with `pointer-events-auto`, routing readers to the active article.
+

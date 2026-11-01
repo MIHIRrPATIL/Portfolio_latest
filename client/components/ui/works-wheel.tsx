@@ -13,6 +13,7 @@
 // the front, and every whole number after that is one more item turned past.
 import * as React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 export interface WorksWheelItem {
@@ -91,11 +92,24 @@ export function WorksWheel({
   className,
   ...props
 }: WorksWheelProps) {
+  const router = useRouter();
   const stageRef = React.useRef<HTMLDivElement>(null);
   const wheelRef = React.useRef<HTMLDivElement>(null);
   const cardRefs = React.useRef<(HTMLElement | null)[]>([]);
   const labelRef = React.useRef<HTMLDivElement>(null);
   const titleRef = React.useRef<HTMLDivElement>(null);
+
+  const navigateTo = React.useCallback(
+    (href: string) => {
+      if (!href) return;
+      if (href.startsWith("http://") || href.startsWith("https://")) {
+        window.open(href, "_blank", "noopener,noreferrer");
+      } else {
+        router.push(href);
+      }
+    },
+    [router],
+  );
 
   const turn = React.useRef(0);
   const target = React.useRef(0);
@@ -223,7 +237,64 @@ export function WorksWheel({
   }, [to, last]);
 
   const drag = React.useRef<number | null>(null);
+  const dragStart = React.useRef<{ x: number; y: number } | null>(null);
+  const isDragging = React.useRef(false);
   const settling = React.useRef(0);
+
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    // Only track primary mouse button (0) or touch
+    if (event.button !== 0) return;
+    dragStart.current = { x: event.clientX, y: event.clientY };
+    drag.current = event.clientY;
+    isDragging.current = false;
+  };
+
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (drag.current === null || !dragStart.current) return;
+    const dy = event.clientY - dragStart.current.y;
+    const dx = event.clientX - dragStart.current.x;
+    const distance = Math.hypot(dx, dy);
+
+    // Only engage drag and capture pointer if user moved beyond 6px threshold
+    if (!isDragging.current && distance > 6) {
+      isDragging.current = true;
+      try {
+        event.currentTarget.setPointerCapture(event.pointerId);
+      } catch (_) {}
+    }
+
+    if (isDragging.current) {
+      to(target.current + (drag.current - event.clientY) / DRAG_UNITS);
+      drag.current = event.clientY;
+    }
+  };
+
+  const handlePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (isDragging.current) {
+      if (target.current > 1) {
+        to(Math.round(target.current));
+      }
+      try {
+        if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+          event.currentTarget.releasePointerCapture(event.pointerId);
+        }
+      } catch (_) {}
+    }
+
+    drag.current = null;
+    dragStart.current = null;
+
+    // Retain isDragging flag briefly so upcoming click event knows whether to suppress navigation
+    window.setTimeout(() => {
+      isDragging.current = false;
+    }, 60);
+  };
+
+  const handlePointerCancel = () => {
+    drag.current = null;
+    dragStart.current = null;
+    isDragging.current = false;
+  };
 
   return (
     <section
@@ -243,19 +314,10 @@ export function WorksWheel({
         aria-activedescendant={`works-wheel-${active}`}
         className="focus-visible:outline-red-300 absolute inset-0 cursor-grab touch-pan-x outline-none focus-visible:outline-2 focus-visible:-outline-offset-4 active:cursor-grabbing"
         style={{ perspective: `${metrics.depth}px` }}
-        onPointerDown={(event) => {
-          drag.current = event.clientY;
-          event.currentTarget.setPointerCapture(event.pointerId);
-        }}
-        onPointerMove={(event) => {
-          if (drag.current === null) return;
-          to(target.current + (drag.current - event.clientY) / DRAG_UNITS);
-          drag.current = event.clientY;
-        }}
-        onPointerUp={() => {
-          drag.current = null;
-          if (target.current > 1) to(Math.round(target.current));
-        }}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
         onKeyDown={(event) => {
           if (event.key === "ArrowDown") to(Math.round(target.current) + 1);
           else if (event.key === "ArrowUp") to(Math.round(target.current) - 1);
@@ -277,6 +339,17 @@ export function WorksWheel({
                     role="option"
                     aria-selected={i === active}
                     href={item.href!}
+                    onClick={(e) => {
+                      if (isDragging.current) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        return;
+                      }
+                      if (item.href) {
+                        e.preventDefault();
+                        navigateTo(item.href);
+                      }
+                    }}
                     ref={(node: HTMLAnchorElement | null) => {
                       cardRefs.current[i] = node;
                     }}
@@ -362,21 +435,65 @@ export function WorksWheel({
 
       <div
         ref={titleRef}
-        className="pointer-events-none absolute top-1/2 left-[5%] md:left-[8%] -translate-y-1/2 max-w-[85%] md:max-w-[42%] tracking-tight opacity-0 space-y-2 z-20"
+        className="pointer-events-none absolute top-1/2 left-[5%] md:left-[8%] -translate-y-1/2 max-w-[85%] md:max-w-[42%] tracking-tight opacity-0 space-y-3 z-20"
       >
         <span className="text-[11px] font-mono text-red-300 uppercase tracking-widest block font-bold">
           // FEATURED DOSSIER #{active + 1}
         </span>
-        <h3
-          className="font-black uppercase text-white leading-[1.08] line-clamp-3 drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]"
-          style={{ fontSize: Math.min(36, Math.max(20, metrics.title * 0.85)) }}
-        >
-          {items[active]?.title}
-        </h3>
+        {items[active]?.href ? (
+          <Link
+            href={items[active].href!}
+            onClick={(e) => {
+              e.preventDefault();
+              navigateTo(items[active].href!);
+            }}
+            className="pointer-events-auto block group/title focus:outline-none"
+          >
+            <h3
+              className="font-black uppercase text-white group-hover/title:text-red-300 transition-colors leading-[1.08] line-clamp-3 drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)] cursor-pointer"
+              style={{ fontSize: Math.min(36, Math.max(20, metrics.title * 0.85)) }}
+            >
+              {items[active]?.title}
+            </h3>
+          </Link>
+        ) : (
+          <h3
+            className="font-black uppercase text-white leading-[1.08] line-clamp-3 drop-shadow-[0_4px_16px_rgba(0,0,0,0.9)]"
+            style={{ fontSize: Math.min(36, Math.max(20, metrics.title * 0.85)) }}
+          >
+            {items[active]?.title}
+          </h3>
+        )}
         {items[active]?.summary && (
           <p className="text-xs md:text-sm text-white/60 line-clamp-2 font-sans font-normal leading-relaxed">
             {items[active]?.summary}
           </p>
+        )}
+        {items[active]?.href && (
+          <Link
+            href={items[active].href!}
+            onClick={(e) => {
+              e.preventDefault();
+              navigateTo(items[active].href!);
+            }}
+            className="pointer-events-auto inline-flex items-center gap-1.5 text-xs font-mono uppercase tracking-wider text-red-300 hover:text-white transition-colors pt-1 group/btn cursor-pointer"
+          >
+            <span>Read Architecture Breakdown</span>
+            <svg
+              viewBox="0 0 12 12"
+              className="size-3 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5"
+              aria-hidden="true"
+            >
+              <path
+                d="M3 9 9 3M4 3h5v5"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Link>
         )}
       </div>
 
