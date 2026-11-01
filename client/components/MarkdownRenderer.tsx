@@ -244,6 +244,72 @@ function CodeBlock({ language, code }: { language: string; code: string }) {
   );
 }
 
+// Module-level Mermaid singleton and serialized render queue
+let mermaidModulePromise: Promise<any> | null = null;
+let mermaidRenderQueue: Promise<void> = Promise.resolve();
+
+function getMermaidInstance() {
+  if (typeof window === "undefined") return Promise.reject("SSR");
+  if (!mermaidModulePromise) {
+    mermaidModulePromise = import("mermaid").then((m) => {
+      const mermaid = m.default;
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: "base",
+        securityLevel: "loose",
+        fontFamily: "monospace, sans-serif",
+        themeVariables: {
+          darkMode: true,
+          background: "transparent",
+          mainBkg: "#0e0e17",
+          primaryColor: "#1a1625",
+          primaryBorderColor: "#f87171",
+          primaryTextColor: "#ffffff",
+          lineColor: "#f87171",
+          secondaryColor: "#12121e",
+          secondaryBorderColor: "#60a5fa",
+          secondaryTextColor: "#ffffff",
+          tertiaryColor: "#0f172a",
+          tertiaryBorderColor: "#94a3b8",
+          tertiaryTextColor: "#e2e8f0",
+          clusterBkg: "#07070c",
+          clusterBorder: "#2e2e42",
+          edgeLabelBackground: "#11111c",
+          nodeTextColor: "#ffffff",
+        },
+      });
+      return mermaid;
+    });
+  }
+  return mermaidModulePromise;
+}
+
+function safeRenderMermaid(id: string, code: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    mermaidRenderQueue = mermaidRenderQueue
+      .then(async () => {
+        try {
+          const mermaid = await getMermaidInstance();
+          const cleanCode = code.trim();
+          const { svg } = await mermaid.render(id, cleanCode);
+          resolve(svg);
+        } catch (err) {
+          // Remove rogue temporary elements created by mermaid on failure
+          if (typeof document !== "undefined") {
+            const rogue1 = document.getElementById(id);
+            if (rogue1) rogue1.remove();
+            const rogue2 = document.getElementById(`d${id}`);
+            if (rogue2) rogue2.remove();
+          }
+          reject(err);
+        }
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
 // Mermaid Diagram Block with Visual SVG Rendering
 function MermaidBlock({ code }: { code: string }) {
   const [copied, setCopied] = useState(false);
@@ -261,36 +327,8 @@ function MermaidBlock({ code }: { code: string }) {
       setError(null);
 
       try {
-        const mermaid = (await import("mermaid")).default;
-        mermaid.initialize({
-          startOnLoad: false,
-          theme: "base",
-          securityLevel: "loose",
-          fontFamily: "monospace, sans-serif",
-          themeVariables: {
-            darkMode: true,
-            background: "transparent",
-            mainBkg: "#0e0e17",
-            primaryColor: "#1a1625",
-            primaryBorderColor: "#f87171",
-            primaryTextColor: "#ffffff",
-            lineColor: "#f87171",
-            secondaryColor: "#12121e",
-            secondaryBorderColor: "#60a5fa",
-            secondaryTextColor: "#ffffff",
-            tertiaryColor: "#0f172a",
-            tertiaryBorderColor: "#94a3b8",
-            tertiaryTextColor: "#e2e8f0",
-            clusterBkg: "#07070c",
-            clusterBorder: "#2e2e42",
-            edgeLabelBackground: "#11111c",
-            nodeTextColor: "#ffffff",
-          },
-        });
-
-        const renderId = `mermaid-${Math.random().toString(36).substring(2, 9)}`;
-        const cleanCode = code.trim();
-        const { svg } = await mermaid.render(renderId, cleanCode);
+        const renderId = `mermaid-${Date.now()}-${Math.floor(Math.random() * 1000000)}`;
+        const svg = await safeRenderMermaid(renderId, code);
 
         if (!isCancelled) {
           setSvgHtml(svg);

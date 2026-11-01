@@ -68,7 +68,9 @@ The parser in `client/components/MarkdownRenderer.tsx` converts markdown tokens 
    - Renders themed color borders, backgrounds, and designated Lucide icons.
 
 3. **Mermaid Architecture Diagrams**:
-   - Code blocks tagged ````mermaid` render a specialized architecture block with a one-click "Copy Diagram Spec" button.
+   - Code blocks tagged ````mermaid` are dynamically rendered into interactive dark-themed SVG diagrams with tailored theme tokens (`#0e0e17` background, `#f87171` edges/borders, `#2e2e42` clusters).
+   - Utilizes a module-level serialized promise queue (`safeRenderMermaid`) to prevent DOM collisions during concurrent diagram renders on complex multi-diagram technical posts.
+   - Includes a visual/source code tab switcher and a one-click "Copy Spec" action.
 
 4. **Syntax Highlighting & Code Blocks**:
    - Monospace font styling with language badge and copy-to-clipboard button.
@@ -111,4 +113,23 @@ The Studio interface provides:
      - **Visitor AI Copilot Widget** (`AgentChatWidget.tsx`) is hidden.
      - **PageLoader** and **ScrollProgress** are hidden.
    - Any residual modal locks or `overflow: hidden` states on `document.body` are reset to clean empty strings on route entry.
+
+---
+
+## 7. Landing Page Thoughts Showcase (`WorksWheel` 3D Drum)
+
+The landing page features a tactile, interactive 3D showcase component (`WorksWheel`) mounted under `client/components/ThoughtsSection.tsx` at `#thoughts`:
+
+1. **Kinetic Drum Geometry**:
+   - At rest (`turn = 0`), cards are arranged tangentially around a central title in a planar ring (`ringR = cardH * 1.14`).
+   - Upon scroll or drag, the ring blossoms into a vertical 3D cylindrical drum (`drumR = cardH * 2.22`) with perspective lens (`depth = cardH * 2.7`) and lateral bow curvature (`bow = cardH * 1.82`).
+   - A single normalized `turn` value is interpolated with damping ease (`EASE = 0.12`) and written directly to DOM element transforms via `requestAnimationFrame` without React re-render overhead.
+
+2. **Lenis Integration**:
+   - The wheel container is annotated with `data-lenis-prevent="true"`, ensuring vertical drag and trackpad wheel events interact directly with the 3D cylinder without triggering parent document inertial scroll snapping.
+
+3. **Dynamic Hydration & Curated Fallbacks**:
+   - On mount, `ThoughtsSection` queries `${API_V1}/public/blogs`.
+   - If database articles are available, they dynamically populate the wheel's items; complementary default engineering dossiers (e.g., VESPER Swarm Architecture, GraphRAG Copilots, Barge-in) fill any remaining slots to keep the 9-slot drum complete.
+   - Direct deep-links route readers to `/blogs/:slug`.
 

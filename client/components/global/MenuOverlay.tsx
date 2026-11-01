@@ -14,7 +14,7 @@ export default function MenuOverlay({ isOpen, close }: MenuOverlayProps) {
     { title: 'home.', href: '/#hero' },
     { title: 'about.', href: '/#about' },
     { title: 'works.', href: '/#works' },
-    { title: 'thoughts.', href: '/blogs' },
+    { title: 'thoughts.', href: '/#thoughts' },
     { title: 'graph.', href: '/graph' },
     { title: 'resume.', href: `${API_V1}/public/resume`, target: '_blank' },
     { title: 'connect.', href: '/#connect' },
